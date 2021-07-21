@@ -5,7 +5,7 @@
         <div class="header">
           <a href="/">
             <img src="~@/assets/logo.png" class="logo" alt="logo">
-            <span class="title">师大管理系统</span>
+            <span class="title">福建师大地理所/地科院资产管理平台</span>
           </a>
         </div>
         <div class="desc">
@@ -93,6 +93,7 @@
             font-weight: 600;
             position: relative;
             top: 2px;
+            line-height: 30px;
           }
         }
         .desc {
