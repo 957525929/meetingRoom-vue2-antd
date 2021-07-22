@@ -21,7 +21,7 @@
             change-on-select
             @change="areaChange"
             placeholder="请选择位置"
-             :display-render="displayRender"
+            :display-render="displayRender"
           ></a-cascader>
         </a-col>
         <a-col :span="1"></a-col>
@@ -81,16 +81,21 @@
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
       >
-        <a-form-model-item ref="dutyName" label="管理员" prop="dutyName" >
+        <a-form-model-item ref="dutyName" label="管理员" prop="dutyName">
           <!-- <a-input v-model="formAdd.dutyName" placeholder="请输入管理员姓名"></a-input> -->
-          <a-select show-search placeholder="请选择管理员" v-model="formAdd.dutyName"   @change="ChangedutyName">
+          <a-select
+            show-search
+            placeholder="请选择管理员"
+            v-model="formAdd.dutyName"
+            @change="ChangedutyName"
+          >
             <a-select-option value="王小艳">王小艳</a-select-option>
             <a-select-option value="刘梅梅">刘梅梅</a-select-option>
             <a-select-option value="于浩浩">于浩浩</a-select-option>
           </a-select>
         </a-form-model-item>
         <a-form-model-item label="管理员电话" prop="dutyTel">
-          <a-input v-model="formAdd.dutyTel"  placeholder="管理员电话" disabled></a-input>
+          <a-input v-model="formAdd.dutyTel" placeholder="管理员电话" disabled></a-input>
         </a-form-model-item>
         <a-form-model-item ref="area" label="管理位置" prop="area">
           <a-tree-select
@@ -201,12 +206,12 @@ export default {
       formAdd: {
         area: [],
         dutyName: undefined,
-        dutyTel:  undefined,
+        dutyTel: undefined
       },
       formModify: {
         area: [],
-        dutyName:  undefined,
-        dutyTel:  undefined,
+        dutyName: undefined,
+        dutyTel: undefined
       },
       rules: {
         area: [
@@ -234,8 +239,8 @@ export default {
     }
   },
   methods: {
-       displayRender({ labels }){
-      return  labels.join('.')
+    displayRender({ labels }) {
+      return labels.join('.')
     },
     areaChange(value) {
       console.log(value)
@@ -248,16 +253,16 @@ export default {
     addDuty() {
       this.visibleAdd = true
     },
-    ChangedutyName(value){
-      if(value=='王小艳'){
-        this.formAdd.dutyTel='13859063857'
+    ChangedutyName(value) {
+      if (value == '李霞') {
+        this.formAdd.dutyTel = '13859063857'
       }
-       if(value=='刘梅梅'){
-         this.formAdd.dutyTel='16958745021'
-       }
-        if(value=='于浩浩'){
-         this.formAdd.dutyTel='13520104879'
-       } 
+      if (value == '尤晓梅') {
+        this.formAdd.dutyTel = '16958745021'
+      }
+      if (value == '黄丽娟') {
+        this.formAdd.dutyTel = '13520104879'
+      }
     },
     onSubmitAdd() {
       this.$refs.ruleForm.validate(valid => {
@@ -298,16 +303,16 @@ export default {
       this.formModify.dutyName = record.dutyName
       this.formModify.dutyTel = record.dutyTel
     },
-    ModifyDutyName(value){
-        if(value=='李霞'){
-        this.formModify.dutyTel='13759655332'
+    ModifyDutyName(value) {
+      if (value == '李霞') {
+        this.formModify.dutyTel = '13759655332'
       }
-       if(value=='尤晓梅'){
-         this.formModify.dutyTel='13053955537'
-       }
-        if(value=='黄丽娟'){
-         this.formModify.dutyTel='13659655381'
-       } 
+      if (value == '尤晓梅') {
+        this.formModify.dutyTel = '13053955537'
+      }
+      if (value == '黄丽娟') {
+        this.formModify.dutyTel = '13659655381'
+      }
     },
     onSubmitModify() {
       this.visibleModify = false

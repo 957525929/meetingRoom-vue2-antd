@@ -9,15 +9,15 @@ const FormTypes = {
   upload: 'upload',
   file: 'file',
   image: 'image',
-  popup:'popup',
-  list_multi:"list_multi",
-  sel_search:"sel_search",
-  radio:'radio',
-  checkbox_meta:"checkbox_meta",
-  input_pop:'input_pop',
-
+  popup: 'popup',
+  list_multi: "list_multi",
+  sel_search: "sel_search",
+  radio: 'radio',
+  checkbox_meta: "checkbox_meta",
+  input_pop: 'input_pop',
   slot: 'slot',
-  hidden: 'hidden'
+  hidden: 'hidden',
+
 }
 const VALIDATE_NO_PASSED = Symbol()
 export { FormTypes, VALIDATE_NO_PASSED }
@@ -88,7 +88,7 @@ export function validateTables(cases, deleteTempId) {
   return new Promise((resolve, reject) => {
     let tables = []
     let index = 0;
-    if(!cases || cases.length==0){
+    if (!cases || cases.length == 0) {
       resolve()
     }
     (function next() {

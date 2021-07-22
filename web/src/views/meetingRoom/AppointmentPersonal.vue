@@ -10,8 +10,8 @@
         <a-col>
           <a-select :style="{width:'200px'}" @change="handleChange" placeholder="请选择会议状态">
             <a-select-option value="已完成">已完成</a-select-option>
-             <a-select-option value="待安排">待开始</a-select-option>
-             <a-select-option value="进行中">进行中</a-select-option>
+            <a-select-option value="待安排">待开始</a-select-option>
+            <a-select-option value="进行中">进行中</a-select-option>
             <!-- <a-select-option value="待审核">待审核</a-select-option>           -->
             <!-- <a-select-option value="未通过">未通过</a-select-option> -->
           </a-select>
@@ -33,7 +33,7 @@
             placeholder="请选择结束"
             :format="dateFormat"
             v-model="queryParam.dateEnd"
-            :style="{width:'200px'}"     
+            :style="{width:'200px'}"
           ></a-date-picker>
         </a-col>
       </a-row>
@@ -88,7 +88,7 @@
             <div v-else-if="state == '进行中'">
               <span :style="{ color: 'green' }">进行中</span>
             </div>
-              <div v-else-if="state == '待开始'">
+            <div v-else-if="state == '待开始'">
               <span :style="{ color: 'green' }">待开始</span>
             </div>
             <div v-else-if="state == '已完成'">
@@ -99,23 +99,21 @@
             </div>
           </template>
         </a-table-column>
-        <a-table-column title="操作"  align="center">
-         <span  slot-scope="text, record" >
-         
-              
-               <a   @click="arrangeInfor(record)" >会务安排</a>
-             <!-- <router-link
+        <a-table-column title="操作" align="center">
+          <span slot-scope="text, record">
+            <a @click="arrangeInfor(record)">会务安排</a>
+            <!-- <router-link
             :to="{ path: '/meetingRoom/PersonalDetil', query: { record }}"
           >
             <a :style="{  color: 'blue' }">详情</a>
-          </router-link>          -->
+            </router-link>-->
             <span v-if="record.state == '进行中'||record.state == '待开始'">
               <a-divider type="vertical" />
-              <a  :style="{  color: 'orange' }" @click="cancleRoom(record)" >强制撤销</a>
-            </span>    
-            <a-divider type="vertical" />     
-                <a   @click="appointRoom(record)" >详情</a>
-        </span>
+              <a :style="{  color: 'orange' }" @click="cancleRoom(record)">强制撤销</a>
+            </span>
+            <a-divider type="vertical" />
+            <a @click="appointRoom(record)">详情</a>
+          </span>
         </a-table-column>
       </a-table>
       <br />
@@ -123,19 +121,19 @@
     </div>
 
     <!-- 撤销原因 -->
-    <a-modal  v-model="visibleReason"   title="强制撤销" @ok="handleOkReason">
-        <a-row type="flex" align="middle">
-         <a-col :span="4">
-         <span>撤销原因：</span>
+    <a-modal v-model="visibleReason" title="强制撤销" @ok="handleOkReason">
+      <a-row type="flex" align="middle">
+        <a-col :span="4">
+          <span>撤销原因：</span>
         </a-col>
         <a-col :span="18">
-        <a-input v-model="reason" type="textarea" required/>
+          <a-input v-model="reason" type="textarea" required />
         </a-col>
-        </a-row>     
+      </a-row>
     </a-modal>
-<!-- 详情页面 -->
-  <a-modal  v-model="visibleAppoint"   title="会议详情" @ok="handleOkReason" :style="{width:'2000px'}">
-       <!-- <a-descriptions>
+    <!-- 详情页面 -->
+    <a-modal v-model="visibleAppoint" title="会议详情" @ok="handleOkReason" :style="{width:'2000px'}">
+      <!-- <a-descriptions>
             <a-descriptions-item label="会议名称">安全管理会议</a-descriptions-item>
             <a-descriptions-item label="会议预算">1000</a-descriptions-item>
             <a-descriptions-item label="负责人姓名">陈宏涛</a-descriptions-item>
@@ -144,13 +142,21 @@
             <a-descriptions-item label="会议地点">总公司机关</a-descriptions-item>
             <a-descriptions-item label="会议安排成员">陈宏涛；李小玲；林诺汐；陈熙雨</a-descriptions-item>
             <a-descriptions-item label="备注">安全管理</a-descriptions-item>
-          </a-descriptions> -->
+      </a-descriptions>-->
     </a-modal>
+    <!-- 会务安排 -->
+    <PurInModal
+      v-if="modalVisible"
+      :modalVisible="modalVisible"
+      @handleCancel="handleCancel"
+      :basicInfo="basicInfo"
+    ></PurInModal>
   </a-card>
 </template>
 
 <script>
 import moment from 'moment'
+import PurInModal from './PurInModal'
 const data = [
   {
     id: 'B1203',
@@ -158,7 +164,7 @@ const data = [
     name: '物流管理会议',
     theme: '物流管理',
     dateTime: '2021年07月27日~2021年07月27日',
-    range:'上午',
+    range: '上午',
     address: '福建师范大学.旗山校区.2号楼.会议室205',
 
     members: '陈宏涛；李小玲；林诺汐；陈熙雨',
@@ -174,7 +180,7 @@ const data = [
     name: '安全管理会议',
     theme: '安全管理',
     dateTime: '2021年08月03日~2021年08月03日',
-    range:'下午',
+    range: '下午',
     address: '福建师范大学.仓山校区.1号楼.会议室203',
     members: '陈宏涛；李小玲；林诺汐；陈熙雨',
     number: '4',
@@ -182,7 +188,7 @@ const data = [
     dutyTel: '152690314587',
     state: '待开始',
     detail: '0'
-  },
+  }
   // {
   //   id: 'B1204',
   //   budget: '3000',
@@ -231,12 +237,17 @@ const data = [
   // }
 ]
 export default {
+  components: {
+    PurInModal
+  },
   data() {
     return {
       data,
       visibleReason: false,
-      visibleAppoint:false,
-      reason:'',
+      visibleAppoint: false,
+      modalVisible: false,
+      basicInfo: {},
+      reason: '',
       queryParam: {
         id: undefined,
         name: undefined,
@@ -248,24 +259,18 @@ export default {
     }
   },
   created() {
-    // let start = moment(new Date())
-    //   .subtract(15, 'days')
-    //   .format('YYYY-MM-DD')
-    // this.queryParam.dateStart = this.moment(start, 'YYYY-MM-DD')
-    let end=moment(new Date())
+    let end = moment(new Date())
       .subtract(-1, 'months')
       .format('YYYY-MM-DD')
-    this.queryParam.dateEnd= this.moment(end, 'YYYY-MM-DD')
-    let dateNow=moment(new Date().toLocaleDateString(), 'YYYY年MM月DD日')
-    // console.log(dateNow.format('YYYY年MM月DD日'))
-      this.data[0].dateTime=dateNow.format('YYYY年MM月DD日')+"~"+dateNow.format('YYYY年MM月DD日')
+    this.queryParam.dateEnd = this.moment(end, 'YYYY-MM-DD')
+    let dateNow = moment(new Date().toLocaleDateString(), 'YYYY年MM月DD日')
+    this.data[0].dateTime = dateNow.format('YYYY年MM月DD日') + '~' + dateNow.format('YYYY年MM月DD日')
   },
   methods: {
     moment,
     onChange() {},
     handleChange() {},
-    searchQuery() {
-    },
+    searchQuery() {},
     searchReset() {
       this.data = data
       this.queryParam.IDName = ''
@@ -275,17 +280,24 @@ export default {
     getCurrentData() {
       return new Date().toLocaleDateString()
     },
-    cancleRoom(record){
-         this.visibleReason = true
+    cancleRoom(record) {
+      this.visibleReason = true
     },
-    handleOkReason(){
-        this.visibleReason = false
+    handleOkReason() {
+      this.visibleReason = false
     },
-       getCurrentData() {
+    getCurrentData() {
       return new Date().toLocaleDateString()
     },
-    appointRoom(record){
-      this.visibleAppoint=true
+    appointRoom(record) {
+      this.visibleAppoint = true
+    },
+    handleCancel() {
+      this.modalVisible = false
+    },
+    arrangeInfor(record) {
+      this.modalVisible = true
+      console.log(record)
     }
   }
 }
