@@ -5,7 +5,7 @@
         :activeKey="customActiveKey"
         :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
         @change="handleTabClick">
-        <a-tab-pane key="tab1" tab="账号密码登陆">
+        <a-tab-pane key="tab1" tab="登陆" class="loginTitle">
           <a-form-item>
             <a-input
               size="large"
@@ -47,41 +47,6 @@
               <img v-else style="margin-top: 2px;" src="../../assets/checkcode.png" @click="handleChangeCheckCode"/>
             </a-col>
           </a-row>
-
-
-        </a-tab-pane>
-        <a-tab-pane key="tab2" tab="手机号登陆">
-          <a-form-item>
-            <a-input
-              v-decorator="['mobile',validatorRules.mobile]"
-              size="large"
-              type="text"
-              placeholder="手机号">
-              <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-            </a-input>
-          </a-form-item>
-
-          <a-row :gutter="16">
-            <a-col class="gutter-row" :span="16">
-              <a-form-item>
-                <a-input
-                  v-decorator="['captcha',validatorRules.captcha]"
-                  size="large"
-                  type="text"
-                  placeholder="请输入验证码">
-                  <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-                </a-input>
-              </a-form-item>
-            </a-col>
-            <a-col class="gutter-row" :span="8">
-              <a-button
-                class="getCaptcha"
-                tabindex="-1"
-                :disabled="state.smsSendBtn"
-                @click.stop.prevent="getCaptcha"
-                v-text="!state.smsSendBtn && '获取验证码' || (state.time+' s')"></a-button>
-            </a-col>
-          </a-row>
         </a-tab-pane>
       </a-tabs>
 
@@ -106,13 +71,6 @@
           :disabled="loginBtn">确定
         </a-button>
       </a-form-item>
-
-      <div class="user-login-other">
-        <span>其他登陆方式</span>
-        <a @click="onThirdLogin('github')" title="github"><a-icon class="item-icon" type="github"></a-icon></a>
-        <a @click="onThirdLogin('wechat_enterprise')" title="企业微信"><a-icon class="item-icon" type="wechat"></a-icon></a>
-        <a @click="onThirdLogin('dingtalk')" title="钉钉"><a-icon class="item-icon" type="dingding"></a-icon></a>
-      </div>
     </a-form>
 
     <two-step-captcha
@@ -120,45 +78,6 @@
       :visible="stepCaptchaVisible"
       @success="stepCaptchaSuccess"
       @cancel="stepCaptchaCancel"></two-step-captcha>
-
-    <a-modal
-      title="登录部门选择"
-      :width="450"
-      :visible="departVisible"
-      :closable="false"
-      :maskClosable="false">
-
-      <template slot="footer">
-        <a-button type="primary" @click="departOk">确认</a-button>
-      </template>
-
-      <a-form>
-        <a-form-item
-          :labelCol="{span:4}"
-          :wrapperCol="{span:20}"
-          style="margin-bottom:10px"
-          :validate-status="validate_status">
-          <a-tooltip placement="topLeft" >
-            <template slot="title">
-              <span>您隶属于多部门，请选择登录部门</span>
-            </template>
-            <a-avatar style="backgroundColor:#87d068" icon="gold" />
-          </a-tooltip>
-          <a-select @change="departChange" :class="{'valid-error':validate_status=='error'}" placeholder="请选择登录部门" style="margin-left:10px;width: 80%">
-            <a-icon slot="suffixIcon" type="gold" />
-            <a-select-option
-              v-for="d in departList"
-              :key="d.id"
-              :value="d.orgCode">
-              {{ d.departName }}
-            </a-select-option>
-          </a-select>
-        </a-form-item>
-      </a-form>
-
-
-
-    </a-modal>
 
   </div>
 </template>
@@ -504,7 +423,6 @@
 </script>
 
 <style lang="less" scoped>
-
   .user-layout-login {
     label {
       font-size: 14px;
@@ -544,7 +462,6 @@
           color: #1890ff;
         }
       }
-
       .register {
         float: right;
       }

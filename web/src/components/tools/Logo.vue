@@ -21,7 +21,7 @@
     props: {
       title: {
         type: String,
-        default: '管理平台',
+        default: '资产管理平台',
         required: false
       },
       showTitle: {
