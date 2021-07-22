@@ -1268,7 +1268,88 @@ const user = {
               },
               "name": "online",
               "id": "e41b69c57a941a3bbcce45032fe57605"
-            }]
+            },
+            // 会议室
+            {
+              "redirect": null,
+              "path": "/meetingRoom",
+              "component": "layouts/RouteView",
+              "route": "1",
+              "children": [
+                {
+                  "path": "/meetingRoom/RoomInformation",
+                  "component": "meetingRoom/RoomInformation",
+                  "route": "1",
+                  "meta": {
+                    "keepAlive": false,
+                    "internalOrExternal": false,
+                    
+                    "title": "会议室管理"
+                  },
+                  "name": "meetingRoom-Information",
+                  "id": "1245154570166390786"
+                },
+                {
+                  "path": "/meetingRoom/RoomDuty",
+                  "component": "meetingRoom/RoomDuty",
+                  "route": "1",
+                  "meta": {
+                    "keepAlive": false,
+                    "internalOrExternal": false,
+     
+                    "title": "会议室管理员"
+                  },
+                  "name": "meetingRoom-duty",
+                  "id": "1245154570166390786"
+                },
+                {
+                  "path": "/meetingRoom/AppointmentPersonal",
+                  "component": "meetingRoom/AppointmentPersonal",
+                  "route": "1",
+                  "meta": {
+                    "keepAlive": false,
+                    "internalOrExternal": false,                   
+                    "title": "预约管理"
+                  },
+                  "name": "meetingRoom-AppointmentPersonal",
+                  "id": "1245154914959151105"
+                },
+                {
+                  "path": "/meetingRoom/PersonalDetil",
+                  "component": "meetingRoom/PersonalDetil",
+                  "route": "1",
+                  "hidden": true,
+                  "meta": {
+                    "keepAlive": false,
+                    "internalOrExternal": false,                   
+                    "title": "个人预约会议详情"
+                  },
+                  "name": "meetingRoom-PersonalDetil",
+                  "id": "1245154914959151105"
+                },
+                {
+                  "path": "/meetingRoom/UseStatistics",
+                  "component": "meetingRoom/UseStatistics",
+                  "route": "1",
+                  "meta": {
+                    "keepAlive": false,
+                    "internalOrExternal": false,                  
+                    "title": "预约统计"
+                  },
+                  "name": "meetingRoom-UseStatistics",
+                  "id": "1245154050731200514"
+                },
+              ],
+              "meta": {
+                "keepAlive": false,
+                "internalOrExternal": false,
+                "icon": "phone",
+                "title": "会议室预约"
+              },
+              "name": "meetingRoomAppointmen",
+              "id": "08e6b9dc3c04489c8e1ff2ce6f105aa4"
+            },                   
+          ]
           },
           "timestamp": 1625195766991
         };
