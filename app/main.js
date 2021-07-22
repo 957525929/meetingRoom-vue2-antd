@@ -1,10 +1,30 @@
 import Vue from 'vue'
 import App from './App'
 
-Vue.config.productionTip = false
+import home from './pages/home/home.vue'
+Vue.component('home',home)
 
-import uView from "uview-ui";
-Vue.use(uView);
+import scan from './pages/scan/scan.vue'
+Vue.component('scan',scan)
+
+import person from './pages/person/person.vue'
+Vue.component('person',person)
+
+
+
+import basics from './pages/basics/home.vue'
+Vue.component('basics',basics)
+
+import components from './pages/component/home.vue'
+Vue.component('components',components)
+
+import plugin from './pages/plugin/home.vue'
+Vue.component('plugin',plugin)
+
+import cuCustom from './colorui/components/cu-custom.vue'
+Vue.component('cu-custom',cuCustom)
+
+Vue.config.productionTip = false
 
 // IP地址	
 Vue.prototype.api_root = '/api/';
@@ -97,7 +117,8 @@ Vue.prototype._get = function(url, data, success, fail, complete) {
 	uni.request({
 		url: App.api_root + url,
 		header: {
-			'content-type': 'application/x-www-form-urlencoded' //自定义请求头信息
+			'content-type': 'application/x-www-form-urlencoded' ,//自定义请求头信息
+			'token': uni.getStorageSync('token')
 		},
 		data: data,
 		success: function(res) {
@@ -124,11 +145,12 @@ Vue.prototype._get = function(url, data, success, fail, complete) {
 // 模拟继承post请求的方法
 Vue.prototype._post_form = function(url, data, success, fail, complete) {
 	let App = this;
-	data.token = uni.getStorageSync('token');
+	data = data || {};
 	uni.request({
 		url: App.api_root + url,
 		header: {
 			'content-type': 'application/x-www-form-urlencoded',
+			'token': uni.getStorageSync('token')
 		},
 		method: 'POST',
 		data: data,
@@ -219,3 +241,8 @@ const app = new Vue({
     ...App
 })
 app.$mount()
+
+ 
+
+
+
