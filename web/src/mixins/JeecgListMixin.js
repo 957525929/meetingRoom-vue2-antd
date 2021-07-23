@@ -63,7 +63,7 @@ export const JeecgListMixin = {
   methods:{
     loadData(arg) {
       if(!this.url.list){
-        this.$message.error("请设置url.list属性!")
+        //this.$message.error("请设置url.list属性!")
         return
       }
       //加载数据 若传入参数1则加载第一页的内容
