@@ -4,10 +4,10 @@ import App from './App'
 import home from './pages/home/home.vue'
 Vue.component('home',home)
 
-import scan from './pages/scan/scan.vue'
+import scan from './pagesB/scan/scan.vue'
 Vue.component('scan',scan)
 
-import person from './pages/person/person.vue'
+import person from './pagesC/person/person.vue'
 Vue.component('person',person)
 
 

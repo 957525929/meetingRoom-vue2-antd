@@ -17,34 +17,32 @@
 				</view>
 			</swiper-item>
 		</swiper>
-
-		<view class="list cu-form-group margin-top padding">
-			<view class="content">
-				<view class="cu-avatar lg radius bg-green">L
-					<view class="cu-tag badge">1</view>
+		
+		<view class="card">
+			<view class="cu-form-group padding">
+				<view class="content">
+					<view class="cu-avatar lg radius bg-green">L
+						<view class="cu-tag badge">1</view>
+					</view>
+					<span class="text-green margin-left">
+						管理员
+					</span>
+					<span class="text-black">
+						, 欢迎您！
+					</span>
 				</view>
-				<span class="text-green margin-left">
-					管理员
-				</span>
-				<span class="text-black">
-					, 欢迎您！
-				</span>
+			</view>
+			
+			<view class="nav-list margin-top">
+				<navigator v-for="(item,index) in navCard" :key="index" hover-class="none" :url="item.url"
+					:class="item.style" navigateTo>
+					<view class="nav-title">{{item.name}}</view>
+					<view class="nav-name">{{item.secname}}</view>
+					<text :class="item.icon"></text>
+				</navigator>
 			</view>
 		</view>
-
-		<view class="nav-list margin-top">
-			<navigator hover-class="none" url="" class="nav-li bg-grey" navigateTo>
-				<view class="nav-title">入库</view>
-				<view class="nav-name">Record</view>
-				<text class="cuIcon-edit"></text>
-			</navigator>
-			<navigator hover-class="none" url="" class="nav-li bg-orange"
-				navigateTo>
-				<view class="nav-title">登记</view>
-				<view class="nav-name">Install</view>
-				<text class="cuIcon-lock"></text>
-			</navigator>
-		</view>
+		
 
 
 	</view>
@@ -69,6 +67,35 @@
 					url: '../../static/index/lb1.png'
 				}, ],
 				dotStyle: false,
+				navCard: [{
+						name: '入库',
+						secname: 'Storage',
+						icon: 'cuIcon-deliver',
+						url: '../../pagesA/storage/storage',
+						style: 'nav-li bg-grey'
+					},
+					{
+						name: '登记',
+						secname: 'Sign',
+						icon: 'cuIcon-edit',
+						url: '../../pagesA/sign/sign',
+						style: 'nav-li bg-blue'
+					},
+					{
+						name: '入帐',
+						secname: 'Account',
+						icon: 'cuIcon-redpacket',
+						url: '../../pagesA/account/account',
+						style: 'nav-li bg-mauve'
+					},
+					{
+						name: '查询',
+						secname: 'Search',
+						icon: 'cuIcon-search',
+						url: '../../pagesA/search/search',
+						style: 'nav-li bg-purple'
+					},
+				]
 			}
 		},
 		methods: {
@@ -80,7 +107,8 @@
 </script>
 
 <style>
-	.list {
-		background-color: #f1f1f1;
+	.card{
+		background-color: white;
+		border-radius: 30rpx;
 	}
 </style>

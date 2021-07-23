@@ -124,26 +124,51 @@
                 "enablePullDownRefresh": false
             }
             
-        }
-        ,{
-            "path" : "pages/scan/scan",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/person/person",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
+        }   
     ],
+	
+	"subPackages":[
+		{
+			"root":"pagesA",
+			"pages":[
+				{
+					"path":"storage/storage",
+					"style":{}
+				},
+				{
+					"path":"sign/sign",
+					"style":{}
+				},
+				{
+					"path":"account/account",
+					"style":{}
+				},
+				{
+					"path":"search/search",
+					"style":{}
+				}
+			]
+		},
+		{
+			"root":"pagesB",
+			"pages":[
+				{
+					"path":"scan/scan",
+					"style":{}
+				}
+			]
+		},
+		{
+			"root":"pagesC",
+			"pages":[
+				{
+					"path":"person/person",
+					"style":{}
+				}
+			]
+		}
+	],
+	
 	"globalStyle": {
 		"mp-alipay": {
 			/* 支付宝小程序特有相关 */
