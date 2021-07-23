@@ -2,7 +2,7 @@
 	"pages": [
 		//pages数组中第一项表示应用启动页，写的时候注意分包，方便以后一端多用！！！
 		{
-			"path": "pages/login/login",
+			"path": "pages/login/index",
 			"style": {}
 		},
 		{
@@ -117,7 +117,16 @@
             
         }
         ,{
-            "path" : "pages/home/home",
+            "path" : "pages/home/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }   
+        ,{
+            "path" : "pages/scan/index",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
@@ -126,16 +135,7 @@
             
         }
         ,{
-            "path" : "pages/scan/scan",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/person/person",
+            "path" : "pages/person/index",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
@@ -144,6 +144,46 @@
             
         }
     ],
+	
+	"subPackages":[
+		{
+			"root":"pagesStorage",
+			"pages":[
+				{
+					"path":"index",
+					"style":{}
+				}
+            ]
+		},
+		{
+			"root":"pagesSign",
+			"pages":[
+				{
+					"path":"index",
+					"style":{}
+				}
+			]
+		},
+		{
+			"root":"pagesAccount",
+			"pages":[
+				{
+					"path":"index",
+					"style":{}
+				}
+			]
+		},
+		{
+			"root":"pagesSearch",
+			"pages":[
+				{
+					"path":"index",
+					"style":{}
+				}
+			]
+		}
+	],
+	
 	"globalStyle": {
 		"mp-alipay": {
 			/* 支付宝小程序特有相关 */

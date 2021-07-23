@@ -184,6 +184,7 @@
 				border-radius: 50%;
 				overflow: hidden;
 				margin-bottom: 40rpx;
+				margin-left: 30rpx;
 			}
 
 			.user-name {

@@ -1,6 +1,9 @@
 <template>
 	<view>
-		我的
+		<cu-custom bgColor="bg-gradual-green" :isBack="true">
+			<block slot="backText">返回</block>
+			<block slot="content">入库</block>
+		</cu-custom>
 	</view>
 </template>
 
