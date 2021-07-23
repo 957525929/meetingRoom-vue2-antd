@@ -1,6 +1,6 @@
 <template>
 	<view>
-		扫码
+		扫码页面
 	</view>
 </template>
 

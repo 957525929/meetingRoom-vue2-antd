@@ -71,28 +71,28 @@
 						name: '入库',
 						secname: 'Storage',
 						icon: 'cuIcon-deliver',
-						url: '../../pagesA/storage/storage',
+						url: '../../pagesStorage/index',
 						style: 'nav-li bg-grey'
 					},
 					{
 						name: '登记',
 						secname: 'Sign',
 						icon: 'cuIcon-edit',
-						url: '../../pagesA/sign/sign',
+						url: '../../pagesSign/index',
 						style: 'nav-li bg-blue'
 					},
 					{
 						name: '入帐',
 						secname: 'Account',
 						icon: 'cuIcon-redpacket',
-						url: '../../pagesA/account/account',
+						url: '../../pagesAccount/index',
 						style: 'nav-li bg-mauve'
 					},
 					{
 						name: '查询',
 						secname: 'Search',
 						icon: 'cuIcon-search',
-						url: '../../pagesA/search/search',
+						url: '../../pagesSearch/index',
 						style: 'nav-li bg-purple'
 					},
 				]

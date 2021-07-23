@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import App from './App'
 
-import home from './pages/home/home.vue'
+import home from './pages/home/index.vue'
 Vue.component('home',home)
 
-import scan from './pagesB/scan/scan.vue'
+import scan from './pages/scan/index.vue'
 Vue.component('scan',scan)
 
-import person from './pagesC/person/person.vue'
+import person from './pages/person/index.vue'
 Vue.component('person',person)
 
 

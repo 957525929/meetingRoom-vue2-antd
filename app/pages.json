@@ -2,7 +2,7 @@
 	"pages": [
 		//pages数组中第一项表示应用启动页，写的时候注意分包，方便以后一端多用！！！
 		{
-			"path": "pages/login/login",
+			"path": "pages/login/index",
 			"style": {}
 		},
 		{
@@ -117,7 +117,7 @@
             
         }
         ,{
-            "path" : "pages/home/home",
+            "path" : "pages/home/index",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
@@ -125,44 +125,59 @@
             }
             
         }   
+        ,{
+            "path" : "pages/scan/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/person/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	
 	"subPackages":[
 		{
-			"root":"pagesA",
+			"root":"pagesStorage",
 			"pages":[
 				{
-					"path":"storage/storage",
+					"path":"index",
 					"style":{}
-				},
+				}
+            ]
+		},
+		{
+			"root":"pagesSign",
+			"pages":[
 				{
-					"path":"sign/sign",
-					"style":{}
-				},
-				{
-					"path":"account/account",
-					"style":{}
-				},
-				{
-					"path":"search/search",
+					"path":"index",
 					"style":{}
 				}
 			]
 		},
 		{
-			"root":"pagesB",
+			"root":"pagesAccount",
 			"pages":[
 				{
-					"path":"scan/scan",
+					"path":"index",
 					"style":{}
 				}
 			]
 		},
 		{
-			"root":"pagesC",
+			"root":"pagesSearch",
 			"pages":[
 				{
-					"path":"person/person",
+					"path":"index",
 					"style":{}
 				}
 			]
