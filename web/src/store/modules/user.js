@@ -200,7 +200,20 @@ const user = {
                 },
                 "name": "erp-bas-supplier",
                 "id": "1245154914959151105"
-              }, {
+              }, 
+              {
+                "path": "/erp/bas/BasWareArrange",
+                "component": "erp/bas/BasWareArrange",
+                "route": "1",
+                "meta": {
+                  "keepAlive": false,
+                  "internalOrExternal": false,
+                  "title": "会务安排员信息管理"
+                },
+                "name": "erp-bas-BasWareArrange",
+                "id": "1245154050731200514"
+              },
+              {
                 "path": "/erp/bas/warehouse",
                 "component": "erp/bas/BasWarehouseList",
                 "route": "1",
@@ -211,7 +224,8 @@ const user = {
                 },
                 "name": "erp-bas-warehouse",
                 "id": "1245154050731200514"
-              }, {
+              },
+               {
                 "path": "/erp/bas/materialCategory",
                 "component": "erp/bas/BasMaterialCategoryList",
                 "route": "1",

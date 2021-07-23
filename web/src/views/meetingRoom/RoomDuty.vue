@@ -94,7 +94,7 @@
     </div>
 
     <!-- 新增 -->
-    <a-Modal v-model="visibleAdd" title="新增会议室管理员" footer>
+    <a-drawer :visible="visibleAdd" title="新增会议室管理员"  @close="closeAdd" width="600px" placement="right">
       <a-form-model
         ref="ruleForm"
         :model="formAdd"
@@ -122,7 +122,7 @@
           <a-tree-select
             v-model="formAdd.area"
             placeholder="请选择位置"
-            style="width: 385px"
+            style="width: 430px"
             :tree-data="treeData"
             tree-checkable
             :show-checked-strategy="SHOW_PARENT"
@@ -134,9 +134,9 @@
           <a-button style="margin-left: 10px;" @click="resetFormAdd()">重置</a-button>
         </a-form-model-item>
       </a-form-model>
-    </a-Modal>
+    </a-drawer>
     <!--修改信息 -->
-    <a-Modal v-model="visibleModify" title="修改会议室管理员" footer>
+    <a-drawer :visible="visibleModify" title="修改会议室管理员" @close="closeModify" width="600px" placement="right">
       <a-form-model
         :label-col="labelCol"
         :model="formModify"
@@ -159,7 +159,7 @@
           <a-tree-select
             v-model="formModify.area"
             placeholder="请选择位置"
-            style="width: 385px"
+            style="width: 430px"
             :tree-data="treeData"
             tree-checkable
             :show-checked-strategy="SHOW_PARENT"
@@ -173,7 +173,7 @@
           <a-button style="margin-left: 10px;" @click="CancelModify()">取消</a-button>
         </a-form-model-item>
       </a-form-model>
-    </a-Modal>
+    </a-drawer>
   </a-card>
 </template>
 
@@ -343,7 +343,15 @@ export default {
     },
     CancelModify() {
       this.visibleModify = false
-    }
+    },
+    closeAdd(){
+        this.$emit('close');
+  this.visibleAdd = false;
+    },
+    closeModify(){
+        this.$emit('close');
+    this.visibleModify = false
+    },
   }
 }
 </script>

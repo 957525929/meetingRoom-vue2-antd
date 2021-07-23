@@ -79,6 +79,7 @@
         <a-table-column title="时段" data-index="range" align="center"></a-table-column>
         <a-table-column title="会议地点" data-index="address" align="center" width="300px"></a-table-column>
         <a-table-column title="参会人数（人）" data-index="number" align="center"></a-table-column>
+          <a-table-column title="会务安排" data-index="arrange" align="center"></a-table-column>
         <!-- <a-table-column title="会议状态" data-index="state" align="center"></a-table-column> -->
         <a-table-column title="会议状态" data-index="state" align="center">
           <template slot-scope="state">
@@ -97,21 +98,19 @@
             <div v-else-if="state == '未通过'">
               <span :style="{ color: 'red' }">未通过</span>
             </div>
+            <div v-else-if="state == '强制撤销'">
+              <span :style="{ color: 'red' }">强制撤销</span>
+            </div>
           </template>
         </a-table-column>
         <a-table-column title="操作" align="center">
-          <span slot-scope="text, record">
-            <a @click="arrangeInfor(record)">会务安排</a>
-            <!-- <router-link
-            :to="{ path: '/meetingRoom/PersonalDetil', query: { record }}"
-          >
-            <a :style="{  color: 'blue' }">详情</a>
-            </router-link>-->
-            <span v-if="record.state == '进行中'||record.state == '待开始'">
+          <span slot-scope="text, record">           
+            <span v-if="record.state == '待开始'&&record.arrange=='是'">
+               <a @click="arrangeInfor(record)">会务安排</a>
               <a-divider type="vertical" />
-              <a :style="{  color: 'orange' }" @click="cancleRoom(record)">强制撤销</a>
-            </span>
-            <a-divider type="vertical" />
+              <a :style="{  color: 'orange' }" @click="roomForced(record)">强制预约</a>
+               <a-divider type="vertical" />
+            </span>        
             <a @click="appointRoom(record)">详情</a>
           </span>
         </a-table-column>
@@ -119,31 +118,120 @@
       <br />
       <a-pagination size="small" :total="50" show-size-changer show-quick-jumper align="center" />
     </div>
-
-    <!-- 撤销原因 -->
-    <a-modal v-model="visibleReason" title="强制撤销" @ok="handleOkReason">
-      <a-row type="flex" align="middle">
-        <a-col :span="4">
-          <span>撤销原因：</span>
-        </a-col>
-        <a-col :span="18">
-          <a-input v-model="reason" type="textarea" required />
-        </a-col>
-      </a-row>
-    </a-modal>
+    <!-- 强制预约 -->
+    <a-drawer
+      :visible="visibleForced"
+      title="强制预约"
+      @close="closeForced"
+      width="600px"
+      placement="right"
+    >
+ <a-form-model
+        ref="ruleForm"
+        :model="formForced"
+        :rules="rules"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
+      >
+      <a-form-model-item ref="theme" label="会议主题" prop="theme">
+          <a-select   show-search v-model="formForced.theme" @change="themeForced">
+            <a-select-option value="李霞">李霞</a-select-option>
+            <a-select-option value="尤晓梅">尤晓梅</a-select-option>
+            <a-select-option value="黄丽娟">黄丽娟</a-select-option>
+          </a-select>
+        </a-form-model-item>
+         <a-form-model-item label="会议名称" prop="name">
+          <a-input v-model="formForced.name"  ></a-input>
+        </a-form-model-item>
+        <a-form-model-item label="会议时间">
+          <!-- <a-input v-model="formForced.dateTime" ></a-input> -->          
+          <a-date-picker
+            v-model="formForced.dateStart"
+            placeholder="选择开始日期"
+            style="width: 45%;"
+            :format="dateFormat"
+          ></a-date-picker>
+          <span>&nbsp;&nbsp;~&nbsp;&nbsp;</span>
+          <a-date-picker
+            v-model="formForced.dateEnd"
+            placeholder="选择结束日期"
+            style="width: 45%;"
+            :format="dateFormat"
+          ></a-date-picker>
+        </a-form-model-item>
+         <a-form-model-item label="时段" prop="range">
+          <a-select v-model="formForced.range" placeholder="请选择时段">
+            <a-select-option value="上午">上午</a-select-option>
+            <a-select-option value="下午">下午</a-select-option>
+            <a-select-option value="晚上">晚上</a-select-option>
+            <a-select-option value="全天">全天</a-select-option>
+          </a-select>
+        </a-form-model-item>    
+        <a-form-model-item label="会议地点" prop="address">
+          <a-input v-model="formForced.address" disabled></a-input>
+        </a-form-model-item>
+        <a-form-model-item label="参会人数" prop="number">
+          <a-input v-model="formForced.number" ></a-input>
+        </a-form-model-item>
+        <a-form-model-item label="会务安排" prop="arrange">
+        <a-radio-group v-model="formForced.arrange" >
+      <a-radio value="是">
+        是
+      </a-radio>
+      <a-radio value="否">
+        否
+      </a-radio>
+    </a-radio-group>
+        </a-form-model-item>
+        <a-form-model-item :wrapper-col="{ span: 14, offset: 6 }">
+          <a-button type="primary" @click="onSubmitForced()">强制预约</a-button>
+          <a-button style="margin-left: 10px;" @click="CancelForced()">取消</a-button>
+        </a-form-model-item>
+      </a-form-model>
+ </a-drawer>
     <!-- 详情页面 -->
-    <a-modal v-model="visibleAppoint" title="会议详情" @ok="handleOkReason" :style="{width:'2000px'}">
-      <!-- <a-descriptions>
+    <a-drawer
+      :visible="visibleAppoint"
+      title="会议详情"
+      @close="appointClose"
+      width="1200px"
+      placement="right"
+    >
+      <a-tabs default-active-key="1">
+        <a-tab-pane key="1" tab="会议申请">
+          <a-descriptions>
+            <a-descriptions-item label="会议主题">安全管理</a-descriptions-item>
             <a-descriptions-item label="会议名称">安全管理会议</a-descriptions-item>
-            <a-descriptions-item label="会议预算">1000</a-descriptions-item>
+            <a-descriptions-item label="会议预算（元）">1000</a-descriptions-item>
             <a-descriptions-item label="负责人姓名">陈宏涛</a-descriptions-item>
             <a-descriptions-item label="负责人电话">152690314587</a-descriptions-item>
             <a-descriptions-item label="会议时间">2021年07月20日~2021年07月20日</a-descriptions-item>
             <a-descriptions-item label="会议地点">总公司机关</a-descriptions-item>
-            <a-descriptions-item label="会议安排成员">陈宏涛；李小玲；林诺汐；陈熙雨</a-descriptions-item>
-            <a-descriptions-item label="备注">安全管理</a-descriptions-item>
-      </a-descriptions>-->
-    </a-modal>
+            <a-descriptions-item label="参会人数">4</a-descriptions-item>
+            <a-descriptions-item label="备注">需提供话筒</a-descriptions-item>
+          </a-descriptions>
+        </a-tab-pane>
+      </a-tabs>
+      <a-tabs default-active-key="1">
+        <a-tab-pane key="1" tab="会议地点">
+          <a-descriptions>
+            <a-descriptions-item label="会议时间">2021年07月20日~2021年07月20日</a-descriptions-item>
+            <a-descriptions-item label="时段">上午</a-descriptions-item>
+            <a-descriptions-item label="会议地点">福建师范大学.仓山校区.1号楼.会议室203</a-descriptions-item>
+          </a-descriptions>
+        </a-tab-pane>
+      </a-tabs>
+      <a-tabs default-active-key="1">
+        <a-tab-pane key="1" tab="会务安排">
+          <a-table :data-source="dataArrange" :pagination="false" rowKey="index">
+            <a-table-column title="序号" data-index="index" align="center"></a-table-column>
+            <a-table-column title="姓名" data-index="name" align="center"></a-table-column>
+            <a-table-column title="联系电话" data-index="phone" align="center"></a-table-column>
+            <a-table-column title="安排事项" data-index="matters" align="center"></a-table-column>
+          </a-table>
+        </a-tab-pane>
+      </a-tabs>
+    </a-drawer>
     <!-- 会务安排 -->
     <PurInModal
       v-if="modalVisible"
@@ -161,18 +249,18 @@ const data = [
   {
     id: 'B1203',
     budget: '5000',
-    name: '物流管理会议',
-    theme: '物流管理',
+    name: '行政管理会议',
+    theme: '行政管理',
     dateTime: '2021年07月27日~2021年07月27日',
     range: '上午',
     address: '福建师范大学.旗山校区.2号楼.会议室205',
-
     members: '陈宏涛；李小玲；林诺汐；陈熙雨',
     number: '4',
     dutyName: '李小玲',
     dutyTel: '152690314587',
     state: '进行中',
-    detail: '1'
+    detail: '1',
+    arrange:"否"
   },
   {
     id: 'B1207',
@@ -187,7 +275,8 @@ const data = [
     dutyName: '李小玲',
     dutyTel: '152690314587',
     state: '待开始',
-    detail: '0'
+    detail: '0',
+    arrange:"是"
   }
   // {
   //   id: 'B1204',
@@ -236,6 +325,20 @@ const data = [
   //   detail: '0'
   // }
 ]
+const dataArrange = [
+  {
+    index: 1,
+    name: '李霞',
+    phone: '13759655332',
+    matters: '记录会议内容'
+  },
+  {
+    index: 2,
+    name: '尤晓梅',
+    phone: '13053955537',
+    matters: '摄影录像'
+  }
+]
 export default {
   components: {
     PurInModal
@@ -243,10 +346,46 @@ export default {
   data() {
     return {
       data,
-      visibleReason: false,
       visibleAppoint: false,
+      visibleForced: false,
       modalVisible: false,
+     labelCol: { span: 6 },
+      wrapperCol: { span: 18 },
+      formForced:{
+        id: undefined,
+        theme: undefined,
+        name: undefined,
+        dateTime: undefined,
+        range: undefined,
+        address: undefined,
+        number: undefined,
+        arrange: undefined,
+      },
+      rules: {
+        theme:[
+            {
+            required: true,
+            message: '请选择会议主题',
+            trigger: 'change'
+          }
+        ],
+         name: [
+          {
+            required: true,
+            message: '请输入会议名称',
+            trigger: 'blur'
+          }
+        ],
+         number: [
+          {
+            required: true,
+            message: '请输入参会人数',
+            trigger: 'blur'
+          }
+        ],
+      },
       basicInfo: {},
+      dataArrange,
       reason: '',
       queryParam: {
         id: undefined,
@@ -280,15 +419,6 @@ export default {
     getCurrentData() {
       return new Date().toLocaleDateString()
     },
-    cancleRoom(record) {
-      this.visibleReason = true
-    },
-    handleOkReason() {
-      this.visibleReason = false
-    },
-    getCurrentData() {
-      return new Date().toLocaleDateString()
-    },
     appointRoom(record) {
       this.visibleAppoint = true
     },
@@ -298,6 +428,55 @@ export default {
     arrangeInfor(record) {
       this.modalVisible = true
       console.log(record)
+    },
+    appointClose() {
+      this.$emit('close')
+      this.visibleAppoint = false
+    },
+    roomForced(record) {
+      this.visibleForced = true
+      this.formForced.id=record.id
+      this.formForced.theme=record.theme
+      this.formForced.name=record.name
+      this.formForced.dateTime=record.dateTime
+      this.formForced.range=record.range
+      this.formForced.address=record.address
+      this.formForced.arrange=record.arrange
+      this.formForced.number=record.number
+      let dateAr=record.dateTime.split("~")
+      this.formForced.dateStart=this.moment(dateAr[0], 'YYYY年MM月DD日')
+      this.formForced.dateEnd=this.moment(dateAr[1], 'YYYY年MM月DD日')
+    },
+    closeForced() {
+      this.$emit('close')
+      this.visibleForced = false
+    },
+    onSubmitForced(){
+      this.$message.success('强制预约成功')
+        this.visibleForced = false
+      this.data.filter(item=>{
+        if(item.id==this.formForced.id){
+          item.state="强制撤销"
+        }
+      })
+      let a={
+        id:"#",
+        theme: this.formForced.theme,
+        name:this.formForced.name,
+        dateTime:this.formForced.dateTime,
+        range:this.formForced.range,
+        dutyName:"管理员",
+        dutyTel:"管理员电话",
+        address:this.formForced.address,
+        arrange:this.formForced.arrange,
+        number:this.formForced.number,
+        state: '待开始',
+      }
+      this.data.push(a)
+    },
+    CancelForced(){
+         this.$emit('close')
+      this.visibleForced = false
     }
   }
 }

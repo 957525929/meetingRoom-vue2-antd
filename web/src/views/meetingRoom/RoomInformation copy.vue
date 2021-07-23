@@ -4,22 +4,13 @@
     <!-- 搜索操作区域 -->
     <div class="table-page-search-wrapper">
       <a-row type="flex" align="middle">
-       <a-col>
-          <span>状态：</span>
-        </a-col>
-        <a-col>
-         <a-select placeholder="请选择会议室状态"  style="width: 200px">
-            <a-select-option value="空闲">空闲</a-select-option>
-            <a-select-option value="已预约">已预约</a-select-option>
-          </a-select>
-        </a-col>
-        <a-col :span="1"></a-col>
         <a-col>
           <span>位置：</span>
         </a-col>
         <a-col>
+          <!-- <a-input placeholder="请输入区域" v-model="queryParam.area" width="100px"></a-input> -->
               <a-cascader
-      style="width: 300px"
+      style="width: 350px"
       :options="selectOptions"
       change-on-select
       @change="areaChange"
@@ -36,13 +27,13 @@
           <a-input placeholder="请输入房间号" v-model="queryParam.room"></a-input>
         </a-col>
         <a-col :span="1"></a-col>
-        <!-- <a-col>
+        <a-col>
           <span>管理员：</span>
         </a-col>
         <a-col>
           <a-input placeholder="请输入管理员姓名" v-model="queryParam.dutyName"></a-input>
         </a-col>
-        <a-col :span="1"></a-col> -->
+        <a-col :span="1"></a-col>
         <a-col>
           <a-button
             :style="{ background: '#49a9ee', color: 'white'}"
@@ -51,6 +42,7 @@
           >查询</a-button>
           <a-button @click="searchReset()" icon="reload" style="margin-left: 8px">重置</a-button>
         </a-col>
+        <a-col :span="1"></a-col>
 <!--        <a-col>-->
 <!--          <a-button-->
 <!--            @click="addRoom()"-->
@@ -88,28 +80,16 @@
 
     <div id="dataRoomTable">
       <a-table :data-source="dataRoom"   :pagination="false" rowKey="index">
-          <a-table-column title="#" data-index="index" align="left" fixed="left" width="150px" scopedSlots:{ customRender: function(t, r, index) {
+          <a-table-column title="序号" data-index="index" align="left" fixed="left" width="150px" scopedSlots:{ customRender: function(t, r, index) {
       return parseInt(index) + 1}}></a-table-column>
         <a-table-column title="位置" data-index="area" align="center" ></a-table-column>
         <a-table-column title="房间号" data-index="room" align="center" ></a-table-column>
-         <a-table-column title="状态" data-index="state" align="center" >
-            <template slot-scope="state">              
-              <span v-if="state=='空闲'">
-                  <a-tag color="green">
-                  空闲
-              </a-tag>
-              </span>
-              <span v-else>
-                 <a-tag color="red">
-                  已预约
-                </a-tag>
-              </span>
-            </template>
-         </a-table-column>
         <a-table-column title="容纳人数" data-index="number" align="center" ></a-table-column>
         <a-table-column title="基本条件" data-index="condition" align="center">
-        </a-table-column>
 
+        </a-table-column>
+       <!-- <a-table-column title="管理员" data-index="dutyName" align="center"></a-table-column>
+        <a-table-column title="管理员电话" data-index="dutyTel" align="center"></a-table-column> -->
         <a-table-column title="操作" align="center">
           <template slot-scope="record">
            <a href="javascript:;" @click="detail(record)" :style="{  color: 'orange' }">查看详情</a>
@@ -128,7 +108,7 @@
     </div>
 
     <!-- 新增 -->
-  <a-drawer :visible="visibleAdd" title="新增会议室" width="600px" placement="right" @close="addClose">
+  <a-Modal v-model="visibleAdd" title="新增会议室" footer>
       <a-form-model
         ref="ruleForm"
         :model="formAdd"
@@ -138,7 +118,7 @@
       >
       <a-form-model-item ref="area" label="位置" prop="area" placeholder="请选择位置">
       <a-cascader
-      style="width: 410px"
+      style="width: 350px"
       :options="selectOptions"
       v-model="formAdd.area"
       change-on-select
@@ -164,6 +144,11 @@
           <a-col :span="8">
             <a-checkbox value="白板">
               白板
+            </a-checkbox>
+          </a-col>
+          <a-col :span="8">
+            <a-checkbox value="空调">
+              空调
             </a-checkbox>
           </a-col>
           <a-col :span="8">
@@ -195,10 +180,10 @@
           <a-button style="margin-left: 10px;" @click="resetFormAdd()">重置</a-button>
         </a-form-model-item>
       </a-form-model>
-  </a-drawer>
+  </a-Modal>
 
     <!--修改信息 -->
-     <a-drawer :visible="visibleModify" title="修改会议室信息" @close="modifyClose" width="600px" placement="right">
+     <a-Modal v-model="visibleModify" title="修改会议室信息" footer>
       <a-form-model
         ref="ruleForm"
         :model="formModify"
@@ -211,16 +196,6 @@
         </a-form-model-item>
         <a-form-model-item label="房间号" prop="room">
           <a-input v-model="formModify.room" disabled></a-input>
-        </a-form-model-item>
-        <a-form-model-item label="状态">
-           <a-radio-group v-model="formModify.state" >
-      <a-radio value="空闲">
-        空闲
-      </a-radio>
-      <a-radio value="已预约">
-        已预约
-      </a-radio>
-    </a-radio-group>
         </a-form-model-item>
          <a-form-model-item label="容纳人数" prop="number">
           <a-input v-model="formModify.number" ></a-input>
@@ -237,6 +212,11 @@
           <a-col :span="8">
             <a-checkbox value="白板">
               白板
+            </a-checkbox>
+          </a-col>
+          <a-col :span="8">
+            <a-checkbox value="空调">
+              空调
             </a-checkbox>
           </a-col>
           <a-col :span="8">
@@ -268,24 +248,24 @@
           <a-button style="margin-left: 10px;" @click="CancelModify()">取消</a-button>
         </a-form-model-item>
       </a-form-model>
-    </a-drawer>
+    </a-Modal>
     <!-- 会议室详情 -->
-    <a-drawer :visible="visibleDetail" title="会议室详情" @close="detailClose" placement="right" width="600px">
-      <a-form
+    <a-Modal v-model="visibleDetail" title="会议室详情" footer>
+      <a-form-model
         :model="formDetail"
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
       >
-         <a-form-item label="位置" >
+         <a-form-model-item label="位置" >
           <a-input v-model="formDetail.area"  disabled></a-input>
-        </a-form-item>
-        <a-form-item label="房间号" >
+        </a-form-model-item>
+        <a-form-model-item label="房间号" >
           <a-input v-model="formDetail.room" disabled></a-input>
-        </a-form-item>
-         <a-form-item label="容纳人数">
+        </a-form-model-item>
+         <a-form-model-item label="容纳人数">
           <a-input v-model="formDetail.number" disabled></a-input>
-        </a-form-item>
-        <a-form-item label="基本条件">
+        </a-form-model-item>
+        <a-form-model-item label="基本条件">
            <a-checkbox-group @change="onChangeCon" v-model="formDetail.condition" disabled>
            <a-row>
           <a-col :span="8">
@@ -296,6 +276,11 @@
           <a-col :span="8">
             <a-checkbox value="白板">
               白板
+            </a-checkbox>
+          </a-col>
+          <a-col :span="8">
+            <a-checkbox value="空调">
+              空调
             </a-checkbox>
           </a-col>
           <a-col :span="8">
@@ -310,19 +295,19 @@
           </a-col>
         </a-row>
         </a-checkbox-group>
-        </a-form-item>
-        <a-form-item ref="dutyName" label="管理员"  >
+        </a-form-model-item>
+        <a-form-model-item ref="dutyName" label="管理员"  >
           <a-select   show-search v-model="formDetail.dutyName" disabled>
             <a-select-option value="李霞">李霞</a-select-option>
             <a-select-option value="尤晓梅">尤晓梅</a-select-option>
             <a-select-option value="黄丽娟">黄丽娟</a-select-option>
           </a-select>
-        </a-form-item>
-        <a-form-item label="管理员电话" >
+        </a-form-model-item>
+        <a-form-model-item label="管理员电话" >
           <a-input v-model="formDetail.dutyTel" disabled></a-input>
-        </a-form-item>
-      </a-form>
-    </a-drawer>
+        </a-form-model-item>
+      </a-form-model>
+    </a-Modal>
   </a-card>
 </template>
 
@@ -337,7 +322,6 @@ const dataRoom = [
     dutyName: "李霞",
     dutyTel: "13759655332",
     room: "会议室203",
-    state:"空闲",
     condition:"投影仪，白板，黑板"
   },
   {
@@ -347,8 +331,7 @@ const dataRoom = [
     dutyName: "王莉莉",
     dutyTel: "13759655348",
     room: "会议室204",
-     state:"空闲",
-    condition: "投影仪，白板"
+    condition: "空调，投影仪，白板"
   },
   {
   index: 3,
@@ -357,7 +340,6 @@ const dataRoom = [
     dutyName: "尤晓梅",
     dutyTel: "13053955537",
     room: "会议室205",
-    state:"已预约",
     condition: "演示电脑，投影仪，黑板"
   },
   {
@@ -367,8 +349,7 @@ const dataRoom = [
     dutyName: "黄丽娟",
     dutyTel: "13659655381",
     room: "会议室206",
-     state:"空闲",
-    condition: "投影仪，演示电脑，白板"
+    condition: "空调，投影仪，演示电脑，白板"
   }
 ];
 const columns = [
@@ -454,7 +435,6 @@ export default {
       dutyName: '',
       dutyTel: '',
       condition: [],
-      state: '',
       },
       rules: {
         condition:[
@@ -576,7 +556,6 @@ export default {
       this.formModify.dutyName = record.dutyName
        this.formModify.condition=record.condition.split('，')
       this.formModify.dutyTel = record.dutyTel
-      this.formModify.state=record.state
       //this.formModify.condition = record.condition
     },
         ModifyDutyName(value){
@@ -610,18 +589,6 @@ export default {
       this.formDetail.dutyName = record.dutyName
        this.formDetail.condition=record.condition.split('，')
       this.formDetail.dutyTel = record.dutyTel
-  },
-  detailClose(){
-     this.$emit('close');
-  this.visibleDetail = false;
-  },
-  addClose(){
-     this.$emit('close');
-  this.visibleAdd = false;
-  },
-  modifyClose(){
-       this.$emit('close');
-  this.visibleModify = false;
   }
   }
 }

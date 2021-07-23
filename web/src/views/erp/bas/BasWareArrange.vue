@@ -4,21 +4,21 @@
     <!-- 搜索操作区域 -->
     <div class="table-page-search-wrapper">
       <a-row type="flex" align="middle">
-           <a-col>
-          <span>工号：</span>
+     <a-col>
+          <span>学号：</span>
         </a-col>
         <a-col>
-          <a-input placeholder="请输入教师工号" v-model="queryParam.teacherID"></a-input>
+          <a-input placeholder="请输入安排员学号" v-model="queryParam.arrangeID"></a-input>
         </a-col>
         <a-col :span="1"></a-col>
                 <a-col>
           <span>姓名：</span>
         </a-col>
         <a-col>
-        <a-input placeholder="请输入教师姓名" v-model="queryParam.teacherName"></a-input>
+        <a-input placeholder="请输入安排员姓名" v-model="queryParam.arrangeName"></a-input>
         </a-col>
         <a-col :span="1"></a-col>
-     
+      
         <a-col>
           <a-button
             :style="{ background: '#49a9ee', color: 'white'}"
@@ -33,7 +33,7 @@
 
     <!-- 操作按钮区域 -->
     <div class="table-operator" style="border-top: 5px;margin-top: 20px">
-      <a-button @click="addTeacher" type="primary" icon="plus">添加</a-button>
+      <a-button @click="addArrange" type="primary" icon="plus">添加</a-button>
       <a-button type="primary" icon="download" @click="handleExportXls('教师人员信息')">导出</a-button>
       <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
         <a-button type="primary" icon="import">导入</a-button>
@@ -54,11 +54,13 @@
     </div>
     <!-- table区域-begin -->
     <div id="dataDutyTable">
-      <a-table :data-source="dataTeacher" :pagination="false" rowKey="index">
+      <a-table :data-source="dataArrange" :pagination="false" rowKey="index">
         <a-table-column title="#" data-index="index" align="left" fixed="left"></a-table-column>
-        <a-table-column title="工号" data-index="teacherID" align="center"></a-table-column>
-        <a-table-column title="姓名" data-index="teacherName" align="center"></a-table-column>
-        <a-table-column title="联系电话" data-index="teacherTel" align="center"></a-table-column>
+        <a-table-column title="学号" data-index="arrangeID" align="center"></a-table-column>
+        <a-table-column title="姓名" data-index="arrangeName" align="center"></a-table-column>
+        <a-table-column title="联系电话" data-index="arrangeTel" align="center"></a-table-column>
+        <a-table-column title="银行账号" data-index="arrangeBank" align="center"></a-table-column>
+        <a-table-column title="开户行" data-index="whereBank" align="center"></a-table-column>
         <a-table-column title="操作" align="center" fixed="right">
           <template slot-scope="record">   
             <a href="javascript:;" @click="Modify(record)" :style="{  color: 'blue' }">修改</a>
@@ -74,7 +76,7 @@
     </div>
 
     <!-- 新增 -->
-    <a-drawer :visible="visibleAdd" title="新增教师"  @close="closeAdd" width="600px" placement="right">
+    <a-drawer :visible="visibleAdd" title="新增会务安排员"  @close="closeAdd" width="600px" placement="right">
       <a-form-model
         ref="ruleForm"
         :model="formAdd"
@@ -82,14 +84,20 @@
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
       >
-        <a-form-model-item ref="teacherID" label="工号" prop="teacherID">
-            <a-input v-model="formAdd.teacherID" placeholder="请输入教师工号"></a-input>
+        <a-form-model-item ref="arrangeID" label="学号" prop="arrangeID">
+            <a-input v-model="formAdd.arrangeID" placeholder="请输入学号"></a-input>
         </a-form-model-item>
-        <a-form-model-item label="姓名" prop="teacherName" ref="teacherName">
-          <a-input v-model="formAdd.teacherName" placeholder="请输入教师姓名"></a-input>
+        <a-form-model-item label="姓名" prop="arrangeName" ref="arrangeName">
+          <a-input v-model="formAdd.arrangeName" placeholder="请输入姓名"></a-input>
         </a-form-model-item>
-        <a-form-model-item label="联系电话" prop="teacherTel" ref="teacherTel">
-          <a-input v-model="formAdd.teacherTel" placeholder="请输入联系电话"></a-input>
+        <a-form-model-item label="联系电话" prop="arrangeTel" ref="arrangeTel">
+          <a-input v-model="formAdd.arrangeTel" placeholder="请输入联系电话"></a-input>
+        </a-form-model-item>
+        <a-form-model-item label="银行账号" prop="arrangeBank" ref="arrangeBank">
+          <a-input v-model="formAdd.arrangeBank" placeholder="请输入银行账号"></a-input>
+        </a-form-model-item>
+       <a-form-model-item label="开户行" prop="whereBank" ref="whereBank">
+          <a-input v-model="formAdd.whereBank" placeholder="请输入开户行"></a-input>
         </a-form-model-item>
         <a-form-model-item :wrapper-col="{ span: 14, offset: 6 }">
           <a-button type="primary" @click="onSubmitAdd()">创建</a-button>
@@ -98,21 +106,27 @@
       </a-form-model>
     </a-drawer>
     <!--修改信息 -->
-    <a-drawer :visible="visibleModify" title="修改教师信息" @close="closeModify" width="600px" placement="right">
+    <a-drawer :visible="visibleModify" title="修改安排员信息" @close="closeModify" width="600px" placement="right">
       <a-form-model
         :label-col="labelCol"
         :model="formModify"
         :wrapper-col="wrapperCol"
         :rules="rules"
       >
-        <a-form-model-item ref="teacherID" label="工号" prop="teacherID">
-            <a-input v-model="formModify.teacherID" placeholder="请输入教师工号"></a-input>
+        <a-form-model-item ref="arrangeID" label="学号" prop="arrangeID">
+            <a-input v-model="formModify.arrangeID" placeholder="请输入学号"></a-input>
         </a-form-model-item>
-         <a-form-model-item label="姓名" prop="teacherName" ref="teacherName">
-          <a-input v-model="formModify.teacherName" placeholder="请输入教师姓名"></a-input>
+         <a-form-model-item label="姓名" prop="arrangeName" ref="arrangeName">
+          <a-input v-model="formModify.arrangeName" placeholder="请输入姓名"></a-input>
         </a-form-model-item>
-     <a-form-model-item label="联系电话" prop="teacherTel" ref="teacherTel">
-          <a-input v-model="formModify.teacherTel" placeholder="请输入联系电话"></a-input>
+        <a-form-model-item label="联系电话" prop="arrangeTel" ref="arrangeTel">
+          <a-input v-model="formModify.arrangeTel" placeholder="请输入联系电话"></a-input>
+        </a-form-model-item>
+         <a-form-model-item label="银行账号" prop="arrangeBank" ref="arrangeBank">
+          <a-input v-model="formModify.arrangeBank" placeholder="请输入联系电话"></a-input>
+        </a-form-model-item>
+         <a-form-model-item label="开户行" prop="whereBank" ref="whereBank">
+          <a-input v-model="formModify.whereBank" placeholder="请输入开户行"></a-input>
         </a-form-model-item>
         <a-form-model-item :wrapper-col="{ span: 14, offset: 6 }">
           <a-button type="primary" @click="onSubmitModify()">修改</a-button>
@@ -125,68 +139,81 @@
 
 <script>
 import {JeecgListMixin} from '@/mixins/JeecgListMixin'
-const dataTeacher = [
+const dataArrange = [
   {
     index: 1,
-    teacherID:"A01",
-    teacherName: '李霞',
-    teacherTel: '13759655332',
+    arrangeID:"B001",
+    arrangeName: '李小娟',
+    arrangeTel: '15059655332',
+    arrangeBank:"6228480068882423498",
+    whereBank:"农行福州洪山支行",
   },
   {
     index: 2,
-     teacherID:"A02",
-    teacherName: '王莉莉',
-    teacherTel: '13759655348',
+    arrangeID:"B002",
+    arrangeName: '王菲菲',
+    arrangeTel: '13859655348',
+    arrangeBank:"6228480068885932881",
+    whereBank:"农行福州洪山支行",
   },
-  {
-    index: 3,
-    teacherID:"A03",
-    teacherName: '尤晓梅', 
-    teacherTel: '13053955537',
-  },
+
 ]
 export default {
   data() {
     return {
       tokenHeader: undefined,
-      dataTeacher,
+      dataArrange,
       queryParam: {
-        teacherName: '',
-        teacherID: ''
+        arrangeName: '',
+        arrangeID: ''
       },
       visibleAdd: false,
       visibleModify: false,
       labelCol: { span: 5 },
       wrapperCol: { span: 19 },
       formAdd: {
-        teacherID: undefined,
-        teacherName: undefined,
-        teacherTel: undefined
+        arrangeID: undefined,
+        arrangeName: undefined,
+        arrangeTel: undefined
       },
       formModify: {
-        teacherID: undefined,
-        teacherName: undefined,
-        teacherTel: undefined
+        arrangeID: undefined,
+        arrangeName: undefined,
+        arrangeTel: undefined
       },
       rules: {
-        teacherID: [
+        arrangeID: [
           {
             required: true,
-            message: '请输入教师工号',
+            message: '请输入学号',
             trigger: 'blur'
           }
         ],
-        teacherName: [
+        arrangeName: [
           {
             required: true,
-            message: '请输入教师姓名',
+            message: '请输入姓名',
             trigger: 'blur'
           }
         ],
-        teacherTel: [
+        arrangeTel: [
           {
             required: true,
             message: '请输入联系电话',
+            trigger: 'blur'
+          }
+        ],
+                arrangeBank: [
+          {
+            required: true,
+            message: '请输入银行账号',
+            trigger: 'blur'
+          }
+        ],
+                whereBank: [
+          {
+            required: true,
+            message: '请输入开户行',
             trigger: 'blur'
           }
         ]
@@ -210,11 +237,11 @@ export default {
     searchQuery() {},
     handleImportExcel(){},
     searchReset() {
-      this.queryParam.teacherID="";
-      this.queryParam.teacherName="";
-      this.dataTeacher=dataTeacher
+      this.queryParam.arrangeID="";
+      this.queryParam.arrangeName="";
+      this.dataArrange=dataArrange
     },
-    addTeacher() {
+    addArrange() {
       this.visibleAdd = true
     },
     onSubmitAdd() {
@@ -236,8 +263,8 @@ export default {
       this.$refs.ruleForm.resetFields()
     },
     onDelete(index) {
-      const dataTeacher = [...this.dataTeacher]
-      this.dataTeacher = dataTeacher.filter(item => item.index !== index)
+      const dataArrange = [...this.dataArrange]
+      this.dataArrange = dataArrange.filter(item => item.index !== index)
     },
     Download() {
       console.log('下载')
@@ -245,9 +272,11 @@ export default {
     Modify(record) {
       this.visibleModify = true
       console.log(record)
-      this.formModify.teacherID = record.teacherID
-      this.formModify.teacherName = record.teacherName
-      this.formModify.teacherTel = record.teacherTel
+      this.formModify.arrangeID = record.arrangeID
+      this.formModify.arrangeName = record.arrangeName
+      this.formModify.arrangeTel = record.arrangeTel
+      this.formModify.arrangeBank=record.arrangeBank
+      this.formModify.whereBank=record.whereBank
     },
     onSubmitModify() {
       this.visibleModify = false
