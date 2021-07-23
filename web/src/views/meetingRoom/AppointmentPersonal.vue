@@ -76,7 +76,7 @@
         <a-table-column title="负责人姓名" data-index="dutyName" align="center"></a-table-column>
         <!-- <a-table-column title="负责人电话" data-index="dutyTel" align="center"></a-table-column> -->
         <a-table-column title="会议时间" data-index="dateTime" align="center"></a-table-column>
-        <a-table-column title="时段" data-index="range" align="center"></a-table-column>
+        <a-table-column title="午别" data-index="range" align="center"></a-table-column>
         <a-table-column title="会议地点" data-index="address" align="center" width="300px"></a-table-column>
         <a-table-column title="参会人数（人）" data-index="number" align="center"></a-table-column>
           <a-table-column title="会务安排" data-index="arrange" align="center"></a-table-column>
@@ -159,8 +159,8 @@
             :format="dateFormat"
           ></a-date-picker>
         </a-form-model-item>
-         <a-form-model-item label="时段" prop="range">
-          <a-select v-model="formForced.range" placeholder="请选择时段">
+         <a-form-model-item label="午别" prop="range">
+          <a-select v-model="formForced.range" placeholder="请选择午别">
             <a-select-option value="上午">上午</a-select-option>
             <a-select-option value="下午">下午</a-select-option>
             <a-select-option value="晚上">晚上</a-select-option>
@@ -216,7 +216,7 @@
         <a-tab-pane key="1" tab="会议地点">
           <a-descriptions>
             <a-descriptions-item label="会议时间">2021年07月20日~2021年07月20日</a-descriptions-item>
-            <a-descriptions-item label="时段">上午</a-descriptions-item>
+            <a-descriptions-item label="午别">上午</a-descriptions-item>
             <a-descriptions-item label="会议地点">福建师范大学.仓山校区.1号楼.会议室203</a-descriptions-item>
           </a-descriptions>
         </a-tab-pane>
