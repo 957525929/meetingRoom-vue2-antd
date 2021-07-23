@@ -43,26 +43,46 @@
           <a-button @click="searchReset()" icon="reload" style="margin-left: 8px">重置</a-button>
         </a-col>
         <a-col :span="1"></a-col>
-        <a-col>
-          <a-button
-            @click="addRoom()"
-            icon="plus"
-            :style="{ color: 'white', background:'orange'}"
-          >新增会议室</a-button>&nbsp;&nbsp;
-          <a-button>
-            <a-icon type="download" />导出
-          </a-button>
-        </a-col>
+<!--        <a-col>-->
+<!--          <a-button-->
+<!--            @click="addRoom()"-->
+<!--            icon="plus"-->
+<!--            :style="{ color: 'white', background:'orange'}"-->
+<!--          >新增会议室</a-button>&nbsp;&nbsp;-->
+<!--          <a-button>-->
+<!--            <a-icon type="download" />导出-->
+<!--          </a-button>-->
+<!--        </a-col>-->
       </a-row>
 
     </div>
- 
+    <!-- 操作按钮区域 -->
+    <div class="table-operator" style="border-top: 5px;margin-top: 20px">
+      <a-button @click="addRoom" type="primary" icon="plus">添加</a-button>
+      <a-button type="primary" icon="download" @click="handleExportXls('会议室信息')">导出</a-button>
+      <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
+        <a-button type="primary" icon="import">导入</a-button>
+      </a-upload>
+      <!--      <a-button type="primary" icon="hdd" @click="recycleBinVisible=true">回收站</a-button>-->
+      <a-dropdown v-if="selectedRowKeys.length > 0">
+        <a-menu slot="overlay" @click="handleMenuClick">
+          <a-menu-item key="1">
+            <a-icon type="delete" @click="batchDel"/>
+            删除
+          </a-menu-item>
+        </a-menu>
+        <a-button style="margin-left: 8px">
+          批量操作
+          <a-icon type="down"/>
+        </a-button>
+      </a-dropdown>
+    </div>
 
     <div id="dataRoomTable">
       <a-table :data-source="dataRoom"   :pagination="false" rowKey="index">
           <a-table-column title="序号" data-index="index" align="left" fixed="left" width="150px" scopedSlots:{ customRender: function(t, r, index) {
       return parseInt(index) + 1}}></a-table-column>
-        <a-table-column title="位置" data-index="area" align="center" ></a-table-column>         
+        <a-table-column title="位置" data-index="area" align="center" ></a-table-column>
         <a-table-column title="房间号" data-index="room" align="center" ></a-table-column>
         <a-table-column title="容纳人数" data-index="number" align="center" ></a-table-column>
         <a-table-column title="基本条件" data-index="condition" align="center">
@@ -79,7 +99,7 @@
             <a-popconfirm title="确定删除吗?" @confirm="() => onDelete(record.index)">
               <a href="javascript:;" :style="{  color: 'red' }">删除</a>
             </a-popconfirm>
-         
+
           </template>
         </a-table-column>
       </a-table>
@@ -308,6 +328,7 @@
 
 <script>
 import { areaData } from './data/area.js'
+import {JeecgListMixin} from '@/mixins/JeecgListMixin'
 const dataRoom = [
   {
     index: 1,
@@ -395,6 +416,7 @@ const columns = [
   }
 ]
 export default {
+  mixins: [JeecgListMixin],
   data() {
     return {
       selectOptions: areaData,
@@ -427,8 +449,8 @@ export default {
       number: '',
       dutyName: '',
       dutyTel: '',
-      condition: [],  
-      },      
+      condition: [],
+      },
       rules: {
         condition:[
             {
@@ -513,7 +535,7 @@ export default {
        }
         if(value=='黄丽娟'){
          this.formAdd.dutyTel='13659655381'
-       } 
+       }
     },
     onSubmitAdd() {
       this.$refs.ruleForm.validate(valid => {
@@ -560,7 +582,7 @@ export default {
        }
         if(value=='黄丽娟'){
          this.formModify.dutyTel='13659655381'
-       } 
+       }
     },
     onSubmitModify() {
       this.visibleModify = false
