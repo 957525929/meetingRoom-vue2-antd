@@ -30,16 +30,105 @@
 </template>
 
 <script>
+	var _this;
 	export default {
 		data() {
 			return {
 				PageCur: 'home'
 			}
 		},
+		onLoad() {
+			_this = this;
+			_this.getmenus();
+			uni.setTabBarStyle({
+				backgroundImage: '/static/images/tabbar/foot.png',
+				backgroundRepeat: 'no-repeat'
+			});
+			_this.wxlogin();
+		},
 		methods: {
 			NavChange: function(e) {
 				console.log(e.currentTarget)
 				this.PageCur = e.currentTarget.dataset.cur
+			},
+			
+			wxlogin() {
+				wx.login({
+					success: function(res) {
+						if (res.code) {
+							console.log("res.code:" + res.code);
+							var d = {
+								appid:'wx8c3e458fbbe9cecb',
+								secret:'d1422640a47c374c48d1c8ce65b6112f'
+							}; //这里存储了appid、secret、token串  
+							var l = 'https://api.weixin.qq.com/sns/jscode2session?appid=' + d.appid +
+								'&secret=' + d.secret + '&js_code=' + res.code +
+								'&grant_type=authorization_code';
+							wx.request({
+								url: l,
+								data: {},
+								method: 'GET',
+								success: function(res) {
+									console.log("res" + res);
+									var obj = {};
+									obj.openid = res.data.openid;
+									obj.expires_in = Date.now() + res.data.expires_in;
+									wx.setStorageSync('user', obj); //存储openid 
+								}
+							});
+						} else {
+							console.log('获取用户登录态失败！' + res.errMsg)
+						}
+					}
+				});
+			},
+			getmenus() {
+				// _this._post_form('user/getAppMenu', {}, (result) => {
+				// 	_this.data = result.data
+				// });
+			},
+			onClickMp() {
+				// #ifndef MP
+				return;
+				// #endif
+				uni.navigateToMiniProgram({
+					appId: 'wxe604ef58ff7c65b1',
+					path: 'pages/index/index'
+				})
+			},
+			/**
+			 * 分享当前页面
+			 */
+			onShareAppMessage: function() {
+				return {
+					title: '我发现了一个超好用的进销存管理系统',
+					path: "/pages/login/index"
+				};
+			},
+			/**
+			 * 分享到朋友圈
+			 * 本接口为 Beta 版本，暂只在 Android 平台支持，详见分享到朋友圈 (Beta)
+			 * https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/share-timeline.html
+			 */
+			onShareTimeline() {
+				return {
+					title: '我发现了一个超好用的进销存管理系统',
+					path: "/pages/login/index"
+				};
+			},
+			scan() {
+				let url = '/pages/commodity/commodityinfo?barCode=' + 123;
+				_this.onClick(url);
+				// 调起条码扫描
+				// uni.scanCode({
+				//  success: function (res) {
+				// 	 //that.result3 = res.result;
+				// 	 console.log('条码类型：' + res.scanType);
+				// 	 console.log('条码内容：' + res.result);
+				// 	 let url = '/pages/commodity/commodityinfo?barCode='+ res.result;
+				// 	 _this.onClick(url);
+				//  }
+				// });
 			}
 		}
 	}
