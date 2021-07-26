@@ -30,7 +30,7 @@
 						</view>
 					</view>
 					<view class="text-lg text-right padding">
-						<text class="cuIcon-edit text-blue margin-left" @tap="edit()">编辑</text>
+						<text class="cuIcon-edit text-blue margin-left" @tap="edit">编辑</text>
 						<text class="cuIcon-delete text-red margin-left" @tap="scrap()">报废</text>
 						<text class="cuIcon-roundclose text-orange margin-left" @tap="showModal"
 							data-target="DialogModal">删除</text>
@@ -94,11 +94,11 @@
 			console.log(option.barCode);
 			//_this.getcommodityList();
 		},
-		onNavigationBarButtonTap(e) {
-			uni.navigateTo({
-				url: 'addcommodity'
-			})
-		},
+		// onNavigationBarButtonTap(e) {
+		// 	uni.navigateTo({
+		// 		url: 'addcommodity'
+		// 	})
+		// },
 		methods: {
 			showModal(e) {
 				this.modalName = e.currentTarget.dataset.target
@@ -121,9 +121,9 @@
 			// del(index) {
 			// 	_this.show = true;
 			// },
-			edit(index) {
+			edit() {
 				uni.navigateTo({
-					url: 'editcommodity?id=1'
+					url: '../scan/editcommodity'
 				})
 			},
 			scrap(index) {
@@ -229,5 +229,6 @@
 	.item-img {
 		display: block;
 		margin: 20rpx 100rpx;
+		border: 1px solid #dcdcdc;
 	}
 </style>
