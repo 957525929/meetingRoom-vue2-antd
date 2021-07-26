@@ -4,7 +4,7 @@ import App from './App'
 import home from './pages/home/index.vue'
 Vue.component('home',home)
 
-import scan from './pages/scan/index.vue'
+import scan from './pages/scan/commodityinfo.vue'
 Vue.component('scan',scan)
 
 import person from './pages/person/index.vue'
