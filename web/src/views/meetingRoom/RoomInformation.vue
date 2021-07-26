@@ -112,7 +112,7 @@
 
         <a-table-column title="操作" align="center">
           <template slot-scope="record">
-           <a href="javascript:;" @click="detail(record)" :style="{  color: 'orange' }">查看详情</a>
+           <a href="javascript:;" @click="detail(record)" :style="{  color: 'orange' }">详情</a>
             <a-divider type="vertical" />
             <a href="javascript:;" @click="Modify(record)" :style="{  color: 'blue' }">修改</a>
             <a-divider type="vertical" />
