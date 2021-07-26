@@ -12,7 +12,7 @@
             <a-select-option value="已完成">已完成</a-select-option>
             <a-select-option value="待安排">待开始</a-select-option>
             <a-select-option value="进行中">进行中</a-select-option>
-            <!-- <a-select-option value="待审核">待审核</a-select-option>           -->
+            <a-select-option value="强制撤销">强制撤销</a-select-option>          
             <!-- <a-select-option value="未通过">未通过</a-select-option> -->
           </a-select>
         </a-col>
@@ -135,9 +135,8 @@
       >
       <a-form-model-item ref="theme" label="会议主题" prop="theme">
           <a-select   show-search v-model="formForced.theme" @change="themeForced">
-            <a-select-option value="李霞">李霞</a-select-option>
-            <a-select-option value="尤晓梅">尤晓梅</a-select-option>
-            <a-select-option value="黄丽娟">黄丽娟</a-select-option>
+            <a-select-option value="行政管理">行政管理</a-select-option>
+            <a-select-option value="安全管理">安全管理</a-select-option>
           </a-select>
         </a-form-model-item>
          <a-form-model-item label="会议名称" prop="name">
@@ -355,7 +354,8 @@ export default {
         id: undefined,
         theme: undefined,
         name: undefined,
-        dateTime: undefined,
+        dateStart: undefined,
+        dateEnd: undefined,
         range: undefined,
         address: undefined,
         number: undefined,
@@ -438,14 +438,16 @@ export default {
       this.formForced.id=record.id
       this.formForced.theme=record.theme
       this.formForced.name=record.name
-      this.formForced.dateTime=record.dateTime
-      this.formForced.range=record.range
       this.formForced.address=record.address
       this.formForced.arrange=record.arrange
       this.formForced.number=record.number
-      let dateAr=record.dateTime.split("~")
-      this.formForced.dateStart=this.moment(dateAr[0], 'YYYY年MM月DD日')
-      this.formForced.dateEnd=this.moment(dateAr[1], 'YYYY年MM月DD日')
+      let dateA=record.dateTime.split("~")
+      this.formForced.dateStart=this.moment(dateA[0], 'YYYY年MM月DD日')
+      this.formForced.dateEnd=this.moment(dateA[1], 'YYYY年MM月DD日')
+      this.formForced.range=record.range
+    },
+    themeForced(value){
+      this.formForced.name=value
     },
     closeForced() {
       this.$emit('close')
@@ -459,11 +461,12 @@ export default {
           item.state="强制撤销"
         }
       })
+       let dateT=this.formForced.dateStart.format("YYYY年MM月DD日")+"~"+this.formForced.dateEnd.format("YYYY年MM月DD日")
       let a={
         id:"#",
         theme: this.formForced.theme,
         name:this.formForced.name,
-        dateTime:this.formForced.dateTime,
+        dateTime:dateT,
         range:this.formForced.range,
         dutyName:"管理员",
         dutyTel:"管理员电话",
