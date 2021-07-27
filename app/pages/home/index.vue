@@ -97,6 +97,14 @@
 						url: '../../pagesSearch/index',
 						style: 'nav-li bg-purple'
 					},
+					{
+						id: 5,
+						name: '会议室预约',
+						secname: 'Appointment',
+						icon: 'cuIcon-newshot',
+						url: '../../pagesAppointment/index',
+						style: 'nav-li bg-yellow'
+					},
 				],
 				modalName: null,
 			}
@@ -113,5 +121,8 @@
 	.card {
 		background-color: white;
 		border-radius: 30rpx;
+	}
+	.nav-li uni-text {
+		right: 8px;
 	}
 </style>
