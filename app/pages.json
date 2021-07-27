@@ -189,7 +189,16 @@
 					"path":"index",
 					"style":{}
 				}
-			]
+			    ,{
+                    "path" : "recordAssetList",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
 		},
 		{
 			"root":"pagesSearch",

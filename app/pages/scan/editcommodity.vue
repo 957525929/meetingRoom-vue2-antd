@@ -196,16 +196,16 @@
 				this.date2 = e.detail.value
 			},
 			submit() {
-				this.$refs.uForm.validate(valid => {
-					if (valid) {
-						this.sendImage();
-					} else {
-						this.$refs.uToast.show({
-							title: '验证失败',
-							type: 'error'
-						})
-					}
-				});
+				// this.$refs.uForm.validate(valid => {
+				// 	if (valid) {
+				// 		this.sendImage();
+				// 	} else {
+				// 		this.$refs.uToast.show({
+				// 			title: '验证失败',
+				// 			type: 'error'
+				// 		})
+				// 	}
+				// });
 			},
 			imgListPreview(url) {
 				var urlList = []
