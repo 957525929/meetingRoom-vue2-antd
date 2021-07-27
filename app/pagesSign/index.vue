@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<cu-custom bgColor="bg-gradual-green" :isBack="true">
-			<block slot="backText">返回</block>
-			<block slot="content">登记</block>
+			<block slot="backText"></block>
+			<block slot="content">资产登记</block>
 		</cu-custom>
 	</view>
 </template>

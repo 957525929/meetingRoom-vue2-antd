@@ -17,7 +17,7 @@
 				</view>
 			</swiper-item>
 		</swiper>
-		
+
 		<view class="card">
 			<view class="cu-form-group padding">
 				<view class="content">
@@ -32,7 +32,7 @@
 					</span>
 				</view>
 			</view>
-			
+
 			<view class="nav-list margin-top">
 				<navigator v-for="(item,index) in navCard" :key="index" hover-class="none" :url="item.url"
 					:class="item.style" navigateTo>
@@ -42,8 +42,6 @@
 				</navigator>
 			</view>
 		</view>
-		
-
 
 	</view>
 </template>
@@ -68,6 +66,7 @@
 				}, ],
 				dotStyle: false,
 				navCard: [{
+						id: 1,
 						name: '入库',
 						secname: 'Storage',
 						icon: 'cuIcon-deliver',
@@ -75,6 +74,7 @@
 						style: 'nav-li bg-grey'
 					},
 					{
+						id: 2,
 						name: '登记',
 						secname: 'Sign',
 						icon: 'cuIcon-edit',
@@ -82,6 +82,7 @@
 						style: 'nav-li bg-blue'
 					},
 					{
+						id: 3,
 						name: '入帐',
 						secname: 'Account',
 						icon: 'cuIcon-redpacket',
@@ -89,13 +90,15 @@
 						style: 'nav-li bg-mauve'
 					},
 					{
+						id: 4,
 						name: '查询',
 						secname: 'Search',
 						icon: 'cuIcon-search',
 						url: '../../pagesSearch/index',
 						style: 'nav-li bg-purple'
 					},
-				]
+				],
+				modalName: null,
 			}
 		},
 		methods: {
@@ -107,7 +110,7 @@
 </script>
 
 <style>
-	.card{
+	.card {
 		background-color: white;
 		border-radius: 30rpx;
 	}
