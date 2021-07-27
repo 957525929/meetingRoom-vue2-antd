@@ -26,6 +26,8 @@
 				<view :class="PageCur=='person'?'text-green':'text-gray'">个人中心</view>
 			</view>
 		</view>
+		
+		<view class="cu-tabbar-height margin-bottom"></view>
 	</view>
 </template>
 

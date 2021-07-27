@@ -54,6 +54,11 @@
 					<view class="nav-name">{{navCard[3].secname}}</view>
 					<text :class="navCard[3].icon"></text>
 				</navigator>
+				<navigator hover-class="none" :url="navCard[4].url" :class="navCard[3].style" navigateTo>
+					<view class="nav-title">{{navCard[4].name}}</view>
+					<view class="nav-name">{{navCard[4].secname}}</view>
+					<text :class="navCard[4].icon"></text>
+				</navigator>
 			</view>
 
 			<view class="cu-modal" :class="modalName=='Modal'?'show':''">
