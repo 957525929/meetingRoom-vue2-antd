@@ -168,7 +168,7 @@
           content: '真的要注销登录吗 ?',
           onOk() {
             return that.Logout({}).then(() => {
-                window.location.href="/";
+              window.location.href="/#";
               //window.location.reload()
             }).catch(err => {
               that.$message.error({
