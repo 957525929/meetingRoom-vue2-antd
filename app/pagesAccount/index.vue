@@ -15,16 +15,24 @@
 		</scroll-view>
 
 		<view v-if="TabCur==0" class="itembox">
-			<itemCard :cardTypy='TabCur'></itemCard>
+			<navigator class="action" url="./itemaccount" hover-class="none">
+				<itemCard :value="value[0]"></itemCard>
+			</navigator>
 		</view>
 		<view v-if="TabCur==1" class="itembox">
-			2
+			<navigator class="action" url="./itemaccount" hover-class="none">
+				<itemCard :value="value[1]"></itemCard>
+			</navigator>
 		</view>
 		<view v-if="TabCur==2" class="itembox">
-			3
+			<navigator class="action" url="./itemaccount" hover-class="none">
+				<itemCard :value="value[2]"></itemCard>
+			</navigator>
 		</view>
 		<view v-if="TabCur==3" class="itembox">
-			4
+			<navigator class="action" url="./itemaccount" hover-class="none">
+				<itemCard :value="value[3]"></itemCard>
+			</navigator>
 		</view>
 	</view>
 </template>
@@ -41,6 +49,7 @@
 				list: ['全部', '审核中', '合格', '不合格'],
 				TabCur: 0,
 				scrollLeft: 0,
+				value: ['0','1','2','3']
 			}
 		},
 		methods: {

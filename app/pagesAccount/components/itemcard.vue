@@ -1,11 +1,34 @@
 <template>
 	<view>
 		<view class="commodityinfo" v-for="(item,index) in infoList" :key="index">
-			<view class="cu-item shadow" @tap="itemaccount">
+			<view v-if="value==0" class="cu-item shadow">
 				<view class="cu-list menu-avatar cardtitle">
 					<view class="margin">资产类型：{{item.assetType}}</view>
 					<view class="margin flex justify-between">
-						<view :class='item.statusstyle' >{{item.statustype}}</view>
+						<view :class='item.statusstyle'>{{item.statustype}}</view>
+					</view>
+				</view>
+				<view class="text-content padding-bottom cf">
+					<view class="title-wrap fl">
+						<view class="margin-left">资产名称：{{ item.deviceName }}</view>
+						<view class="margin-left">位置：{{ item.campus }}{{ item.tower }}{{item.room}}</view>
+						<view class="margin-left">数量：{{ item.amount }}</view>
+						<view class="margin-left">价格：{{ item.price }}(元)</view>
+						<view class="margin-left">厂家：{{ item.factory}}</view>
+						<view class="margin-left">购置时间：{{ item.payTime}}</view>
+					</view>
+					<view class="fr">
+						<image class="item-img" :src="item.image">
+						</image>
+					</view>
+				</view>
+			</view>
+			
+			<view v-if="item.id == value" class="cu-item shadow">
+				<view class="cu-list menu-avatar cardtitle">
+					<view class="margin">资产类型：{{item.assetType}}</view>
+					<view class="margin flex justify-between">
+						<view :class='item.statusstyle'>{{item.statustype}}</view>
 					</view>
 				</view>
 				<view class="text-content padding-bottom cf">
@@ -28,39 +51,28 @@
 </template>
 
 <script>
-	import { List } from '../data/infolist.js'
-	
+	import {
+		List
+	} from '../data/infolist.js'
+
 	export default {
 		data() {
 			return {
-				infoList:[],
+				infoList: List,
 			}
-		},
-		
-		beforeMount() {
-			let obj = []
-			for(let i = 0; i<List.length; i++){
-				if(List[i].id == 3){
-					obj.push(List[i])
-				}
-			}
-			this.infoList = obj
 		},
 
-		props:["cardType"],
-		
+		props: {
+			value: String
+		},
+
 		methods: {
-			itemaccount() {
-				uni.navigateTo({
-					url:'../itemaccount'
-				})
-			}
 		}
 	}
 </script>
 
 <style>
-.commodityinfo {
+	.commodityinfo {
 		// background-image: linear-gradient(#b6e1e5, #09c1e6);
 		background-color: white;
 		margin: 30rpx;

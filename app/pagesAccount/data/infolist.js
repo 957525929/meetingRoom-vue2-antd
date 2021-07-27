@@ -1,5 +1,5 @@
 export const List = [{
-		id: 3,
+		id: 1,
 		assetType: '家具、用具',
 		deviceName: '办公桌',
 		amount: 1,
@@ -24,7 +24,7 @@ export const List = [{
 		reason: '',
 		image: require('../static/phone.jpg')
 	}, {
-		id: 1,
+		id: 2,
 		assetType: '专用设备',
 		deviceName: '笔记本电脑',
 		amount: 1,
@@ -49,7 +49,7 @@ export const List = [{
 		image: require('../static/laptop.jpg')
 	},
 	{
-		id: 2,
+		id: 3,
 		assetType: '专用设备',
 		deviceName: '手机',
 		amount: 1,
