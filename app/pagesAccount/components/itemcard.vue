@@ -44,13 +44,7 @@
 				if(this.value ==0){
 					this.infoList = List
 				}else{
-					let obj = []
-					for(let i =0; i< List.length; i++){
-						if(List[i].id == this.value){
-							obj.push(List[i])
-						}
-					}
-					this.infoList = obj
+					this.getinforList()
 				}
 			}
 		},
@@ -60,6 +54,15 @@
 		},
 
 		methods: {
+			getinforList(){
+				let obj = []
+				for(let i =0; i< List.length; i++){
+					if(List[i].id == this.value){
+						obj.push(List[i])
+					}
+				}
+				this.infoList = obj
+			}
 		}
 	}
 </script>
