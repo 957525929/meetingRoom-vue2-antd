@@ -242,6 +242,22 @@
 				{
 					"path":"index",
 					"style":{}
+				},
+				{
+				    "path" : "historyList",
+				    "style" :                                                                                    
+					{
+						
+					}
+				
+				},
+				{
+				    "path" : "reappointment",
+				    "style" :                                                                                    
+					{
+						
+					}
+				
 				}
 			]
 		}

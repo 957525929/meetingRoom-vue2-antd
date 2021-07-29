@@ -26,11 +26,11 @@
 
 			<view class="cu-form-group">
 				<text class="cuIcon-title text-orange" ></text>参会人数
-				<input  v-model="meetingdata.peoples"  name="input"  style="padding-left: 10px;" ></input>
+				<input  v-model="meetingdata.peoples"  name="input"  style="padding-left: 10px;"></input>
 			</view>
 			<view class="cu-form-group" style="margin-top: 10px;">
 				<text class="cuIcon-title text-orange "></text> 会议日期
-				<picker mode="date" :value="date" start="2015年09月01" end="2030年09月01" @change="DateChange">
+				<picker mode="date" :value="date" start="2015-09-01" end="2030-09-01" @change="DateChange">
 					<view class="picker">
 						{{meetingdata.time}}
 					</view>
@@ -116,10 +116,8 @@
 	export default {
 		data() {
 			return {
-				itemdata:{},
-				date: '2021年07月25',
+				date: '2021-07-25',
 				index: 0,
-				indexcampus:0,
 				time: ['上午','下午','晚上','全天'],
 				campus:['旗山校区','仓山校区'],
 				switchA: false,
@@ -173,17 +171,6 @@
 				},
 			};
 		},
-		onLoad(option) {
-			this.itemdata=JSON.parse(option.itemdata);
-			this.meetingdata.name=this.itemdata.name;
-			this.meetingdata.campus=this.itemdata.campus;
-			this.meetingdata.peoples=this.itemdata.peoples;
-			this.meetingdata.time=this.itemdata.time;
-			this.meetingdata.period=this.itemdata.period;
-			this.switchC=this.itemdata.affairs;
-			this.meetingdata.remark=this.itemdata.remark;
-			console.log("主页面",this.itemdata);
-		},
 		methods: {
 			//时段选择
 			PickerChange(e) {
@@ -192,9 +179,8 @@
 			},
 			//校区选择
 			PickerChangecampus(e) {
-				console.log("校区",e.detail.value)
-				this.indexcampus = e.detail.value
-				this.meetingdata.campus=this.campus[this.indexcampus]
+				this.index = e.detail.value
+				this.meetingdata.campus=this.campus[this.index]
 				console.log("校区选择",this.meetingdata.campus)
 				this.MultiColumnChange();
 			},
@@ -237,7 +223,7 @@
 				this.multiIndex = e.detail.value
 			},
 			MultiColumnChange(e) {
-				console.log("当前校区",e)
+				console.log("当前校区",this.meetingdata.campus)
 				if(this.meetingdata.campus=="旗山校区") {
 					console.log("当前校区1",this.meetingdata.campus)
 					let data = {
@@ -288,61 +274,7 @@
 					}	
 					this.multiArray = data.multiArray;
 					this.multiIndex = data.multiIndex;
-				}
-				// switch (e.detail.column) {
-				// 	case 0:
-				// 		switch (data.multiIndex[0]) {
-				// 			case 0:
-				// 				data.multiArray[1] = ['1号楼', '2号楼','3号楼'];
-				// 				data.multiArray[2] = ['1-105','1-205','1-305','1-405'];
-				// 				break;
-				// 			case 1:
-				// 				data.multiArray[1] = ['4号楼', '5号楼'];
-				// 				data.multiArray[2] = ['4-106','4-206','4-306','4-406'];
-				// 				break;
-				// 		}
-				// 		data.multiIndex[1] = 0;
-				// 		data.multiIndex[2] = 0;
-				// 		break;
-				// 	case 1:
-				// 		switch (data.multiIndex[0]) {
-				// 			case 0:
-				// 				switch (data.multiIndex[1]) {
-				// 					case 0:
-				// 						data.multiArray[2] = ['1-105','1-205','1-305','1-405'];
-				// 						break;
-				// 					case 1:
-				// 						data.multiArray[2] = ['2-301','2-302','2-303','2-304'];
-				// 						break;
-				// 					case 2:
-				// 						data.multiArray[2] = ['3-101','3-102','3-103','3-104'];
-				// 						break;
-				// 					// case 3:
-				// 					// 	data.multiArray[2] = ['4-205','4-206'];
-				// 					// 	break;
-				// 					// case 4:
-				// 					// 	data.multiArray[2] = ['5-101','5-102','5-103'];
-				// 					// 	break;
-				// 				}
-				// 				break;
-				// 			case 1:
-				// 				switch (data.multiIndex[1]) {
-				// 					case 0:
-				// 						data.multiArray[2] = ['4-106','4-206','4-306','4-406'];
-				// 						break;
-				// 					case 1:
-				// 						data.multiArray[2] = ['5-303', '5-304'];
-				// 						break;
-				// 					// case 2:
-				// 					// 	data.multiArray[2] = ['8-205', '8-206', '8-207'];
-				// 					// 	break;
-				// 				}
-				// 				break;
-				// 		}
-				// 		data.multiIndex[2] = 0;
-				// 		break;
-				// }
-				
+				}	
 			},
 			//是否会务安排
 			SwitchC(e) {
@@ -350,7 +282,6 @@
 				this.meetingdata.affairs=this.switchC
 			},
 			Pagego() {
-				console.log(111);
 				uni.navigateTo({
 					url: './historyList'
 				});
