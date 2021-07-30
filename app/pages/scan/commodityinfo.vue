@@ -164,7 +164,7 @@
 				var urlList = []
 
 				urlList.push(
-					'https://img36.51tietu.net/pic/2016-122315/20161223155040stnfwkjxaih15350.jpg'
+					'../../static/scan/table.jpg'
 				) //push中的参数为 :src="item.img_url" 中的图片地址
 				uni.previewImage({
 					indicator: "number",
@@ -256,6 +256,7 @@
 	}
 
 	.item-img {
+		margin-top: 10rpx;
 		background-color: pink ;
 		width: 150rpx;
 		height: 150rpx;
