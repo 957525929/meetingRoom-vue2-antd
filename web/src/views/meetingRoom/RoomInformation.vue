@@ -521,7 +521,11 @@ export default {
       },
       visibleDetail: false,
       formDetail: {},
-      disabledState:false
+      disabledState:false,
+       url: {
+        list: '/sys/user/list',
+        exportXlsUrl: '/sys/user/exportXls'
+      }
     }
   },
   methods: {

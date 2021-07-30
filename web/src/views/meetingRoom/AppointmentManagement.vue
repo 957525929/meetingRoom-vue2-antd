@@ -60,9 +60,7 @@
             @click="searchQuery"
           >查询</a-button>
           <a-button @click="searchReset()" icon="reload" style="margin-left: 8px">重置</a-button>
-          <a-button style="margin-left: 8px">
-            <a-icon type="download" />导出
-          </a-button>
+          <a-button style="margin-left: 8px" icon="download" @click="handleExportXls('预约管理')">导出</a-button>
         </a-col>
       </a-row>
     </div>
@@ -79,7 +77,7 @@
         <a-table-column title="午别" data-index="range" align="center"></a-table-column>
         <a-table-column title="会议地点" data-index="address" align="center" width="300px"></a-table-column>
         <a-table-column title="参会人数（人）" data-index="number" align="center"></a-table-column>
-          <a-table-column title="会务安排" data-index="arrange" align="center"></a-table-column>
+        <a-table-column title="会务安排" data-index="arrange" align="center"></a-table-column>
         <!-- <a-table-column title="会议状态" data-index="state" align="center"></a-table-column> -->
         <a-table-column title="会议状态" data-index="state" align="center">
           <template slot-scope="state">
@@ -101,13 +99,13 @@
           </template>
         </a-table-column>
         <a-table-column title="操作" align="center">
-          <span slot-scope="text, record">           
+          <span slot-scope="text, record">
             <span v-if="record.state == '待开始'&&record.arrange=='是'">
-               <a @click="arrangeInfor(record)">会务安排</a>
+              <a @click="arrangeInfor(record)">会务安排</a>
               <a-divider type="vertical" />
               <!-- <a :style="{  color: 'orange' }" @click="roomForced(record)">强制预约</a>
-               <a-divider type="vertical" /> -->
-            </span>        
+              <a-divider type="vertical" />-->
+            </span>
             <a @click="appointRoom(record)">详情</a>
           </span>
         </a-table-column>
@@ -183,7 +181,7 @@
           <a-button style="margin-left: 10px;" @click="CancelForced()">取消</a-button>
         </a-form-model-item>
       </a-form-model>
- </a-drawer> -->
+    </a-drawer>-->
     <!-- 详情页面 -->
     <a-drawer
       :visible="visibleAppoint"
@@ -240,6 +238,7 @@
 <script>
 import moment from 'moment'
 import PurInModal from './PurInModal'
+import { JeecgListMixin } from '@/mixins/JeecgListMixin'
 const data = [
   {
     id: 'B1203',
@@ -255,7 +254,7 @@ const data = [
     dutyTel: '152690314587',
     state: '进行中',
     detail: '1',
-    arrange:"否"
+    arrange: '否'
   },
   {
     id: 'B1207',
@@ -271,7 +270,7 @@ const data = [
     dutyTel: '152690314587',
     state: '待开始',
     detail: '0',
-    arrange:"是"
+    arrange: '是'
   }
   // {
   //   id: 'B1204',
@@ -335,6 +334,7 @@ const dataArrange = [
   }
 ]
 export default {
+  mixins: [JeecgListMixin],
   components: {
     PurInModal
   },
@@ -344,9 +344,9 @@ export default {
       visibleAppoint: false,
       visibleForced: false,
       modalVisible: false,
-     labelCol: { span: 6 },
+      labelCol: { span: 6 },
       wrapperCol: { span: 18 },
-      formForced:{
+      formForced: {
         id: undefined,
         theme: undefined,
         name: undefined,
@@ -355,30 +355,30 @@ export default {
         range: undefined,
         address: undefined,
         number: undefined,
-        arrange: undefined,
+        arrange: undefined
       },
       rules: {
-        theme:[
-            {
+        theme: [
+          {
             required: true,
             message: '请选择会议主题',
             trigger: 'change'
           }
         ],
-         name: [
+        name: [
           {
             required: true,
             message: '请输入会议名称',
             trigger: 'blur'
           }
         ],
-         number: [
+        number: [
           {
             required: true,
             message: '请输入参会人数',
             trigger: 'blur'
           }
-        ],
+        ]
       },
       basicInfo: {},
       dataArrange,
@@ -390,7 +390,11 @@ export default {
         dateEnd: undefined,
         state: undefined
       },
-      dateFormat: 'YYYY年MM月DD日'
+      dateFormat: 'YYYY年MM月DD日',
+      url: {
+        list: '/sys/user/list',
+        exportXlsUrl: '/sys/user/exportXls'
+      }
     }
   },
   created() {
@@ -431,50 +435,51 @@ export default {
     },
     roomForced(record) {
       this.visibleForced = true
-      this.formForced.id=record.id
-      this.formForced.theme=record.theme
-      this.formForced.name=record.name
-      this.formForced.address=record.address
-      this.formForced.arrange=record.arrange
-      this.formForced.number=record.number
-      let dateA=record.dateTime.split("~")
-      this.formForced.dateStart=this.moment(dateA[0], 'YYYY年MM月DD日')
-      this.formForced.dateEnd=this.moment(dateA[1], 'YYYY年MM月DD日')
-      this.formForced.range=record.range
+      this.formForced.id = record.id
+      this.formForced.theme = record.theme
+      this.formForced.name = record.name
+      this.formForced.address = record.address
+      this.formForced.arrange = record.arrange
+      this.formForced.number = record.number
+      let dateA = record.dateTime.split('~')
+      this.formForced.dateStart = this.moment(dateA[0], 'YYYY年MM月DD日')
+      this.formForced.dateEnd = this.moment(dateA[1], 'YYYY年MM月DD日')
+      this.formForced.range = record.range
     },
-    themeForced(value){
-      this.formForced.name=value
+    themeForced(value) {
+      this.formForced.name = value
     },
     closeForced() {
       this.$emit('close')
       this.visibleForced = false
     },
-    onSubmitForced(){
+    onSubmitForced() {
       this.$message.success('强制预约成功')
-        this.visibleForced = false
-      this.data.filter(item=>{
-        if(item.id==this.formForced.id){
-          item.state="强制撤销"
+      this.visibleForced = false
+      this.data.filter(item => {
+        if (item.id == this.formForced.id) {
+          item.state = '强制撤销'
         }
       })
-       let dateT=this.formForced.dateStart.format("YYYY年MM月DD日")+"~"+this.formForced.dateEnd.format("YYYY年MM月DD日")
-      let a={
-        id:"#",
+      let dateT =
+        this.formForced.dateStart.format('YYYY年MM月DD日') + '~' + this.formForced.dateEnd.format('YYYY年MM月DD日')
+      let a = {
+        id: '#',
         theme: this.formForced.theme,
-        name:this.formForced.name,
-        dateTime:dateT,
-        range:this.formForced.range,
-        dutyName:"管理员",
-        dutyTel:"管理员电话",
-        address:this.formForced.address,
-        arrange:this.formForced.arrange,
-        number:this.formForced.number,
-        state: '待开始',
+        name: this.formForced.name,
+        dateTime: dateT,
+        range: this.formForced.range,
+        dutyName: '管理员',
+        dutyTel: '管理员电话',
+        address: this.formForced.address,
+        arrange: this.formForced.arrange,
+        number: this.formForced.number,
+        state: '待开始'
       }
       this.data.push(a)
     },
-    CancelForced(){
-         this.$emit('close')
+    CancelForced() {
+      this.$emit('close')
       this.visibleForced = false
     }
   }

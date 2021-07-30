@@ -4,21 +4,21 @@
     <!-- 搜索操作区域 -->
     <div class="table-page-search-wrapper">
       <a-row type="flex" align="middle">
-           <a-col>
+        <a-col>
           <span>工号：</span>
         </a-col>
         <a-col>
           <a-input placeholder="请输入教师工号" v-model="queryParam.teacherID"></a-input>
         </a-col>
         <a-col :span="1"></a-col>
-                <a-col>
+        <a-col>
           <span>姓名：</span>
         </a-col>
         <a-col>
-        <a-input placeholder="请输入教师姓名" v-model="queryParam.teacherName"></a-input>
+          <a-input placeholder="请输入教师姓名" v-model="queryParam.teacherName"></a-input>
         </a-col>
         <a-col :span="1"></a-col>
-     
+
         <a-col>
           <a-button
             :style="{ background: '#49a9ee', color: 'white'}"
@@ -35,7 +35,14 @@
     <div class="table-operator" style="border-top: 5px;margin-top: 20px">
       <a-button @click="addTeacher" type="primary" icon="plus">添加</a-button>
       <a-button type="primary" icon="download" @click="handleExportXls('教师人员信息')">导出</a-button>
-      <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
+      <a-upload
+        name="file"
+        :showUploadList="false"
+        :multiple="false"
+        :headers="tokenHeader"
+        :action="importExcelUrl"
+        @change="handleImportExcel"
+      >
         <a-button type="primary" icon="import">导入</a-button>
       </a-upload>
       <!--      <a-button type="primary" icon="hdd" @click="recycleBinVisible=true">回收站</a-button>-->
@@ -50,7 +57,7 @@
           批量操作
           <a-icon type="down"/>
         </a-button>
-      </a-dropdown> -->
+      </a-dropdown>-->
     </div>
     <!-- table区域-begin -->
     <div id="dataDutyTable">
@@ -60,7 +67,7 @@
         <a-table-column title="姓名" data-index="teacherName" align="center"></a-table-column>
         <a-table-column title="联系电话" data-index="teacherTel" align="center"></a-table-column>
         <a-table-column title="操作" align="center" fixed="right">
-          <template slot-scope="record">   
+          <template slot-scope="record">
             <a href="javascript:;" @click="Modify(record)" :style="{  color: 'blue' }">修改</a>
             <a-divider type="vertical" />
             <a-popconfirm title="确定删除吗?" @confirm="() => onDelete(record.index)">
@@ -74,7 +81,7 @@
     </div>
 
     <!-- 新增 -->
-    <a-drawer :visible="visibleAdd" title="新增教师"  @close="closeAdd" width="600px" placement="right">
+    <a-drawer :visible="visibleAdd" title="新增教师" @close="closeAdd" width="600px" placement="right">
       <a-form-model
         ref="ruleForm"
         :model="formAdd"
@@ -83,7 +90,7 @@
         :wrapper-col="wrapperCol"
       >
         <a-form-model-item ref="teacherID" label="工号" prop="teacherID">
-            <a-input v-model="formAdd.teacherID" placeholder="请输入教师工号"></a-input>
+          <a-input v-model="formAdd.teacherID" placeholder="请输入教师工号"></a-input>
         </a-form-model-item>
         <a-form-model-item label="姓名" prop="teacherName" ref="teacherName">
           <a-input v-model="formAdd.teacherName" placeholder="请输入教师姓名"></a-input>
@@ -98,7 +105,13 @@
       </a-form-model>
     </a-drawer>
     <!--修改信息 -->
-    <a-drawer :visible="visibleModify" title="修改教师信息" @close="closeModify" width="600px" placement="right">
+    <a-drawer
+      :visible="visibleModify"
+      title="修改教师信息"
+      @close="closeModify"
+      width="600px"
+      placement="right"
+    >
       <a-form-model
         :label-col="labelCol"
         :model="formModify"
@@ -106,12 +119,12 @@
         :rules="rules"
       >
         <a-form-model-item ref="teacherID" label="工号" prop="teacherID">
-            <a-input v-model="formModify.teacherID" placeholder="请输入教师工号"></a-input>
+          <a-input v-model="formModify.teacherID" placeholder="请输入教师工号"></a-input>
         </a-form-model-item>
-         <a-form-model-item label="姓名" prop="teacherName" ref="teacherName">
+        <a-form-model-item label="姓名" prop="teacherName" ref="teacherName">
           <a-input v-model="formModify.teacherName" placeholder="请输入教师姓名"></a-input>
         </a-form-model-item>
-     <a-form-model-item label="联系电话" prop="teacherTel" ref="teacherTel">
+        <a-form-model-item label="联系电话" prop="teacherTel" ref="teacherTel">
           <a-input v-model="formModify.teacherTel" placeholder="请输入联系电话"></a-input>
         </a-form-model-item>
         <a-form-model-item :wrapper-col="{ span: 14, offset: 6 }">
@@ -124,28 +137,29 @@
 </template>
 
 <script>
-import {JeecgListMixin} from '@/mixins/JeecgListMixin'
+import { JeecgListMixin } from '@/mixins/JeecgListMixin'
 const dataTeacher = [
   {
     index: 1,
-    teacherID:"A01",
+    teacherID: 'A01',
     teacherName: '李霞',
-    teacherTel: '13759655332',
+    teacherTel: '13759655332'
   },
   {
     index: 2,
-     teacherID:"A02",
+    teacherID: 'A02',
     teacherName: '王莉莉',
-    teacherTel: '13759655348',
+    teacherTel: '13759655348'
   },
   {
     index: 3,
-    teacherID:"A03",
-    teacherName: '尤晓梅', 
-    teacherTel: '13053955537',
-  },
+    teacherID: 'A03',
+    teacherName: '尤晓梅',
+    teacherTel: '13053955537'
+  }
 ]
 export default {
+  mixins: [JeecgListMixin],
   data() {
     return {
       tokenHeader: undefined,
@@ -192,27 +206,27 @@ export default {
         ]
       },
       url: {
-          // syncUser: "/process/extActProcess/doSyncUser",
-          // //list: "/sys/user/list",
-          // delete: "/sys/user/delete",
-          // deleteBatch: "/sys/user/deleteBatch",
-          // exportXlsUrl: "/sys/user/exportXls",
-          importExcelUrl: "sys/user/importExcel",
-        },
+        // syncUser: "/process/extActProcess/doSyncUser",
+        // //list: "/sys/user/list",
+        // delete: "/sys/user/delete",
+        // deleteBatch: "/sys/user/deleteBatch",
+        exportXlsUrl: '/sys/user/exportXls',
+        importExcelUrl: 'sys/user/importExcel'
+      }
     }
   },
-      computed: {
-      importExcelUrl: function(){
-        return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`;
-      }
-    },
+  computed: {
+    importExcelUrl: function() {
+      return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`
+    }
+  },
   methods: {
     searchQuery() {},
-    handleImportExcel(){},
+    handleImportExcel() {},
     searchReset() {
-      this.queryParam.teacherID="";
-      this.queryParam.teacherName="";
-      this.dataTeacher=dataTeacher
+      this.queryParam.teacherID = ''
+      this.queryParam.teacherName = ''
+      this.dataTeacher = dataTeacher
     },
     addTeacher() {
       this.visibleAdd = true
@@ -256,14 +270,14 @@ export default {
     CancelModify() {
       this.visibleModify = false
     },
-    closeAdd(){
-        this.$emit('close');
-  this.visibleAdd = false;
+    closeAdd() {
+      this.$emit('close')
+      this.visibleAdd = false
     },
-    closeModify(){
-        this.$emit('close');
-    this.visibleModify = false
-    },
+    closeModify() {
+      this.$emit('close')
+      this.visibleModify = false
+    }
   }
 }
 </script>

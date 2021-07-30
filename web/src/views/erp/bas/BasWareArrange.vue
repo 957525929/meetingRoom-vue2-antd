@@ -1,24 +1,24 @@
 <template>
-  <!--会议室管理人员 -->
+  <!--会务安排员 -->
   <a-card :bordered="false">
     <!-- 搜索操作区域 -->
     <div class="table-page-search-wrapper">
       <a-row type="flex" align="middle">
-     <a-col>
+        <a-col>
           <span>学号：</span>
         </a-col>
         <a-col>
           <a-input placeholder="请输入安排员学号" v-model="queryParam.arrangeID"></a-input>
         </a-col>
         <a-col :span="1"></a-col>
-                <a-col>
+        <a-col>
           <span>姓名：</span>
         </a-col>
         <a-col>
-        <a-input placeholder="请输入安排员姓名" v-model="queryParam.arrangeName"></a-input>
+          <a-input placeholder="请输入安排员姓名" v-model="queryParam.arrangeName"></a-input>
         </a-col>
         <a-col :span="1"></a-col>
-      
+
         <a-col>
           <a-button
             :style="{ background: '#49a9ee', color: 'white'}"
@@ -34,8 +34,15 @@
     <!-- 操作按钮区域 -->
     <div class="table-operator" style="border-top: 5px;margin-top: 20px">
       <a-button @click="addArrange" type="primary" icon="plus">添加</a-button>
-      <a-button type="primary" icon="download" @click="handleExportXls('教师人员信息')">导出</a-button>
-      <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
+      <a-button type="primary" icon="download" @click="handleExportXls('会务安排员信息')">导出</a-button>
+      <a-upload
+        name="file"
+        :showUploadList="false"
+        :multiple="false"
+        :headers="tokenHeader"
+        :action="importExcelUrl"
+        @change="handleImportExcel"
+      >
         <a-button type="primary" icon="import">导入</a-button>
       </a-upload>
       <!--      <a-button type="primary" icon="hdd" @click="recycleBinVisible=true">回收站</a-button>-->
@@ -50,7 +57,7 @@
           批量操作
           <a-icon type="down"/>
         </a-button>
-      </a-dropdown> -->
+      </a-dropdown>-->
     </div>
     <!-- table区域-begin -->
     <div id="dataDutyTable">
@@ -62,7 +69,7 @@
         <a-table-column title="银行账号" data-index="arrangeBank" align="center"></a-table-column>
         <a-table-column title="开户行" data-index="whereBank" align="center"></a-table-column>
         <a-table-column title="操作" align="center" fixed="right">
-          <template slot-scope="record">   
+          <template slot-scope="record">
             <a href="javascript:;" @click="Modify(record)" :style="{  color: 'blue' }">修改</a>
             <a-divider type="vertical" />
             <a-popconfirm title="确定删除吗?" @confirm="() => onDelete(record.index)">
@@ -76,7 +83,13 @@
     </div>
 
     <!-- 新增 -->
-    <a-drawer :visible="visibleAdd" title="新增会务安排员"  @close="closeAdd" width="600px" placement="right">
+    <a-drawer
+      :visible="visibleAdd"
+      title="新增会务安排员"
+      @close="closeAdd"
+      width="600px"
+      placement="right"
+    >
       <a-form-model
         ref="ruleForm"
         :model="formAdd"
@@ -85,7 +98,7 @@
         :wrapper-col="wrapperCol"
       >
         <a-form-model-item ref="arrangeID" label="学号" prop="arrangeID">
-            <a-input v-model="formAdd.arrangeID" placeholder="请输入学号"></a-input>
+          <a-input v-model="formAdd.arrangeID" placeholder="请输入学号"></a-input>
         </a-form-model-item>
         <a-form-model-item label="姓名" prop="arrangeName" ref="arrangeName">
           <a-input v-model="formAdd.arrangeName" placeholder="请输入姓名"></a-input>
@@ -96,7 +109,7 @@
         <a-form-model-item label="银行账号" prop="arrangeBank" ref="arrangeBank">
           <a-input v-model="formAdd.arrangeBank" placeholder="请输入银行账号"></a-input>
         </a-form-model-item>
-       <a-form-model-item label="开户行" prop="whereBank" ref="whereBank">
+        <a-form-model-item label="开户行" prop="whereBank" ref="whereBank">
           <a-input v-model="formAdd.whereBank" placeholder="请输入开户行"></a-input>
         </a-form-model-item>
         <a-form-model-item :wrapper-col="{ span: 14, offset: 6 }">
@@ -106,7 +119,13 @@
       </a-form-model>
     </a-drawer>
     <!--修改信息 -->
-    <a-drawer :visible="visibleModify" title="修改安排员信息" @close="closeModify" width="600px" placement="right">
+    <a-drawer
+      :visible="visibleModify"
+      title="修改安排员信息"
+      @close="closeModify"
+      width="600px"
+      placement="right"
+    >
       <a-form-model
         :label-col="labelCol"
         :model="formModify"
@@ -114,18 +133,18 @@
         :rules="rules"
       >
         <a-form-model-item ref="arrangeID" label="学号" prop="arrangeID">
-            <a-input v-model="formModify.arrangeID" placeholder="请输入学号"></a-input>
+          <a-input v-model="formModify.arrangeID" placeholder="请输入学号"></a-input>
         </a-form-model-item>
-         <a-form-model-item label="姓名" prop="arrangeName" ref="arrangeName">
+        <a-form-model-item label="姓名" prop="arrangeName" ref="arrangeName">
           <a-input v-model="formModify.arrangeName" placeholder="请输入姓名"></a-input>
         </a-form-model-item>
         <a-form-model-item label="联系电话" prop="arrangeTel" ref="arrangeTel">
           <a-input v-model="formModify.arrangeTel" placeholder="请输入联系电话"></a-input>
         </a-form-model-item>
-         <a-form-model-item label="银行账号" prop="arrangeBank" ref="arrangeBank">
+        <a-form-model-item label="银行账号" prop="arrangeBank" ref="arrangeBank">
           <a-input v-model="formModify.arrangeBank" placeholder="请输入联系电话"></a-input>
         </a-form-model-item>
-         <a-form-model-item label="开户行" prop="whereBank" ref="whereBank">
+        <a-form-model-item label="开户行" prop="whereBank" ref="whereBank">
           <a-input v-model="formModify.whereBank" placeholder="请输入开户行"></a-input>
         </a-form-model-item>
         <a-form-model-item :wrapper-col="{ span: 14, offset: 6 }">
@@ -138,27 +157,27 @@
 </template>
 
 <script>
-import {JeecgListMixin} from '@/mixins/JeecgListMixin'
+import { JeecgListMixin } from '@/mixins/JeecgListMixin'
 const dataArrange = [
   {
     index: 1,
-    arrangeID:"B001",
+    arrangeID: 'B001',
     arrangeName: '李小娟',
     arrangeTel: '15059655332',
-    arrangeBank:"6228480068882423498",
-    whereBank:"农行福州洪山支行",
+    arrangeBank: '6228480068882423498',
+    whereBank: '农行福州洪山支行'
   },
   {
     index: 2,
-    arrangeID:"B002",
+    arrangeID: 'B002',
     arrangeName: '王菲菲',
     arrangeTel: '13859655348',
-    arrangeBank:"6228480068885932881",
-    whereBank:"农行福州洪山支行",
-  },
-
+    arrangeBank: '6228480068885932881',
+    whereBank: '农行福州洪山支行'
+  }
 ]
 export default {
+  mixins: [JeecgListMixin],
   data() {
     return {
       tokenHeader: undefined,
@@ -203,14 +222,14 @@ export default {
             trigger: 'blur'
           }
         ],
-                arrangeBank: [
+        arrangeBank: [
           {
             required: true,
             message: '请输入银行账号',
             trigger: 'blur'
           }
         ],
-                whereBank: [
+        whereBank: [
           {
             required: true,
             message: '请输入开户行',
@@ -219,27 +238,27 @@ export default {
         ]
       },
       url: {
-          // syncUser: "/process/extActProcess/doSyncUser",
-          // //list: "/sys/user/list",
-          // delete: "/sys/user/delete",
-          // deleteBatch: "/sys/user/deleteBatch",
-          // exportXlsUrl: "/sys/user/exportXls",
-          importExcelUrl: "sys/user/importExcel",
-        },
+        // syncUser: "/process/extActProcess/doSyncUser",
+        // //list: "/sys/user/list",
+        // delete: "/sys/user/delete",
+        // deleteBatch: "/sys/user/deleteBatch",
+        exportXlsUrl: '/sys/user/exportXls',
+        importExcelUrl: 'sys/user/importExcel'
+      }
     }
   },
-      computed: {
-      importExcelUrl: function(){
-        return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`;
-      }
-    },
+  computed: {
+    importExcelUrl: function() {
+      return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`
+    }
+  },
   methods: {
     searchQuery() {},
-    handleImportExcel(){},
+    handleImportExcel() {},
     searchReset() {
-      this.queryParam.arrangeID="";
-      this.queryParam.arrangeName="";
-      this.dataArrange=dataArrange
+      this.queryParam.arrangeID = ''
+      this.queryParam.arrangeName = ''
+      this.dataArrange = dataArrange
     },
     addArrange() {
       this.visibleAdd = true
@@ -275,8 +294,8 @@ export default {
       this.formModify.arrangeID = record.arrangeID
       this.formModify.arrangeName = record.arrangeName
       this.formModify.arrangeTel = record.arrangeTel
-      this.formModify.arrangeBank=record.arrangeBank
-      this.formModify.whereBank=record.whereBank
+      this.formModify.arrangeBank = record.arrangeBank
+      this.formModify.whereBank = record.whereBank
     },
     onSubmitModify() {
       this.visibleModify = false
@@ -285,14 +304,14 @@ export default {
     CancelModify() {
       this.visibleModify = false
     },
-    closeAdd(){
-        this.$emit('close');
-  this.visibleAdd = false;
+    closeAdd() {
+      this.$emit('close')
+      this.visibleAdd = false
     },
-    closeModify(){
-        this.$emit('close');
-    this.visibleModify = false
-    },
+    closeModify() {
+      this.$emit('close')
+      this.visibleModify = false
+    }
   }
 }
 </script>

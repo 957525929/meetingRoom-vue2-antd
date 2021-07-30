@@ -34,16 +34,16 @@
           <a-button @click="searchReset()" icon="reload" style="margin-left: 8px">重置</a-button>
         </a-col>
         <a-col :span="2"></a-col>
-<!--        <a-col>-->
-<!--          <a-button-->
-<!--            @click="addDuty()"-->
-<!--            icon="plus"-->
-<!--            :style="{ color: 'white', background:'orange'}"-->
-<!--          >新增管理员</a-button>&nbsp;&nbsp;-->
-<!--          <a-button>-->
-<!--            <a-icon type="download" />导出-->
-<!--          </a-button>-->
-<!--        </a-col>-->
+        <!--        <a-col>-->
+        <!--          <a-button-->
+        <!--            @click="addDuty()"-->
+        <!--            icon="plus"-->
+        <!--            :style="{ color: 'white', background:'orange'}"-->
+        <!--          >新增管理员</a-button>&nbsp;&nbsp;-->
+        <!--          <a-button>-->
+        <!--            <a-icon type="download" />导出-->
+        <!--          </a-button>-->
+        <!--        </a-col>-->
       </a-row>
     </div>
     <!-- 搜索操作区域-END -->
@@ -51,21 +51,27 @@
     <!-- 操作按钮区域 -->
     <div class="table-operator" style="border-top: 5px;margin-top: 20px">
       <a-button @click="addDuty" type="primary" icon="plus">添加</a-button>
-      <a-button type="primary" icon="download" @click="handleExportXls('会议室管理人员信息')">导出</a-button>
-      <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
+      <a-button type="primary" icon="download" @click="handleExportXls('会议室管理员信息')">导出</a-button>
+      <a-upload
+        name="file"
+        :showUploadList="false"
+        :multiple="false"
+        :headers="tokenHeader"
+        :action="importExcelUrl"
+        @change="handleImportExcel"
+      >
         <a-button type="primary" icon="import">导入</a-button>
       </a-upload>
       <!--      <a-button type="primary" icon="hdd" @click="recycleBinVisible=true">回收站</a-button>-->
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay" @click="handleMenuClick">
           <a-menu-item key="1">
-            <a-icon type="delete" @click="batchDel"/>
-            删除
+            <a-icon type="delete" @click="batchDel" />删除
           </a-menu-item>
         </a-menu>
         <a-button style="margin-left: 8px">
           批量操作
-          <a-icon type="down"/>
+          <a-icon type="down" />
         </a-button>
       </a-dropdown>
     </div>
@@ -94,7 +100,13 @@
     </div>
 
     <!-- 新增 -->
-    <a-drawer :visible="visibleAdd" title="新增会议室管理员"  @close="closeAdd" width="600px" placement="right">
+    <a-drawer
+      :visible="visibleAdd"
+      title="新增会议室管理员"
+      @close="closeAdd"
+      width="600px"
+      placement="right"
+    >
       <a-form-model
         ref="ruleForm"
         :model="formAdd"
@@ -136,7 +148,13 @@
       </a-form-model>
     </a-drawer>
     <!--修改信息 -->
-    <a-drawer :visible="visibleModify" title="修改会议室管理员" @close="closeModify" width="600px" placement="right">
+    <a-drawer
+      :visible="visibleModify"
+      title="修改会议室管理员"
+      @close="closeModify"
+      width="600px"
+      placement="right"
+    >
       <a-form-model
         :label-col="labelCol"
         :model="formModify"
@@ -181,7 +199,7 @@
 import { areaData } from './data/area.js'
 import { treeData } from './data/treeData.js'
 import { TreeSelect } from 'ant-design-vue'
-import {JeecgListMixin} from '@/mixins/JeecgListMixin'
+import { JeecgListMixin } from '@/mixins/JeecgListMixin'
 const SHOW_PARENT = TreeSelect.SHOW_PARENT
 const dataDuty = [
   {
@@ -258,6 +276,10 @@ export default {
             trigger: 'blur'
           }
         ]
+      },
+      url: {
+        list: '/sys/user/list',
+        exportXlsUrl: '/sys/user/exportXls'
       }
     }
   },
@@ -344,14 +366,14 @@ export default {
     CancelModify() {
       this.visibleModify = false
     },
-    closeAdd(){
-        this.$emit('close');
-  this.visibleAdd = false;
+    closeAdd() {
+      this.$emit('close')
+      this.visibleAdd = false
     },
-    closeModify(){
-        this.$emit('close');
-    this.visibleModify = false
-    },
+    closeModify() {
+      this.$emit('close')
+      this.visibleModify = false
+    }
   }
 }
 </script>
