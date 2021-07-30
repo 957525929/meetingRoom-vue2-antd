@@ -131,7 +131,7 @@
 				checkbox: [{
 					value: 0,
 					name: '白板',
-					checked: false,				
+					checked: true,				
 				}, {
 					value: 1,
 					name: '黑板',
@@ -143,7 +143,7 @@
 				}, {
 					value: 3,
 					name: '投影仪',
-					checked: false,
+					checked: true,
 				},],
 				//会议室选择
 				multiIndex: [0, 0],
