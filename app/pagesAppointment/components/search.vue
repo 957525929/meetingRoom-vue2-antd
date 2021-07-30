@@ -1,14 +1,13 @@
 <template>
 	<view>
-		<!-- <view class="cu-form-group">
+		<view class="cu-form-group">
 			<view class="title">申请状态</view>
-			<picker @change="PickerChange1" :value="index1" :range="picker1">
+			<picker @change="PickerChange" :value="index" :range="picker">
 				<view class="picker">
-					{{picker1[index1]}}
+					{{picker[index]}}
 				</view>
 			</picker>
-		</view> -->
-		
+		</view>
 		<!-- <view class="cu-form-group">
 			<view class="title">被访部门</view>
 
@@ -88,24 +87,17 @@
 			return {
 				time: '',
 				time1: '',
-				// index: 0,
-				// index1: 0,
-				// index2: 0,
+				index: 0,
+				picker: ['待开会', '已完成', '强制撤销'],
 				date:''
 			}
 		},
 		methods: {
-			// PickerChange(e) {
-			// 	this.index = e.detail.value
-			// },
-			// PickerChange1(e) {
-			// 	this.index1 = e.detail.value
-			// 	this.$emit('send', this.index1)
-			// 	// console.log(e.detail.value)
-			// },
-			// PickerChange2(e) {
-			// 	this.index2 = e.detail.value
-			// },
+			PickerChange(e) {
+				this.index = e.detail.value
+				this.$emit('send', this.index)
+				// console.log(e.detail.value)
+			},
 			TimeChange(e) {
 				this.time = e.detail.value
 			},

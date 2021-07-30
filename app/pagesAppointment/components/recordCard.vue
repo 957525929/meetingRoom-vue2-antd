@@ -11,34 +11,34 @@
 				</view>
 				<view class="padding-xl m-view" style="text-align: left;">
 					<view class="m-bottom">
-						会议名称：{{curData.name}}
+						【会议名称】：{{curData.name}}
 					</view>
 					<view class="m-bottom">
-						会议时间：{{curData.time}}
+						【会议时间】：{{curData.time}}
 					</view>
 					<view class="m-bottom">
-						会议时段：{{curData.period}}
+						【会议时段】：{{curData.period}}
 					</view>
-					<view class="m-bottom">
+<!-- 					<view class="m-bottom">
 						校区：{{curData.campus}}
+					</view> -->
+					<view class="m-bottom">
+						【预约会议室】：{{curData.room}}
 					</view>
 					<view class="m-bottom">
-						预约会议室：{{curData.room}}
+						【基本条件】：{{curData.condition}}
 					</view>
 					<view class="m-bottom">
-						基本条件：{{curData.condition}}
-					</view>
-					<view class="m-bottom">
-						参会人数：{{curData.peoples}}
+						【参会人数】：{{curData.peoples}}
 					</view>
 					<view v-if="curData.affairs==true" class="m-bottom">	
-						是否会务安排：是
+						【是否会务安排】：是
 					</view>
 					<view v-if="curData.affairs==false" class="m-bottom">
-						是否会务安排：否
+						【是否会务安排】：否
 					</view>
 					<view class="m-bottom">
-						备注：{{curData.remark}}
+						【备注】：{{curData.remark}}
 					</view>
 				</view>
 			</view>

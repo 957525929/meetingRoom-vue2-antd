@@ -5,7 +5,6 @@
 			<block slot="content">会议室预约</block>
 			<block slot="right"> 
 				<view @tap="Pagego()" style="margin-right: 10px;">历史记录
-					<!-- <text class="cuIcon-calender" ></text> -->
 				</view>
 			
 			</block>
@@ -131,7 +130,7 @@
 				checkbox: [{
 					value: 0,
 					name: '白板',
-					checked: false,				
+					checked: true,				
 				}, {
 					value: 1,
 					name: '黑板',
@@ -143,7 +142,7 @@
 				}, {
 					value: 3,
 					name: '投影仪',
-					checked: false,
+					checked: true,
 				},],
 				//会议室选择
 				multiIndex: [0, 0],
