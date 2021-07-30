@@ -162,7 +162,7 @@
 			},
 			goto2(){
 				uni.navigateTo({
-					url:'../../pagesAccount/recordAssetList'
+					url:'../../pagesAccount/index'
 				})
 			},
 			message(){
