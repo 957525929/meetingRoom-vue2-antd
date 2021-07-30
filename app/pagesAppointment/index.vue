@@ -5,7 +5,6 @@
 			<block slot="content">会议室预约</block>
 			<block slot="right"> 
 				<view @tap="Pagego()" style="margin-right: 10px;">历史记录
-					<!-- <text class="cuIcon-calender" ></text> -->
 				</view>
 			
 			</block>

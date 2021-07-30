@@ -8,7 +8,6 @@
 				</view>
 			</picker>
 		</view>
-		
 		<!-- <view class="cu-form-group">
 			<view class="title">被访部门</view>
 
