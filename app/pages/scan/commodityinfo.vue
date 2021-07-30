@@ -6,27 +6,47 @@
 		<view class="margin-top">
 			<view class="commodityinfo">
 				<view class="cu-item shadow">
-					<view class="cu-list menu-avatar cardtitle">
-						<view class="margin">办公桌</view>
+					<view class="cu-list menu-avatar cardtitle" :class=" size?'solids-bottom':'solid-bottom'">
+						<view class="margin text-bold text-xl">办公桌</view>
 						<view class="margin text-gray text-sm flex justify-between">
 							2021-05-06 16:31:30
 						</view>
 					</view>
-					<view class="text-content">
+					<view class="text-content margin-top">
 						<view class="title-wrap">
-							<view class="margin-left">领用人：{{ commodityList.name }}</view>
-							<view class="margin-left">手机：{{ commodityList.telephone }}</view>
-							<view class="margin-left">位置：{{ commodityList.address }}</view>
-							<view class="margin-left">数量：{{ commodityList.number }}</view>
-							<view class="margin-left">学校编号：{{ commodityList.barcode1 }}</view>
-							<view class="margin-left">学院编号：{{ commodityList.barcode2 }}</view>
-							<view class="margin-left">登记时间：{{ commodityList.regTime }}</view>
-							<view class="margin-left">有效期限：{{ commodityList.expire }}</view>
-							<view class="margin-left">报废时间：{{ commodityList.scrapTime }}</view>
-							<view class="margin-left">照片：</view>
-							<image @click="imgListPreview(commodityList.image)" class="item-img"
-								:src="commodityList.image">
-							</image>
+							<view class="margin-left margin-bottom-xs">
+								领用人：{{ commodityList.name }}
+							</view>
+							<view class="margin-left margin-bottom-xs">
+								手机：{{ commodityList.telephone }}
+							</view>
+							<view class="margin-left margin-bottom-xs">
+								位置：{{ commodityList.address }}
+							</view>
+							<view class="margin-left margin-bottom-xs">
+								数量：{{ commodityList.number }}
+							</view>
+							<view class="margin-left margin-bottom-xs">
+								学校编号：{{ commodityList.barcode1 }}
+							</view>
+							<view class="margin-left margin-bottom-xs">
+								学院编号：{{ commodityList.barcode2 }}
+							</view>
+							<view class="margin-left margin-bottom-xs">
+								登记时间：{{ commodityList.regTime }}
+							</view>
+							<view class="margin-left margin-bottom-xs">
+								有效期限：{{ commodityList.expire }}
+							</view>
+							<view class="margin-left margin-bottom-xs">
+								报废时间：{{ commodityList.scrapTime }}
+							</view>
+							<view class="itemimage">
+								<view class="margin-left">照片：</view>
+								<image @click="imgListPreview(commodityList.image)" class="item-img"
+									:src="commodityList.image">
+								</image>
+							</view>
 						</view>
 					</view>
 					<view class="text-lg text-right padding">
@@ -80,13 +100,14 @@
 					expire: '2023-05-06',
 					scrapTime: '2021-05-06 16:31:30',
 					image: '../../static/scan/table.jpg',
-					number: 1
+					number: 1,
 				},
 				id: null,
 				value: '',
 				type: 'text',
 				border: true,
 				modalName: null,
+				size: false
 			}
 		},
 		onLoad(option) {
@@ -150,6 +171,9 @@
 					loop: true,
 					urls: urlList
 				})
+			},
+			SetSize(e) {
+				this.size = e.detail.value
 			}
 		}
 	}
@@ -171,14 +195,19 @@
 		display: inherit;
 		padding: 20rpx;
 	}
-
-	image {
-		width: 120rpx;
-		flex: 0 0 120rpx;
-		height: 120rpx;
-		margin-right: 20rpx;
-		border-radius: 12rpx;
+	
+	.itemimage{
+		display: flex;
+		width: 100%;
 	}
+
+	// image {
+	// 	width: 150rpx;
+	// 	flex: 0 0 120rpx;
+	// 	height: 150rpx;
+	// 	margin-right: 20rpx;
+	// 	border-radius: 12rpx;
+	// }
 
 	.u-popup {
 		padding: 15px;
@@ -227,8 +256,11 @@
 	}
 
 	.item-img {
+		background-color: pink ;
+		width: 150rpx;
+		height: 150rpx;
+		border-radius: 12rpx;
 		display: block;
-		margin: 20rpx 100rpx;
 		border: 1px solid #dcdcdc;
 	}
 </style>
