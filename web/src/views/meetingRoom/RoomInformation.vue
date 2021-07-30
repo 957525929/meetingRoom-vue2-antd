@@ -10,6 +10,7 @@
         <a-col>
          <a-select placeholder="请选择会议室状态"  style="width: 200px">
             <a-select-option value="空闲">空闲</a-select-option>
+            <a-select-option value="禁用">禁用</a-select-option>
             <a-select-option value="已预约">已预约</a-select-option>
           </a-select>
         </a-col>
@@ -97,6 +98,11 @@
               <span v-if="state=='空闲'">
                   <a-tag color="green">
                   空闲
+              </a-tag>
+              </span>
+              <span v-else-if="state=='禁用'">
+                  <a-tag color="blue">
+                  禁用
               </a-tag>
               </span>
               <span v-else>
@@ -213,11 +219,14 @@
           <a-input v-model="formModify.room" disabled></a-input>
         </a-form-model-item>
         <a-form-model-item label="状态">
-           <a-radio-group v-model="formModify.state" >
+           <a-radio-group v-model="formModify.state"  :disabled="disabledState">
       <a-radio value="空闲">
         空闲
       </a-radio>
-      <a-radio value="已预约">
+        <a-radio value="禁用">
+        禁用
+      </a-radio>
+      <a-radio value="已预约" disabled>
         已预约
       </a-radio>
     </a-radio-group>
@@ -285,6 +294,9 @@
          <a-form-item label="容纳人数">
           <a-input v-model="formDetail.number" disabled></a-input>
         </a-form-item>
+         <a-form-item label="状态">
+          <a-input v-model="formDetail.state" disabled></a-input>
+        </a-form-item>
         <a-form-item label="基本条件">
            <a-checkbox-group @change="onChangeCon" v-model="formDetail.condition" disabled>
            <a-row>
@@ -328,49 +340,49 @@
 
 <script>
 import { areaData } from './data/area.js'
-import {JeecgListMixin} from '@/mixins/JeecgListMixin'
+import { JeecgListMixin } from '@/mixins/JeecgListMixin'
 const dataRoom = [
   {
     index: 1,
-    area:"福建师范大学.旗山校区.1号楼",
-    number:"5-6",
-    dutyName: "李霞",
-    dutyTel: "13759655332",
-    room: "会议室203",
-    state:"空闲",
-    condition:"投影仪，白板，黑板"
+    area: '福建师范大学.旗山校区.1号楼',
+    number: '5-6',
+    dutyName: '李霞',
+    dutyTel: '13759655332',
+    room: '会议室203',
+    state: '空闲',
+    condition: '投影仪，白板，黑板',
   },
   {
     index: 2,
-    area:"福建师范大学.旗山校区.2号楼",
-    number:"6-8",
-    dutyName: "王莉莉",
-    dutyTel: "13759655348",
-    room: "会议室204",
-     state:"空闲",
-    condition: "投影仪，白板"
+    area: '福建师范大学.旗山校区.2号楼',
+    number: '6-8',
+    dutyName: '王莉莉',
+    dutyTel: '13759655348',
+    room: '会议室204',
+    state: '禁用',
+    condition: '投影仪，白板',
   },
   {
-  index: 3,
-    area:"福建师范大学.仓山校区.1号楼",
-    number:"3-4",
-    dutyName: "尤晓梅",
-    dutyTel: "13053955537",
-    room: "会议室205",
-    state:"已预约",
-    condition: "演示电脑，投影仪，黑板"
+    index: 3,
+    area: '福建师范大学.仓山校区.1号楼',
+    number: '3-4',
+    dutyName: '尤晓梅',
+    dutyTel: '13053955537',
+    room: '会议室205',
+    state: '已预约',
+    condition: '演示电脑，投影仪，黑板',
   },
   {
-   index: 4,
-    area:"福建师范大学.仓山校区.2号楼",
-    number:"4-6",
-    dutyName: "黄丽娟",
-    dutyTel: "13659655381",
-    room: "会议室206",
-     state:"空闲",
-    condition: "投影仪，演示电脑，白板"
-  }
-];
+    index: 4,
+    area: '福建师范大学.仓山校区.2号楼',
+    number: '4-6',
+    dutyName: '黄丽娟',
+    dutyTel: '13659655381',
+    room: '会议室206',
+    state: '空闲',
+    condition: '投影仪，演示电脑，白板',
+  },
+]
 const columns = [
   {
     title: '序号',
@@ -379,45 +391,45 @@ const columns = [
     fixed: 'left',
     width: 100,
     align: 'center',
-    customRender: function(t, r, index) {
+    customRender: function (t, r, index) {
       return parseInt(index) + 1
-    }
+    },
   },
   {
     title: '位置',
     align: 'center',
-    dataIndex: 'area'
+    dataIndex: 'area',
   },
   {
     title: '房间号',
     align: 'center',
-    dataIndex: 'room'
+    dataIndex: 'room',
   },
   {
     title: '容纳人数',
     align: 'center',
-    dataIndex: 'number'
+    dataIndex: 'number',
   },
   {
     title: '负责人',
     align: 'center',
-    dataIndex: 'dutyName'
+    dataIndex: 'dutyName',
   },
   {
     title: '负责人电话',
     align: 'center',
-    dataIndex: 'dutyTel'
+    dataIndex: 'dutyTel',
   },
   {
     title: '基本条件',
     align: 'center',
-    dataIndex: 'condition'
+    dataIndex: 'condition',
   },
   {
     title: '操作',
     align: 'center',
-    dataIndex: 'action'
-  }
+    dataIndex: 'action',
+  },
 ]
 export default {
   mixins: [JeecgListMixin],
@@ -429,101 +441,101 @@ export default {
       queryParam: {
         dutyName: '',
         room: '',
-        area:""
+        area: '',
       },
       visibleAdd: false,
       visibleModify: false,
       labelCol: { span: 6 },
       wrapperCol: { span: 18 },
       formAdd: {
-      area: [],
-      room: undefined,
-      number: undefined,
-      dutyName: undefined,
-      dutyTel: undefined,
-      condition: [],
-      remark: ''
+        area: [],
+        room: undefined,
+        number: undefined,
+        dutyName: undefined,
+        dutyTel: undefined,
+        condition: [],
+        remark: '',
       },
-        radioStyle: {
-        display: "block",
-        height: "30px",
-        lineHeight: "30px"
+      radioStyle: {
+        display: 'block',
+        height: '30px',
+        lineHeight: '30px',
       },
       formModify: {
-      number: '',
-      dutyName: '',
-      dutyTel: '',
-      condition: [],
-      state: '',
+        number: '',
+        dutyName: '',
+        dutyTel: '',
+        condition: [],
+        state: '',
       },
       rules: {
-        condition:[
-            {
+        condition: [
+          {
             required: true,
             message: '请选择基本条件',
-            trigger: 'change'
-          }
+            trigger: 'change',
+          },
         ],
-         area: [
+        area: [
           {
             required: true,
             message: '请选择位置',
-            trigger: 'change'
-          }
+            trigger: 'change',
+          },
         ],
-         room: [
+        room: [
           {
             required: true,
             message: '请输入房间号',
-            trigger: 'blur'
-          }
+            trigger: 'blur',
+          },
         ],
         number: [
           {
             required: true,
             message: '请输入容纳人数（个）',
-            trigger: 'blur'
-          }
+            trigger: 'blur',
+          },
         ],
         dutyName: [
           {
             required: true,
             message: '请输入管理员',
-            trigger: 'blur'
-          }
+            trigger: 'blur',
+          },
         ],
         dutyTel: [
           {
             required: true,
             message: '请输入管理员电话',
-            trigger: 'blur'
-          }
+            trigger: 'blur',
+          },
         ],
         address: [
           {
             required: true,
             message: '请输入地点',
-            trigger: 'blur'
-          }
-        ]
+            trigger: 'blur',
+          },
+        ],
       },
-      visibleDetail:false,
-      formDetail:{}
+      visibleDetail: false,
+      formDetail: {},
+      disabledState:false
     }
   },
   methods: {
-    displayRender({ labels }){
-      return  labels.join('.')
+    displayRender({ labels }) {
+      return labels.join('.')
     },
-    areaChange(value){
+    areaChange(value) {
       console.log(value)
     },
-    onChangeCon(checkedValues){
-       console.log('checked = ', checkedValues);
-      console.log('value = ', this.value);
+    onChangeCon(checkedValues) {
+      console.log('checked = ', checkedValues)
+      console.log('value = ', this.value)
     },
-    searchQuery() {
-    },
+    searchQuery() {},
     searchReset() {
       this.dataRoom = dataRoom
       this.queryParam.IDName = ''
@@ -531,19 +543,19 @@ export default {
     addRoom() {
       this.visibleAdd = true
     },
-    addDutyName(value){
-    if(value=='李霞'){
-        this.formAdd.dutyTel='13759655332'
+    addDutyName(value) {
+      if (value == '李霞') {
+        this.formAdd.dutyTel = '13759655332'
       }
-       if(value=='尤晓梅'){
-         this.formAdd.dutyTel='13053955537'
-       }
-        if(value=='黄丽娟'){
-         this.formAdd.dutyTel='13659655381'
-       }
+      if (value == '尤晓梅') {
+        this.formAdd.dutyTel = '13053955537'
+      }
+      if (value == '黄丽娟') {
+        this.formAdd.dutyTel = '13659655381'
+      }
     },
     onSubmitAdd() {
-      this.$refs.ruleForm.validate(valid => {
+      this.$refs.ruleForm.validate((valid) => {
         if (valid) {
           // let length = this.dataHotel.length;
           // this.dataHotel[length] = this.formAdd;
@@ -562,7 +574,7 @@ export default {
     },
     onDelete(index) {
       const dataRoom = [...this.dataRoom]
-      this.dataRoom = dataRoom.filter(item => item.index !== index)
+      this.dataRoom = dataRoom.filter((item) => item.index !== index)
     },
     Download() {
       console.log('下载')
@@ -571,24 +583,29 @@ export default {
       this.visibleModify = true
       console.log(record)
       this.formModify.area = record.area
-       this.formModify.room = record.room
+      this.formModify.room = record.room
       this.formModify.number = record.number
       this.formModify.dutyName = record.dutyName
-       this.formModify.condition=record.condition.split('，')
+      this.formModify.condition = record.condition.split('，')
       this.formModify.dutyTel = record.dutyTel
-      this.formModify.state=record.state
+       this.formModify.state = record.state
+      if(record.state=="已预约"){
+        this.disabledState=true
+      }else{
+        this.disabledState=false
+      }
       //this.formModify.condition = record.condition
     },
-        ModifyDutyName(value){
-        if(value=='李霞'){
-        this.formModify.dutyTel='13759655332'
+    ModifyDutyName(value) {
+      if (value == '李霞') {
+        this.formModify.dutyTel = '13759655332'
       }
-       if(value=='尤晓梅'){
-         this.formModify.dutyTel='13053955537'
-       }
-        if(value=='黄丽娟'){
-         this.formModify.dutyTel='13659655381'
-       }
+      if (value == '尤晓梅') {
+        this.formModify.dutyTel = '13053955537'
+      }
+      if (value == '黄丽娟') {
+        this.formModify.dutyTel = '13659655381'
+      }
     },
     onSubmitModify() {
       this.visibleModify = false
@@ -601,29 +618,30 @@ export default {
     CancelModify() {
       this.visibleModify = false
     },
-   detail(record){
+    detail(record) {
       this.visibleDetail = true
       console.log(record)
       this.formDetail.area = record.area
-       this.formDetail.room = record.room
+      this.formDetail.room = record.room
       this.formDetail.number = record.number
+      this.formDetail.state = record.state
       this.formDetail.dutyName = record.dutyName
-       this.formDetail.condition=record.condition.split('，')
+      this.formDetail.condition = record.condition.split('，')
       this.formDetail.dutyTel = record.dutyTel
+    },
+    detailClose() {
+      this.$emit('close')
+      this.visibleDetail = false
+    },
+    addClose() {
+      this.$emit('close')
+      this.visibleAdd = false
+    },
+    modifyClose() {
+      this.$emit('close')
+      this.visibleModify = false
+    },
   },
-  detailClose(){
-     this.$emit('close');
-  this.visibleDetail = false;
-  },
-  addClose(){
-     this.$emit('close');
-  this.visibleAdd = false;
-  },
-  modifyClose(){
-       this.$emit('close');
-  this.visibleModify = false;
-  }
-  }
 }
 </script>
 <style >

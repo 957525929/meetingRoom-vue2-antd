@@ -1323,9 +1323,21 @@ const user = {
                   "meta": {
                     "keepAlive": false,
                     "internalOrExternal": false,                   
-                    "title": "预约管理"
+                    "title": "会议室预约"
                   },
                   "name": "meetingRoom-AppointmentPersonal",
+                  "id": "1245154914959151105"
+                },
+                {
+                  "path": "/meetingRoom/AppointmentManagement",
+                  "component": "meetingRoom/AppointmentManagement",
+                  "route": "1",
+                  "meta": {
+                    "keepAlive": false,
+                    "internalOrExternal": false,                   
+                    "title": "预约管理"
+                  },
+                  "name": "meetingRoom-AppointmentManagement",
                   "id": "1245154914959151105"
                 },
                 {
