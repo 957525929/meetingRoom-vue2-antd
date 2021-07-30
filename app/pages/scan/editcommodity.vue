@@ -5,14 +5,35 @@
 			<block slot="content">编辑资产信息</block>
 		</cu-custom>
 		<view class="wrap">
-			<view class="cu-form-group itemimage">
-				<view class="title titlename">资产图片</view>
-				<image @click="imgListPreview('../../static/scan/table.jpg')" class="image" mode="scaleToFill"
-					src="../../static/scan/table.jpg" style="width: 13vh; height: 13vh;">
-				</image>
+			
+			<view class="cu-bar bg-white padding-left">
+				<view class="action">
+					资产图片
+				</view>
+				<view class="action">
+					{{imgList.length}}/4
+				</view>
 			</view>
 			<view class="cu-form-group">
-				<view class="title">领用人</view>
+				<view class="grid col-4 grid-square flex-sub padding-left">
+					<view class="bg-img" v-for="(item,index) in imgList" :key="index" @tap="ViewImage"
+						:data-url="imgList[index]">
+						<image :src="imgList[index]" mode="aspectFill"></image>
+						<view class="cu-tag bg-red" @tap.stop="DelImg" :data-index="index">
+							<text class='cuIcon-close'></text>
+						</view>
+					</view>
+					<view class="solids" @tap="ChooseImage" v-if="imgList.length<4">
+						<text class='cuIcon-cameraadd'></text>
+					</view>
+				</view>
+			</view>
+			
+			<view class="cu-form-group">
+				<view class="title">
+					<text class="cuIcon-title text-red"></text>
+					领用人
+				</view>
 				<picker @change="nameSelectchange" :value="nameIndex" :range="nameSelectList">
 					<view class="picker">
 						{{nameIndex>-1?nameSelectList[nameIndex]:'请选择领用人'}}
@@ -20,7 +41,10 @@
 				</picker>
 			</view>
 			<view class="cu-form-group">
-				<view class="title">位置</view>
+				<view class="title">
+					<text class="cuIcon-title text-red"></text>
+					位置
+				</view>
 				<picker mode="multiSelector" @change="addressSelectChange" :value="addressIndex"
 					@columnchange="addressColumnChange" :range="addressSelectList">
 					<view class="picker">
@@ -29,19 +53,26 @@
 				</picker>
 			</view>
 			<view class="cu-form-group">
-				<view class="title">手机</view>
+				<view class="title">
+					<text class="cuIcon-title text-red"></text>
+					手机
+				</view>
 				<input placeholder="请输入手机号码" name="input"></input>
 			</view>
 			<view class="cu-form-group">
-				<view class="title">学校编号</view>
+				<view class="title padding-left">学校编号</view>
 				<input placeholder="请输入学校编号" name="input"></input>
 			</view>
 			<view class="cu-form-group">
-				<view class="title">学院编号</view>
+				<view class="title padding-left">学院编号</view>
 				<input placeholder="请输入学院编号" name="input"></input>
+				<text class='cuIcon-scan'></text>
 			</view>
 			<view class="cu-form-group">
-				<view class="title">资产类型</view>
+				<view class="title">
+					<text class="cuIcon-title text-red"></text>
+					资产类型
+				</view>
 				<picker @change="selectchange" :value="selectIndex" :range="selectList">
 					<view class="picker">
 						{{selectIndex>-1?selectList[selectIndex]:'请选择资产类型'}}
@@ -49,38 +80,38 @@
 				</picker>
 			</view>
 			<view class="cu-form-group">
-				<view class="title">登记时间</view>
-				<picker mode="date" :value="date" start="2015-09-01" end="2020-09-01" @change="DateChange">
+				<view class="title padding-left">登记时间</view>
+				<picker mode="date" :value="date" start="2017-09-01" end="2023-09-01" @change="DateChange">
 					<view class="picker">
 						{{date}}
 					</view>
 				</picker>
 			</view>
 			<view class="cu-form-group">
-				<picker mode="time" :value="time" start="09:01" end="21:01" @change="TimeChange">
+				<picker mode="time" :value="time" start="00:00" end="24:00" @change="TimeChange">
 					<view class="picker">
 						{{time}}
 					</view>
 				</picker>
 			</view>
 			<view class="cu-form-group">
-				<view class="title">登记时间</view>
-				<picker mode="date" :value="date1" start="2015-09-01" end="2020-09-01" @change="Date1Change">
+				<view class="title padding-left">有效期限</view>
+				<picker mode="date" :value="date1" start="2017-09-01" end="2023-09-01" @change="Date1Change">
 					<view class="picker">
 						{{date1}}
 					</view>
 				</picker>
 			</view>
 			<view class="cu-form-group">
-				<view class="title">报废时间</view>
-				<picker mode="date" :value="date2" start="2015-09-01" end="2020-09-01" @change="Date2Change">
+				<view class="title padding-left">报废时间</view>
+				<picker mode="date" :value="date2" start="2017-09-01" end="2023-09-01" @change="Date2Change">
 					<view class="picker">
 						{{date2}}
 					</view>
 				</picker>
 			</view>
 			<view class="cu-form-group">
-				<picker mode="time" :value="time2" start="09:01" end="21:01" @change="Time2Change">
+				<picker mode="time" :value="time2" start="00:00" end="24:00" @change="Time2Change">
 					<view class="picker">
 						{{time2}}
 					</view>
@@ -88,7 +119,27 @@
 			</view>
 
 			<view class="padding flex flex-direction">
-				<button class="cu-btn light bg-green lg" @tap="submit">提交</button>
+				<button class="cu-btn round bg-green lg" @tap="submit" data-target="DialogModal">提交</button>
+			</view>
+			
+			<view class="cu-modal" :class="modalName=='DialogModal'?'show':''">
+				<view class="cu-dialog">
+					<view class="cu-bar bg-white justify-end">
+						<view class="content">提交</view>
+						<view class="action" @tap="hideModal">
+							<text class="cuIcon-close text-red"></text>
+						</view>
+					</view>
+					<view class="padding-xl bg-white">
+						请确认是否提交
+					</view>
+					<view class="cu-bar bg-white justify-end">
+						<view class="action">
+							<button class="cu-btn" @tap="hideModal">否</button>
+							<button class="cu-btn bg-green margin-left" @tap="okconfirm">是</button>
+						</view>
+					</view>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -97,6 +148,16 @@
 <script>
 	var _this;
 	export default {
+		created: function() {
+			let aData = new Date();
+		
+			this.date =
+				aData.getFullYear() + "-" +
+				(aData.getMonth() + 1) + "-" +
+				(aData.getDate())
+		},
+		
+		
 		data() {
 			return {
 				nameIndex: -1,
@@ -109,11 +170,13 @@
 				],
 				selectIndex: -1,
 				selectList: ['办公桌', '办公椅'],
-				date: '请选择登记日期',
+				date: '',
 				date1: '请选择有效期限',
 				date2: '请选择报废日期',
 				time: '请选择登记时间',
 				time2: '请选择报废时间',
+				imgList: ['../../static/scan/table.jpg'],
+				modalName: null,
 			}
 		},
 		onLoad() {
@@ -207,18 +270,52 @@
 				// 	}
 				// });
 			},
-			imgListPreview(url) {
-				var urlList = []
-
-				urlList.push(
-					'https://img36.51tietu.net/pic/2016-122315/20161223155040stnfwkjxaih15350.jpg'
-				) //push中的参数为 :src="item.img_url" 中的图片地址
+			ChooseImage() {
+				uni.chooseImage({
+					count: 4, //默认9
+					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album'], //从相册选择
+					success: (res) => {
+						if (this.imgList.length != 0) {
+							this.imgList = this.imgList.concat(res.tempFilePaths)
+						} else {
+							this.imgList = res.tempFilePaths
+						}
+					}
+				});
+			},
+			ViewImage(e) {
 				uni.previewImage({
-					indicator: "number",
-					loop: true,
-					urls: urlList
+					urls: this.imgList,
+					current: e.currentTarget.dataset.url
+				});
+			},
+			DelImg(e) {
+				uni.showModal({
+					title: '删除图片',
+					content: '确定要删除这张图片吗？',
+					cancelText: '取消',
+					confirmText: '确定',
+					success: res => {
+						if (res.confirm) {
+							this.imgList.splice(e.currentTarget.dataset.index, 1)
+						}
+					}
 				})
-			}
+			},
+			
+			submit(e) {
+				this.modalName = e.currentTarget.dataset.target
+			},
+			hideModal(e) {
+				this.modalName = null
+			},
+			cancle() {
+				this.modalName = null
+			},
+			okconfirm() {
+				uni.navigateBack()
+			},
 		}
 
 	}

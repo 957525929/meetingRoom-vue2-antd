@@ -20,7 +20,7 @@
 
 		<view class="card">
 			<view class="cu-form-group padding">
-				<view class="content">
+				<view class="content" @tap="message">
 					<view class="cu-avatar lg radius bg-green">L
 						<view class="cu-tag badge">1</view>
 					</view>
@@ -33,7 +33,7 @@
 				</view>
 			</view>
 
-			<view class="nav-list margin-top">
+			<view class="nav-list margin-top margin-bottom">
 				<navigator hover-class="none" :url="navCard[0].url" :class="navCard[0].style" navigateTo>
 					<view class="nav-title">{{navCard[0].name}}</view>
 					<view class="nav-name">{{navCard[0].secname}}</view>
@@ -163,6 +163,11 @@
 			goto2(){
 				uni.navigateTo({
 					url:'../../pagesAccount/recordAssetList'
+				})
+			},
+			message(){
+				uni.navigateTo({
+					url:'../person/message'
 				})
 			}
 		}

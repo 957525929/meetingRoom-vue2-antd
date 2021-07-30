@@ -7,7 +7,7 @@
 		<!-- #endif -->
 		<view class="wrapper">
 			<view class="card">
-				<view class="contentList perMsg bg-green" @tap="$navTo.goTo('myInfo')">
+				<view class="contentList perMsg bg-green">
 					<view class="avat">
 						<image mode="scaleToFill" src="/static/person/head.png"></image>
 					</view>
@@ -18,7 +18,7 @@
 				<text class="listIcons secCode iconfont iconerweima-copy"></text>
 			</view>
 			<view class="cu-list menu sm-border card-menu margin-top">
-				<view class="cu-item arrow content" v-for="item in contentList" :key="item.title">
+				<view class="cu-item arrow content" v-for="(item,index) in contentList" :key="index" @tap="gotopage(index)">
 					<text class="text-grey">{{item.title}}</text>
 					<view v-if="item.title=='我的消息'" class="action">
 						<view class="cu-tag round bg-red">1</view>
@@ -65,6 +65,18 @@
 				uni.navigateTo({
 					url: '../login/index'
 				});
+			},
+			
+			gotopage(value){
+				let url =[
+					'../person/message',
+					'../person/manager',
+					'../person/modify',
+					'../login/register'
+				]
+				uni.navigateTo({
+					url: url[value]
+				})
 			}
 		}
 	};

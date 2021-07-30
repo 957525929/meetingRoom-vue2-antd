@@ -69,7 +69,6 @@
 
 <style>
 	.commodityinfo {
-		// background-image: linear-gradient(#b6e1e5, #09c1e6);
 		background-color: white;
 		margin: 30rpx;
 		border-radius: 20rpx;

@@ -63,6 +63,7 @@
 			}
 		},
 		methods: {
+		
 			gourl(url) {
 				uni.navigateTo({
 					url: url
