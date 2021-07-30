@@ -161,6 +161,33 @@
             }
             
         }
+        ,{
+            "path" : "pages/person/message",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/person/manager",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/person/modify",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	
 	"subPackages":[
@@ -189,7 +216,52 @@
 					"path":"index",
 					"style":{}
 				}
-			]
+			    ,{
+                    "path" : "recordAssetList",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "addaccount",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "itemaccount",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "components/itemcard",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "editaccount",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
 		},
 		{
 			"root":"pagesSearch",
@@ -197,6 +269,31 @@
 				{
 					"path":"index",
 					"style":{}
+				}
+			]
+		},
+		{
+			"root":"pagesAppointment",
+			"pages":[
+				{
+					"path":"index",
+					"style":{}
+				},
+				{
+				    "path" : "historyList",
+				    "style" :                                                                                    
+					{
+						
+					}
+				
+				},
+				{
+				    "path" : "reappointment",
+				    "style" :                                                                                    
+					{
+						
+					}
+				
 				}
 			]
 		}

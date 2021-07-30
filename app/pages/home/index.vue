@@ -17,10 +17,10 @@
 				</view>
 			</swiper-item>
 		</swiper>
-		
+
 		<view class="card">
 			<view class="cu-form-group padding">
-				<view class="content">
+				<view class="content" @tap="message">
 					<view class="cu-avatar lg radius bg-green">L
 						<view class="cu-tag badge">1</view>
 					</view>
@@ -32,18 +32,52 @@
 					</span>
 				</view>
 			</view>
-			
-			<view class="nav-list margin-top">
-				<navigator v-for="(item,index) in navCard" :key="index" hover-class="none" :url="item.url"
-					:class="item.style" navigateTo>
-					<view class="nav-title">{{item.name}}</view>
-					<view class="nav-name">{{item.secname}}</view>
-					<text :class="item.icon"></text>
+
+			<view class="nav-list margin-top margin-bottom">
+				<navigator hover-class="none" :url="navCard[0].url" :class="navCard[0].style" navigateTo>
+					<view class="nav-title">{{navCard[0].name}}</view>
+					<view class="nav-name">{{navCard[0].secname}}</view>
+					<text :class="navCard[0].icon"></text>
+				</navigator>
+				<navigator hover-class="none" :url="navCard[1].url" :class="navCard[1].style" navigateTo>
+					<view class="nav-title">{{navCard[1].name}}</view>
+					<view class="nav-name">{{navCard[1].secname}}</view>
+					<text :class="navCard[1].icon"></text>
+				</navigator>
+				<view hover-class="none" @tap="click" data-target="Modal" :class="navCard[2].style" navigateTo>
+					<view class="nav-title">{{navCard[2].name}}</view>
+					<view class="nav-name">{{navCard[2].secname}}</view>
+					<text :class="navCard[2].icon"></text>
+				</view>
+				<navigator hover-class="none" :url="navCard[3].url" :class="navCard[3].style" navigateTo>
+					<view class="nav-title">{{navCard[3].name}}</view>
+					<view class="nav-name">{{navCard[3].secname}}</view>
+					<text :class="navCard[3].icon"></text>
+				</navigator>
+				<navigator hover-class="none" :url="navCard[4].url" :class="navCard[4].style" navigateTo>
+					<view class="nav-title">{{navCard[4].name}}</view>
+					<view class="nav-name">{{navCard[4].secname}}</view>
+					<text :class="navCard[4].icon"></text>
 				</navigator>
 			</view>
-		</view>
-		
 
+			<view class="cu-modal" :class="modalName=='Modal'?'show':''">
+				<view class="cu-dialog">
+					<view class="cu-bar bg-white justify-end">
+						<view class="content">选择所属单位进入</view>
+						<view class="action" @tap="hideModal">
+							<text class="cuIcon-close text-red"></text>
+						</view>
+					</view>
+					<view class="padding-xl">
+						<view class="padding flex flex-direction">
+							<button class="cu-btn bg-blue lg" @tap="goto1">地科院</button>
+							<button class="cu-btn bg-green margin-tb-sm lg" @tap="goto2">地理所</button>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
 
 	</view>
 </template>
@@ -68,6 +102,7 @@
 				}, ],
 				dotStyle: false,
 				navCard: [{
+						id: 1,
 						name: '入库',
 						secname: 'Storage',
 						icon: 'cuIcon-deliver',
@@ -75,6 +110,7 @@
 						style: 'nav-li bg-grey'
 					},
 					{
+						id: 2,
 						name: '登记',
 						secname: 'Sign',
 						icon: 'cuIcon-edit',
@@ -82,6 +118,7 @@
 						style: 'nav-li bg-blue'
 					},
 					{
+						id: 3,
 						name: '入帐',
 						secname: 'Account',
 						icon: 'cuIcon-redpacket',
@@ -89,26 +126,60 @@
 						style: 'nav-li bg-mauve'
 					},
 					{
+						id: 4,
 						name: '查询',
 						secname: 'Search',
 						icon: 'cuIcon-search',
 						url: '../../pagesSearch/index',
 						style: 'nav-li bg-purple'
 					},
-				]
+					{
+						id: 5,
+						name: '会议室预约',
+						secname: 'Appointment',
+						icon: 'cuIcon-newshot',
+						url: '../../pagesAppointment/index',
+						style: 'nav-li bg-yellow'
+					},
+				],
+				modalName: null,
 			}
 		},
 		methods: {
 			cardSwiper(e) {
 				this.cardCur = e.detail.current
 			},
+			click(e) {
+				this.modalName = e.currentTarget.dataset.target
+			},
+			hideModal(e) {
+				this.modalName = null
+			},
+			goto1(){
+				uni.navigateTo({
+					url:'../../pagesAccount/index'
+				})
+			},
+			goto2(){
+				uni.navigateTo({
+					url:'../../pagesAccount/index'
+				})
+			},
+			message(){
+				uni.navigateTo({
+					url:'../person/message'
+				})
+			}
 		}
 	}
 </script>
 
 <style>
-	.card{
+	.card {
 		background-color: white;
 		border-radius: 30rpx;
+	}
+	.nav-li uni-text {
+		right: 8px;
 	}
 </style>
