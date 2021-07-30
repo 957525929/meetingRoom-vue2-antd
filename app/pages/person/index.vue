@@ -21,7 +21,7 @@
 				<view class="cu-item arrow content" v-for="(item,index) in contentList" :key="index" @tap="gotopage(index)">
 					<text class="text-grey">{{item.title}}</text>
 					<view v-if="item.title=='我的消息'" class="action">
-						<view class="cu-tag round bg-red">1</view>
+						<view class="cu-tag round bg-red">2</view>
 					</view>
 				</view>
 			</view>

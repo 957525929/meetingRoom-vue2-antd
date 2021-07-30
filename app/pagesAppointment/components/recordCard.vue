@@ -37,6 +37,9 @@
 					<view v-if="curData.affairs==false" class="m-bottom">
 						【是否会务安排】：否
 					</view>
+					<view v-if="curData.type=='强制撤销'" class="m-bottom">
+						【强制撤销原因】：{{curData.reason}}
+					</view>
 					<view class="m-bottom">
 						【备注】：{{curData.remark}}
 					</view>
@@ -149,7 +152,7 @@
 						room:"仓山校区.邵逸夫楼.305",
 						affairs:false,
 						remark:"参与人:学科地理组所有老师",
-						
+						reason:"",
 					},
 					{
 						index: 1,
@@ -166,7 +169,7 @@
 						room:"仓山校区.邵逸夫楼.305",
 						affairs:false,
 						remark:"参与人:学科地理组所有老师",
-						
+						reason:"",
 					},
 					{
 						index: 2,
@@ -183,7 +186,7 @@
 						peoples:"15人",
 						affairs:true,
 						remark:"参与人:自然地理组所有老师",
-						
+						reason:"",
 					},
 					{
 						index: 3,
@@ -200,7 +203,7 @@
 						peoples:"15人",
 						affairs:true,
 						remark:"参与人:自然地理组所有老师",
-						
+						reason:"",
 					},
 					{
 						index: 4,
@@ -217,7 +220,7 @@
 						peoples:"12人",
 						affairs:true,
 						remark:"参与人:人文地理组所有老师",
-						
+						reason:"",
 					},
 					{
 						index: 5,
@@ -234,7 +237,7 @@
 						peoples:"12人",
 						affairs:true,
 						remark:"参与人:自然地理组所有老师",
-						
+						reason:"",
 					},
 					{
 						index:6,
@@ -251,7 +254,7 @@
 						peoples:"16人",
 						affairs:true,
 						remark:"参与人:自然地理组所有老师",
-						
+						reason:"需要征用该会议室召开紧急会议",
 					},
 					
 				],
