@@ -95,9 +95,9 @@
 						</view>
 						<view class="cu-form-group padding-bottom">
 							<view class="grid col-4 grid-square flex-sub padding-left">
-								<view class="bg-img" v-for="(item,index) in imgList1" :key="index" @tap="ViewImage1"
+								<view class="image" v-for="(item,index) in imgList1" :key="index" @tap="ViewImage1"
 									:data-url="imgList1[index]">
-									<image :src="imgList1[index]" mode="aspectFill"></image>
+									<image :src="imgList1[index]" mode="widthFix"></image>
 								</view>
 							</view>
 						</view>
@@ -132,8 +132,8 @@
 	export default {
 		data() {
 			return {
-				imgList: ['./static/invoice.jpg'],
-				imgList1: ['./static/phone.jpg','./static/phone.jpg','./static/phone.jpg'],
+				imgList: [require('./static/invoice.jpg')],
+				imgList1: [require('./static/phone.jpg'),require('./static/phone.jpg'), require('./static/phone.jpg')],
 				modalName: null,
 			}
 		},
