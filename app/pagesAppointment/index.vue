@@ -168,7 +168,7 @@
 					condition:["白板","投影仪"],
 					room:"",
 					affairs:false,
-					remark:"参与人:学科地理组所有老师",
+					remark:"需要会务安排，请按照需求列出安排事项",
 				},
 			};
 		},
