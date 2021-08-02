@@ -1,6 +1,32 @@
 import Vue from 'vue'
 import App from './App'
 
+// 引入vuex
+import store from './store'
+Vue.prototype.$store = store
+// +路由跳转
+import * as router from 'common/router.js'
+Vue.prototype.$navTo = router
+
+// 网络请求
+// import {request} from 'common/http/http.js'
+// Vue.prototype.http = api
+import homeApiList from 'common/http/api/home.js'
+Vue.prototype.homeApi = homeApiList
+
+import deliveryApiList from 'common/http/api/delivery.js'
+Vue.prototype.deliveryApi = deliveryApiList
+
+import personApiList from 'common/http/api/person.js'
+Vue.prototype.personApi = personApiList
+
+import globalApiList from 'common/http/api/global.js'
+Vue.prototype.globalApi = globalApiList
+
+// 提示信息
+import tool from 'common/util.js'
+Vue.prototype.$msg = tool.msg
+
 import home from './pages/home/index.vue'
 Vue.component('home',home)
 
@@ -238,7 +264,8 @@ Vue.prototype.transformTime = function(timestamp) {
 App.mpType = 'app'
 
 const app = new Vue({
-    ...App
+    ...App,
+    store
 })
 app.$mount()
 

@@ -45,8 +45,8 @@
 	export default {
 		data() {
 			return {
-				username: '', //用户/电话
-				password: '', //密码
+				username: '13023818127', //用户/电话
+				password: '123456', //密码
 				labelPosition: 'left',
 				border: false,
 				systeminfo: null,
@@ -63,7 +63,7 @@
 			}
 		},
 		methods: {
-		
+
 			gourl(url) {
 				uni.navigateTo({
 					url: url
@@ -86,33 +86,27 @@
 					});
 				} else {
 					_that.loginSever(_that.username, _that.password)
-					uni.navigateTo({
-						url:'../index/index'
-					})
 				}
 			},
 			loginSever(account, password) {
 				var _that = this
 				var userinfo = [];
-				userinfo.account = 'admin';
+				userinfo.account = '13023818127';
 				userinfo.password = '123456';
 
 				_that.setUserInfo(userinfo);
 
 				uni.setStorageSync('token', 'sfdsafas12312sdff')
 				uni.setStorageSync('user_id', 1)
+				uni.navigateTo({
+					url: '../index/index'
+				})
 
-				// uni.switchTab({
-				// 	url: '/pages/index/index'
-				// });
-				
-				
-				//这里请求接口
-				// _that._post_form('dologin/login', {
-				// 	account: account,
+				// this.globalApi.loginIn({
+				// 	telephone: account,
 				// 	password: password,
-				// }, (result) => {
-				// 	var userinfo = result.data;
+				// }).then(res => {
+				// 	var userinfo = res.data;
 				// 	userinfo.account = account;
 				// 	userinfo.password = password;
 
@@ -120,20 +114,16 @@
 
 				// 	uni.setStorageSync('token', userinfo.token)
 				// 	uni.setStorageSync('user_id', userinfo.user_id)
-
-				// 	uni.switchTab({
-				// 		url: '/pages/home/index'
-				// 	});
 				// });
 			}
 		}
 	}
 </script>
 <style lscoped lang="scss">
-	.form-login{
+	.form-login {
 		background-color: #fcefd7;
 	}
-	
+
 	page {
 		background: linear-gradient(180deg, rgba(239, 196, 128, 1) 0%, rgba(248, 220, 165, 1) 25%, rgba(255, 255, 255, 1) 98%);
 	}
