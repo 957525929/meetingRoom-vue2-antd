@@ -3,10 +3,12 @@
 		<cu-custom  bgColor="bg-gradual-green"  :isBack="true">
 			<block slot="backText">返回</block>
 			<block slot="content">会议室预约</block>
-			<block slot="right"> 
-				<view @tap="Pagego()" style="margin-right: 10px;">历史记录
+			<block slot="right">
+				<view class="action">
+					<view class='cuIcon-cu-image'>
+						<text class="cuIcon-copy" @tap="Pagego" data-target="viewModal"></text>
+					</view>
 				</view>
-			
 			</block>
 		</cu-custom>
 		<form>

@@ -105,9 +105,9 @@
 				// 图片
 
 				imgSrc: [
-					"../static/Appointment/leisure.png",
-					"../static/Appointment/reserved.png",
-					"../static/Appointment/forbid.png",
+					"/static/Appointment/leisure.png",
+					"/static/Appointment/reserved.png",
+					"/static/Appointment/forbid.png",
 				],
 				// 颜色
 				// styleObject: [{

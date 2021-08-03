@@ -260,9 +260,9 @@
 				],
 				// 图片
 				imgSrc: [
-					"../static/Appointment/waitmeeting.png",
-					"../static/Appointment/complete.png",
-					"../static/Appointment/revocation.png",
+					"/static/Appointment/waitmeeting.png",
+					"/static/Appointment/complete.png",
+					"/static/Appointment/revocation.png",
 				//	"../static/Appointment/cancel.png",
 				],
 				// 颜色
