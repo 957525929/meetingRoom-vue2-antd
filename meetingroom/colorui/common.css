@@ -1,0 +1,129 @@
+	/* 灰色背景 */
+	.back {
+		width: 100%;
+		height: 100%;
+		background-color: #e0e0e0;
+		position: absolute;
+		display: flex;
+		flex-direction: column;
+		font-family: "微软雅黑";
+		/* 		-webkit-flex: 1;
+		flex: 1; */
+	}
+
+	/* 二级页面背景 */
+	.secBack {
+		background-color: #f1f1f1;
+	}
+ 
+	/* home背景色 */
+	.backColor {
+		background-color: white;
+	}
+
+	/* 色系背景色 */
+	.mainBackColor {
+		background-color: #04009A;
+	}
+	.btnColor {
+		background-color: #FEA82F;
+	}
+	/*  字体颜色*/
+	.fontColorGrey {
+		color: #616161;
+	}
+	
+	.fontColorWhite {
+		color: white;
+	}
+	
+	.fontColorMain {
+		color: #FF6701;
+	}
+	/* 内部可滚动盒子 */
+	.task-back {
+		width: 100%;
+		height: 100%;
+		background-color: #e0e0e0;
+		overflow: scroll;
+		padding-bottom: 10px;
+	}
+
+	.border-left {
+		border-left: 1.5px solid rgb(242, 242, 242);
+	}
+
+	.border-right {
+		border-right: 1.5px solid rgb(242, 242, 242);
+	}
+
+	.border-bottom {
+		border-bottom: 1.5px solid rgb(242, 242, 242);
+	}
+
+	.border-top {
+		border-top: 1.5px solid rgb(242, 242, 242);
+	}
+
+	/* 字体大小 */
+	.font24 {
+		font-size: 24rpx;
+	}
+
+	.font28 {
+		font-size: 28rpx;
+	}
+
+	.font30 {
+		font-size: 30rpx;
+	}
+
+	.font32 {
+		font-size: 32rpx;
+	}
+
+	.font36 {
+		font-size: 36rpx;
+	}
+
+	.font25 {
+		font-size: 25px;
+	}
+
+.font48{
+	font-size: 48rpx;
+}
+	.font56 {
+		font-size: 56rpx;
+	}
+
+	/* 卡片样式 */
+	.card {
+		margin: 10px 30rpx 0 30rpx;
+		border-radius: 5px;
+		background-color: white;
+		/* overflow: hidden; */
+		/* padding: 20rpx 20rpx 20rpx 30rpx; */
+	}
+
+	/* 小标题样式 */
+	.subtitle {
+		color: #686868;
+		font-size: 16px;
+		margin: 15px auto 0 30rpx;
+	}
+
+	/* 无数据 */
+	.noResult {
+		width: 100%;
+		height: 100%;
+		position: relative;
+	}
+
+	.noResult image {
+		width: 400rpx;
+		left: 50%;
+		top: 50%;
+		position: absolute;
+		transform: translate(-50%, -75%);
+	}
