@@ -107,8 +107,16 @@
 					<view class="padding-xl">
 						您已成功提交会议室预约申请
 					</view>
+					<view class="cu-bar bg-white justify-end">
+						<view class="action">
+							<button class="cu-btn bg-green margin-left" @tap="hideModal">确定</button>
+						</view>
+					</view>
 				</view>
 			</view>
+			
+			
+			
 		</form>
 	</view>
 </template>
@@ -219,6 +227,7 @@
 			},
 			hideModal(e) {
 				this.modalName = null
+				this.Pagego();
 			},
 			RadioChange(e) {
 				this.radio = e.detail.value

@@ -113,7 +113,7 @@
     },
     "h5" : {
         "devServer" : {
-            "port" : 8080,
+            "port" : "",
             "disableHostCheck" : true,
             "proxy" : {
                 "/api" : {
@@ -124,7 +124,8 @@
                         "^/api" : ""
                     }
                 }
-            }
+            },
+            "https" : false
         },
         "sdkConfigs" : {
             "maps" : {
@@ -135,6 +136,7 @@
         },
         "router" : {
             "base" : "./"
-        }
+        },
+        "title" : "会议室预约系统"
     }
 }

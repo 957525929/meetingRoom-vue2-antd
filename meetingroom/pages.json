@@ -225,8 +225,8 @@
 			"transparentTitle": "always",
 			"allowsBounceVertical": "NO"
 		},
-		"navigationBarBackgroundColor": "#04009A",
-		"navigationBarTitleText": "智慧烟草",
+		"navigationBarBackgroundColor": "#77C142",
+		"navigationBarTitleText": "",
 		"navigationStyle": "custom",
 		"navigationBarTextStyle": "white",
 		"backgroundColor": "#f2eeef",

@@ -2,7 +2,7 @@
 	<view>
 		<view class="cu-bar bg-gradual-green">
 			<view class="content text-bold">
-				首页
+				
 			</view>
 		</view>
 
