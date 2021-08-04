@@ -3,7 +3,7 @@
 		<image class="logo-bg" src="../../static/login/logo_bg.png" mode="aspectFill"></image>
 		<view class="force-login__content y-f">
 			<image class="user-avatar" src="../../static/login/logosd.png" mode="aspectFill"></image>
-			<text class="user-name">福建师大地科院/地理所资产管理平台</text>
+			<text class="user-name">福师大会议室预约平台</text>
 			<view class="login-notice"></view>
 			<view class="login-boxs">
 				<!-- <u-form-item :rightIconStyle="{color: '#888', fontSize: '32rpx'}" right-icon="account" :label-position="labelPosition"

@@ -58,11 +58,11 @@
 					<view v-for="(item,index)  in checkbox" v-if="item.checked" :key="index" class="cu-tag round bg-blue light" style="font-size: 14.5px;">{{item.name}}</view>
 				</view>
 			</view>
-			<view class="cu-modal bottom-modal" :class="modalName=='ChooseModal'?'show':''" @tap="hideModal">
+			<view class="cu-modal bottom-modal" :class="modalName=='ChooseModal'?'show':''" @tap="hideChooseModal">
 				<view class="cu-dialog" @tap.stop="">
 					<view class="cu-bar bg-white">
-						<view class="action text-blue" @tap="hideModal">取消</view>
-						<view class="action text-green" @tap="hideModal">确定</view>
+						<view class="action text-blue" @tap="hideChooseModal">取消</view>
+						<view class="action text-green" @tap="hideChooseModal">确定</view>
 					</view>
 					<view class="grid col-3 padding-sm">
 						<view v-for="(item,index) in checkbox" class="padding-xs" :key="index">
@@ -228,6 +228,9 @@
 			hideModal(e) {
 				this.modalName = null
 				this.Pagego();
+			},
+			hideChooseModal(e) {
+				this.modalName = null
 			},
 			RadioChange(e) {
 				this.radio = e.detail.value
