@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<cu-custom  bgColor="bg-gradual-green"  :isBack="true">
+		<cu-custom bgColor="bg-gradual-green" :isBack="true">
 			<block slot="backText">返回</block>
 			<block slot="content">会议室预约</block>
 			<block slot="right">
@@ -26,8 +26,8 @@
 			</view>
 
 			<view class="cu-form-group">
-				<text class="cuIcon-title text-orange" ></text>参会人数
-				<input  v-model="meetingdata.peoples"  name="input"  style="padding-left: 10px;" ></input>
+				<text class="cuIcon-title text-orange"></text>参会人数
+				<input v-model="meetingdata.peoples" name="input" style="padding-left: 10px;"></input>
 			</view>
 			<view class="cu-form-group" style="margin-top: 10px;">
 				<text class="cuIcon-title text-orange "></text> 会议日期
@@ -47,7 +47,7 @@
 			</view>
 			<view class="cu-bar bg-white margin-top" style="margin-top: 0;">
 				<view class="action">
-					<text ></text> 基本条件
+					<text></text> 基本条件
 				</view>
 				<view class="action">
 					<button class="cu-btn bg-green shadow" @tap="showModal" data-target="ChooseModal">选择</button>
@@ -55,7 +55,8 @@
 			</view>
 			<view class="bg-white margin-top" style="margin-top: 0;">
 				<view style="margin-left: 3%;">
-					<view v-for="(item,index)  in checkbox" v-if="item.checked" :key="index" class="cu-tag round bg-blue light" style="font-size: 14.5px;">{{item.name}}</view>
+					<view v-for="(item,index)  in checkbox" v-if="item.checked" :key="index"
+						class="cu-tag round bg-blue light" style="font-size: 14.5px;">{{item.name}}</view>
 				</view>
 			</view>
 			<view class="cu-modal bottom-modal" :class="modalName=='ChooseModal'?'show':''" @tap="hideChooseModal">
@@ -66,21 +67,22 @@
 					</view>
 					<view class="grid col-3 padding-sm">
 						<view v-for="(item,index) in checkbox" class="padding-xs" :key="index">
-							<button class="cu-btn orange lg block" :class="item.checked?'bg-orange':'line-orange'" @tap="ChooseCheckbox"
-							 :data-value="item.value"> {{item.name}}
+							<button class="cu-btn orange lg block" :class="item.checked?'bg-orange':'line-orange'"
+								@tap="ChooseCheckbox" :data-value="item.value"> {{item.name}}
 							</button>
 						</view>
 					</view>
 				</view>
 			</view>
 			<view class="cu-form-group">
-				<text class="cuIcon-title text-orange" ></text>会议地点
-				<picker mode="multiSelector" @change="MultiChange" @columnchange="MultiColumnChange" :value="multiIndex" :range="multiArray">
+				<text class="cuIcon-title text-orange"></text>会议地点
+				<picker mode="multiSelector" @change="MultiChange" @columnchange="MultiColumnChange" :value="multiIndex"
+					:range="multiArray">
 					<view class="picker" style="font-size: 15px;">
 						{{multiArray[0][multiIndex[0]]}}.{{multiArray[1][multiIndex[1]]}}
 					</view>
 				</picker>
-	
+
 				<!-- <text class='cuIcon-locationfill text-orange'></text> -->
 			</view>
 			<view class="cu-form-group margin-top">
@@ -89,13 +91,14 @@
 			</view>
 			<view class="cu-form-group align-start">
 				<view class="title">备注</view>
-				<textarea maxlength="-1" name="input" v-model="meetingdata.remark" ></textarea>
+				<textarea maxlength="-1" name="input" v-model="meetingdata.remark"></textarea>
 			</view>
 			<view class="box">
 				<view class="cu-bar btn-group">
-					<button class="cu-btn bg-orange shadow-blur round lg" @tap="showModal" data-target="Modal">提交</button>
+					<button class="cu-btn bg-orange shadow-blur round lg" @tap="showModal"
+						data-target="Modal">提交</button>
 				</view>
-			</view>	
+			</view>
 			<view class="cu-modal" :class="modalName=='Modal'?'show':''">
 				<view class="cu-dialog">
 					<view class="cu-bar bg-white justify-end">
@@ -114,33 +117,35 @@
 					</view>
 				</view>
 			</view>
-			
-			
-			
+
+
+
 		</form>
 	</view>
 </template>
 
 <script>
+	import {
+		objectMultiArray
+	} from './data/areaTree.js'
 	export default {
 		data() {
 			return {
-				itemdata:{},
+				objectMultiArray,
+				itemdata: {},
 				date: '2021年07月25',
 				index: 0,
-				indexcampus:0,
-				time: ['上午','下午','晚上','全天'],
-				campus:['旗山校区','仓山校区'],
+				time: ['上午', '下午', '晚上', '全天'],
 				switchA: false,
 				switchB: true,
-				switchC:false,
+				switchC: false,
 				modalName: null,
 				radio: 'radio1',
 				//条件选择
 				checkbox: [{
 					value: 0,
 					name: '白板',
-					checked: true,				
+					checked: true,
 				}, {
 					value: 1,
 					name: '黑板',
@@ -153,64 +158,71 @@
 					value: 3,
 					name: '投影仪',
 					checked: true,
-				},],
+				}, ],
 				//会议室选择
+				campus: [],
+				curIndex: 0,
 				multiIndex: [0, 0],
 				multiArray: [
-					['旗山接待中心', '地理科学学院实验楼'],
-					['101','102'],
-					],
-				multiArrayqs: [
-					['旗山接待中心', '地理科学学院实验楼'],
-					['101','102'],
+					[],
+					[]
 				],
-				multiArraycs:[
-					['科学会堂', '邵逸夫楼','文科楼'],
-					['301'],
-				],
-				
-				meetingdata:{
-					name:"学科研讨会议",
-					campus:"旗山校区",
-					peoples:"10人",
-					time:"2021-07-25",
-					period:"上午",
-					condition:["白板","投影仪"],
-					room:"",
-					affairs:false,
-					remark:"需要会务安排，请按照需求列出安排事项",
+				meetingdata: {
+					name: "学科研讨会议",
+					campus: "旗山校区",
+					peoples: "10人",
+					time: "2021-07-25",
+					period: "上午",
+					condition: ["白板", "投影仪"],
+					room: "",
+					affairs: false,
+					remark: "需要会务安排，请按照需求列出安排事项",
 				},
 			};
 		},
 		onLoad(option) {
-			console.log(option)
-			if(option.itemdata!=null)
-			{
-				this.itemdata=JSON.parse(option.itemdata);
-				this.meetingdata.name=this.itemdata.name;
-				this.meetingdata.campus=this.itemdata.campus;
-				this.meetingdata.peoples=this.itemdata.peoples;
-				this.meetingdata.time=this.itemdata.time;
-				this.meetingdata.period=this.itemdata.period;
-				this.switchC=this.itemdata.affairs;
-				this.meetingdata.remark=this.itemdata.remark;
-				console.log("主页面",this.itemdata);
+			if (option.itemdata != null) {
+				this.itemdata = JSON.parse(option.itemdata);
+				this.meetingdata.name = this.itemdata.name;
+				this.meetingdata.campus = this.itemdata.campus;
+				this.curIndex = this.objectMultiArray.findIndex(value=>value.name == this.meetingdata.campus);
+				this.meetingdata.peoples = this.itemdata.peoples;
+				this.meetingdata.time = this.itemdata.time;
+				this.meetingdata.period = this.itemdata.period;
+				this.switchC = this.itemdata.affairs;
+				this.meetingdata.remark = this.itemdata.remark;
+				console.log("主页面", this.itemdata);
 			}
-			
+			this.init();
 		},
 		methods: {
+			init() {
+				this.meetingdata.campus = this.objectMultiArray[this.curIndex].name;
+				this.campus = [];
+				this.multiArray[0] = [];
+				this.multiArray[1] = [];
+				for (var i = 0; i < this.objectMultiArray.length; i++) {
+					this.campus.push(this.objectMultiArray[i].name);
+				}
+				for (var j = 0; j < this.objectMultiArray[this.curIndex].tower.length; j++) {
+					this.multiArray[0].push(this.objectMultiArray[this.curIndex].tower[j].name);
+				}
+				for (var k = 0; k < this.objectMultiArray[this.curIndex].tower[this.multiIndex[1]].room
+					.length; k++) {
+					this.multiArray[1].push(this.objectMultiArray[this.curIndex].tower[this.multiIndex[1]].room[k]
+						.name);
+				}
+			},
 			//时段选择
 			PickerChange(e) {
 				this.index = e.detail.value
-				this.meetingdata.period=this.time[this.index]
+				this.meetingdata.period = this.time[this.index]
 			},
 			//校区选择
 			PickerChangecampus(e) {
-				console.log("校区",e.detail.value)
-				this.indexcampus = e.detail.value
-				this.meetingdata.campus=this.campus[this.indexcampus]
-				console.log("校区选择",this.meetingdata.campus)
-				this.MultiColumnChange();
+				this.curIndex = e.detail.value;
+				this.multiIndex = [0, 0];
+				this.init();
 			},
 			DateChange(e) {
 				this.meetingdata.time = e.detail.value
@@ -241,131 +253,42 @@
 				let items = this.checkbox;
 				let values = e.currentTarget.dataset.value;
 				for (let i = 0, lenI = items.length; i < lenI; ++i) {
-					if (items[i].value == values) 
-					{
-						console.log("当前选中",items[i].name)
+					if (items[i].value == values) {
+						console.log("当前选中", items[i].name)
 						items[i].checked = !items[i].checked;
 						break
 					}
 				}
-				
 			},
 			//会议室选择
 			MultiChange(e) {
 				this.multiIndex = e.detail.value
 			},
 			MultiColumnChange(e) {
-				console.log("当前校区",e)
-				if(this.meetingdata.campus=="旗山校区") {
-					console.log("当前校区1",this.meetingdata.campus)
-					let data = {
-						multiArray: this.multiArrayqs,
-						multiIndex: this.multiIndex
-					};
-					data.multiIndex[e.detail.column] = e.detail.value;
-					switch (e.detail.column) {
-						case 0:
-							switch (data.multiIndex[0]) {
-								case 0:
-									data.multiArray[1] = ['101','102'];
-									break;
-								case 1:
-									data.multiArray[1] =['106','206','306','406'];
-									break;
-							}
-							data.multiIndex[1] = 0;
-							break;
+				this.multiIndex[e.detail.column] = e.detail.value;
+				switch (e.detail.column) {
+					case 0:
+						this.multiIndex[1] = 0;
+						let result = this.searchColumn(e.detail.value);
+						this.multiArray[1] = result
+						break;
+				};
+			},
+			searchColumn() {
+				var arr = [];
+				for (var j = 0; j < this.objectMultiArray[this.curIndex].tower.length; j++) {
+					if (j == this.multiIndex[0]) {
+						for (var k = 0; k < this.objectMultiArray[this.curIndex].tower[j].room.length; k++) {
+							arr.push(this.objectMultiArray[this.curIndex].tower[j].room[k].name);
+						}
 					}
-					this.multiArray = data.multiArray;
-					this.multiIndex = data.multiIndex;
-					
 				}
-				else if(this.meetingdata.campus=="仓山校区") {
-					console.log("当前校区2",this.meetingdata.campus)
-					let data = {
-						multiArray: this.multiArraycs,
-						multiIndex: this.multiIndex
-					};
-					console.log(data.multiArray[1])
-					data.multiIndex[e.detail.column] = e.detail.value;
-					switch (e.detail.column) {
-						case 0:
-							switch (data.multiIndex[0]) {
-								case 0:
-									data.multiArray[1] = ['301'];
-									break;
-								case 1:
-									data.multiArray[1] = ['203', '304'];
-									break;
-								case 2:
-									data.multiArray[1] = ['106','206','306','406'];
-									break;
-							}
-							data.multiIndex[1] = 0;
-							break;
-					}	
-					this.multiArray = data.multiArray;
-					this.multiIndex = data.multiIndex;
-				}
-				// switch (e.detail.column) {
-				// 	case 0:
-				// 		switch (data.multiIndex[0]) {
-				// 			case 0:
-				// 				data.multiArray[1] = ['1号楼', '2号楼','3号楼'];
-				// 				data.multiArray[2] = ['1-105','1-205','1-305','1-405'];
-				// 				break;
-				// 			case 1:
-				// 				data.multiArray[1] = ['4号楼', '5号楼'];
-				// 				data.multiArray[2] = ['4-106','4-206','4-306','4-406'];
-				// 				break;
-				// 		}
-				// 		data.multiIndex[1] = 0;
-				// 		data.multiIndex[2] = 0;
-				// 		break;
-				// 	case 1:
-				// 		switch (data.multiIndex[0]) {
-				// 			case 0:
-				// 				switch (data.multiIndex[1]) {
-				// 					case 0:
-				// 						data.multiArray[2] = ['1-105','1-205','1-305','1-405'];
-				// 						break;
-				// 					case 1:
-				// 						data.multiArray[2] = ['2-301','2-302','2-303','2-304'];
-				// 						break;
-				// 					case 2:
-				// 						data.multiArray[2] = ['3-101','3-102','3-103','3-104'];
-				// 						break;
-				// 					// case 3:
-				// 					// 	data.multiArray[2] = ['4-205','4-206'];
-				// 					// 	break;
-				// 					// case 4:
-				// 					// 	data.multiArray[2] = ['5-101','5-102','5-103'];
-				// 					// 	break;
-				// 				}
-				// 				break;
-				// 			case 1:
-				// 				switch (data.multiIndex[1]) {
-				// 					case 0:
-				// 						data.multiArray[2] = ['4-106','4-206','4-306','4-406'];
-				// 						break;
-				// 					case 1:
-				// 						data.multiArray[2] = ['5-303', '5-304'];
-				// 						break;
-				// 					// case 2:
-				// 					// 	data.multiArray[2] = ['8-205', '8-206', '8-207'];
-				// 					// 	break;
-				// 				}
-				// 				break;
-				// 		}
-				// 		data.multiIndex[2] = 0;
-				// 		break;
-				// }
-				
+				return  arr;
 			},
 			//是否会务安排
 			SwitchC(e) {
 				this.switchC = e.detail.value
-				this.meetingdata.affairs=this.switchC
+				this.meetingdata.affairs = this.switchC
 			},
 			Pagego() {
 				console.log(111);
@@ -381,17 +304,19 @@
 	.cu-form-group {
 		font-size: 15px;
 	}
+
 	.cu-form-group .title {
 		min-width: calc(4em + 15px);
 	}
-	
+
 	.box {
 		margin: 20upx 0;
 	}
-	
+
 	.box view.cu-bar {
 		margin-top: 20upx;
 	}
+
 	.cardItem {
 		display: flex;
 		flex-direction: row;
@@ -403,4 +328,3 @@
 		color: #000000;
 	}
 </style>
-
