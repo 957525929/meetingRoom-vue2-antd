@@ -4,7 +4,7 @@
     <div class="meetingApply">
       <table class="meetingInfoPer">
         <tbody>
-          <tr>
+          <!-- <tr>
             <td colspan="2">
               <label :style="{ marginLeft: '100px' }">负责人姓名</label>
               <div class="bgc">
@@ -17,7 +17,7 @@
                 <a-input placeholder="请输入负责人电话" :style="{ width: '80%' }" v-model="responsibleTel"></a-input>
               </div>
             </td>
-          </tr>
+          </tr> -->
           <tr>
             <td colspan="2">
               <label :style="{ marginLeft: '100px' }">会议名称</label>
@@ -74,6 +74,7 @@
               <label :style="{ marginLeft: '100px' }">会议室状态</label>
               <div class="bgc">
                 <span v-if="busyRoom" style="color: red">已预约</span>
+                <a-button v-if="busyRoom" @click="applyDetail()"  type="primary" style="margin-left: 20px">预约详情</a-button>
                 <span v-if="noneRoom" style="color: green">空闲</span>
               </div>
             </td>
@@ -139,6 +140,35 @@
         </a-clo>
       </a-row>
     </a-modal>
+
+     <!--已预约详情 -->
+    <a-modal v-model="visibleApplyDetail"  @ok="visibleApplyDetail=false" @cancel="visibleApplyDetail=false" width="500px">
+        <a-descriptions title="预约详情" :column='2'>
+          <a-descriptions-item label="预约人姓名">
+            周唐
+          </a-descriptions-item>
+          <a-descriptions-item label="预约人电话">
+            18652140306
+          </a-descriptions-item>
+          <a-descriptions-item label="会议时间">
+          2021年8月15日
+          </a-descriptions-item>
+        <a-descriptions-item label="会议午别">
+         全天
+          </a-descriptions-item>
+        </a-descriptions>
+        <!-- <a-tabs default-active-key="1">
+        <a-tab-pane key="1" tab="预约详情">
+          <a-descriptions :column='2'>
+            <a-descriptions-item label="预约人姓名">周唐</a-descriptions-item>
+            <a-descriptions-item label="预约人电话">18652140306</a-descriptions-item>
+            <a-descriptions-item label="会议时间"> 2021年8月15日</a-descriptions-item>
+            <a-descriptions-item label="会议午别"> 全天</a-descriptions-item>
+          </a-descriptions>
+        </a-tab-pane>
+      </a-tabs> -->
+    </a-modal>
+
   </a-card>
 </template>
 <script>
@@ -231,7 +261,8 @@ export default {
       noneRoom: false,
       visibleReason: false,
        modalVisible: false,
-       dataRoom:dataRoom
+       dataRoom:dataRoom,
+       visibleApplyDetail:false
     }
   },
   created() {
@@ -303,6 +334,9 @@ export default {
          this.modalVisible=false
       }
     },
+    applyDetail(){
+      this.visibleApplyDetail=true
+    }
   },
 }
 </script>

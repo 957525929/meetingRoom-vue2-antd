@@ -12,6 +12,7 @@
             <a-select-option value="已完成">已完成</a-select-option>
             <a-select-option value="待安排">待开始</a-select-option>
             <a-select-option value="进行中">进行中</a-select-option>
+             <a-select-option value="全部">全部</a-select-option>
             <!-- <a-select-option value="强制撤销">强制撤销</a-select-option>           -->
             <!-- <a-select-option value="未通过">未通过</a-select-option> -->
           </a-select>
@@ -47,10 +48,14 @@
         </a-col>
         <a-col :span="1"></a-col>
         <a-col>
-          <span>编号：</span>
+          <span>是否需要会务安排：</span>
         </a-col>
         <a-col>
-          <a-input placeholder="请输入会议编号" v-model="queryParam.id"></a-input>
+          <a-select :style="{width:'200px'}"   v-model="queryParam.arrange" placeholder="请选择是否需要会务安排">
+            <a-select-option value="是">是</a-select-option>
+            <a-select-option value="否">否</a-select-option>
+            <a-select-option value="全部">全部</a-select-option>
+          </a-select>
         </a-col>
         <a-col :span="5"></a-col>
         <a-col>
@@ -198,7 +203,7 @@
             <a-descriptions-item label="会议预算（元）">1000</a-descriptions-item>
             <a-descriptions-item label="负责人姓名">陈宏涛</a-descriptions-item>
             <a-descriptions-item label="负责人电话">152690314587</a-descriptions-item>
-            <a-descriptions-item label="会议时间">2021年07月20日~2021年07月20日</a-descriptions-item>
+            <a-descriptions-item label="会议时间">2021年07月20日</a-descriptions-item>
             <a-descriptions-item label="会议地点">总公司机关</a-descriptions-item>
             <a-descriptions-item label="参会人数">4</a-descriptions-item>
             <a-descriptions-item label="备注">需提供话筒</a-descriptions-item>
@@ -208,7 +213,7 @@
       <a-tabs default-active-key="1">
         <a-tab-pane key="1" tab="会议地点">
           <a-descriptions>
-            <a-descriptions-item label="会议时间">2021年07月20日~2021年07月20日</a-descriptions-item>
+            <a-descriptions-item label="会议时间">2021年07月20日</a-descriptions-item>
             <a-descriptions-item label="午别">上午</a-descriptions-item>
             <a-descriptions-item label="会议地点">福建师范大学.仓山校区.1号楼.会议室203</a-descriptions-item>
           </a-descriptions>
@@ -240,22 +245,22 @@ import moment from 'moment'
 import PurInModal from './PurInModal'
 import { JeecgListMixin } from '@/mixins/JeecgListMixin'
 const data = [
-  {
-    id: 'B1203',
-    budget: '5000',
-    name: '行政管理会议',
-    theme: '行政管理',
-    dateTime: '2021年07月27日',
-    range: '上午',
-    address: '福建师范大学.旗山校区.2号楼.会议室205',
-    members: '陈宏涛；李小玲；林诺汐；陈熙雨',
-    number: '4',
-    dutyName: '李小玲',
-    dutyTel: '152690314587',
-    state: '进行中',
-    detail: '1',
-    arrange: '否'
-  },
+  // {
+  //   id: 'B1203',
+  //   budget: '5000',
+  //   name: '行政管理会议',
+  //   theme: '行政管理',
+  //   dateTime: '2021年07月27日',
+  //   range: '上午',
+  //   address: '福建师范大学.旗山校区.2号楼.会议室205',
+  //   members: '陈宏涛；李小玲；林诺汐；陈熙雨',
+  //   number: '4',
+  //   dutyName: '李小玲',
+  //   dutyTel: '152690314587',
+  //   state: '进行中',
+  //   detail: '1',
+  //   arrange: '否'
+  // },
   {
     id: 'B1207',
     budget: '5000',
@@ -384,11 +389,11 @@ export default {
       dataArrange,
       reason: '',
       queryParam: {
-        id: undefined,
         name: undefined,
         dateStart: undefined,
         dateEnd: undefined,
-        state: undefined
+        state: undefined,
+        arrange:'是'
       },
       dateFormat: 'YYYY年MM月DD日',
       url: {

@@ -118,8 +118,8 @@
 
         <a-table-column title="操作" align="center">
           <template slot-scope="record">
-           <a href="javascript:;" @click="detail(record)" :style="{  color: 'orange' }">详情</a>
-            <a-divider type="vertical" />
+           <!-- <a href="javascript:;" @click="detail(record)" :style="{  color: 'orange' }">详情</a>
+            <a-divider type="vertical" /> -->
             <a href="javascript:;" @click="Modify(record)" :style="{  color: 'blue' }">修改</a>
             <a-divider type="vertical" />
             <a-popconfirm title="确定删除吗?" @confirm="() => onDelete(record.index)">
@@ -261,8 +261,7 @@
         </a-row>
         </a-checkbox-group>
         </a-form-model-item>
-        <a-form-model-item ref="dutyName" label="管理员" prop="dutyName">
-          <!-- <a-input v-model="formModify.dutyName"></a-input> -->
+        <!-- <a-form-model-item ref="dutyName" label="管理员" prop="dutyName">
           <a-select   show-search v-model="formModify.dutyName" @change="ModifyDutyName">
             <a-select-option value="李霞">李霞</a-select-option>
             <a-select-option value="尤晓梅">尤晓梅</a-select-option>
@@ -271,7 +270,7 @@
         </a-form-model-item>
         <a-form-model-item label="管理员电话" prop="dutyTel">
           <a-input v-model="formModify.dutyTel" disabled></a-input>
-        </a-form-model-item>
+        </a-form-model-item> -->
         <a-form-model-item :wrapper-col="{ span: 14, offset: 6 }">
           <a-button type="primary" @click="onSubmitModify()">修改</a-button>
           <a-button style="margin-left: 10px;" @click="CancelModify()">取消</a-button>
@@ -279,7 +278,7 @@
       </a-form-model>
     </a-drawer>
     <!-- 会议室详情 -->
-    <a-drawer :visible="visibleDetail" title="会议室详情" @close="detailClose" placement="right" width="600px">
+    <!-- <a-drawer :visible="visibleDetail" title="会议室详情" @close="detailClose" placement="right" width="600px">
       <a-form
         :model="formDetail"
         :label-col="labelCol"
@@ -334,7 +333,7 @@
           <a-input v-model="formDetail.dutyTel" disabled></a-input>
         </a-form-item>
       </a-form>
-    </a-drawer>
+    </a-drawer> -->
   </a-card>
 </template>
 
@@ -520,7 +519,7 @@ export default {
         ],
       },
       visibleDetail: false,
-      formDetail: {},
+      // formDetail: {},
       disabledState:false,
        url: {
         list: '/sys/user/list',
@@ -622,21 +621,21 @@ export default {
     CancelModify() {
       this.visibleModify = false
     },
-    detail(record) {
-      this.visibleDetail = true
-      console.log(record)
-      this.formDetail.area = record.area
-      this.formDetail.room = record.room
-      this.formDetail.number = record.number
-      this.formDetail.state = record.state
-      this.formDetail.dutyName = record.dutyName
-      this.formDetail.condition = record.condition.split('，')
-      this.formDetail.dutyTel = record.dutyTel
-    },
-    detailClose() {
-      this.$emit('close')
-      this.visibleDetail = false
-    },
+    // detail(record) {
+    //   this.visibleDetail = true
+    //   console.log(record)
+    //   this.formDetail.area = record.area
+    //   this.formDetail.room = record.room
+    //   this.formDetail.number = record.number
+    //   this.formDetail.state = record.state
+    //   this.formDetail.dutyName = record.dutyName
+    //   this.formDetail.condition = record.condition.split('，')
+    //   this.formDetail.dutyTel = record.dutyTel
+    // },
+    // detailClose() {
+    //   this.$emit('close')
+    //   this.visibleDetail = false
+    // },
     addClose() {
       this.$emit('close')
       this.visibleAdd = false

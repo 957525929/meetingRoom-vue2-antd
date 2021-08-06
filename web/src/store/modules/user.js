@@ -1303,19 +1303,19 @@ const user = {
                   "name": "meetingRoom-Information",
                   "id": "1245154570166390786"
                 },
-                {
-                  "path": "/meetingRoom/RoomDuty",
-                  "component": "meetingRoom/RoomDuty",
-                  "route": "1",
-                  "meta": {
-                    "keepAlive": false,
-                    "internalOrExternal": false,
+                // {
+                //   "path": "/meetingRoom/RoomDuty",
+                //   "component": "meetingRoom/RoomDuty",
+                //   "route": "1",
+                //   "meta": {
+                //     "keepAlive": false,
+                //     "internalOrExternal": false,
      
-                    "title": "会议室管理员"
-                  },
-                  "name": "meetingRoom-duty",
-                  "id": "1245154570166390786"
-                },
+                //     "title": "会议室管理员"
+                //   },
+                //   "name": "meetingRoom-duty",
+                //   "id": "1245154570166390786"
+                // },
                 {
                   "path": "/meetingRoom/AppointmentPersonal",
                   "component": "meetingRoom/AppointmentPersonal",
