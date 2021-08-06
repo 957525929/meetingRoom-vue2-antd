@@ -12,6 +12,7 @@
             <a-select-option value="空闲">空闲</a-select-option>
             <a-select-option value="禁用">禁用</a-select-option>
             <a-select-option value="已预约">已预约</a-select-option>
+            <a-select-option value="全部">全部</a-select-option>
           </a-select>
         </a-col>
         <a-col :span="1"></a-col>
