@@ -117,7 +117,7 @@
 			},
 			ToList() {
 				uni.navigateTo({
-					url:'../../pagesAppointment/historyList?TabCur='+'2'
+					url:'/pagesList/index?TabCur='+'2'
 		
 				});	
 			}
