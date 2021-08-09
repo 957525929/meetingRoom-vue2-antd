@@ -95,6 +95,13 @@
 				],
 			};
 		},
+		onLoad(option) {
+		if(option!=null)
+			{
+				this.TabCur=JSON.parse(option.TabCur);
+			}
+
+		},
 		components: {
 			recordCard,
 			search1
