@@ -1,9 +1,9 @@
 <template>
 	<view>
 		<scroll-view scroll-y class="DrawerPage" :class="modalName=='viewModal'?'show':''">
-			<cu-custom bgColor="bg-gradual-green" :isBack="true">
+			<cu-custom  bgColor="bg-gradual-green"  :isBack="true">
 				<block slot="backText">返回</block>
-				<block slot="content">预约记录</block>
+				<block slot="content">会务安排任务列表</block>
 				<block slot="right">
 					<view class="action">
 						<view class='cuIcon-cu-image'>
@@ -12,123 +12,53 @@
 					</view>
 				</block>
 			</cu-custom>
-
-			<scroll-view scroll-x class="bg-white nav flex text-center">
-				<view class="cu-item" :class="0==TabCur?'text-orange cur':''" @tap="tabSelect" data-id="0">
-					待开会
-				</view>
-				<view class="cu-item" :class="1==TabCur?'text-orange cur':''" @tap="tabSelect" data-id="1">
-					已完成
-				</view>
-				<view class="cu-item" :class="2==TabCur?'text-orange cur':''" @tap="tabSelect" data-id="2">
-					强制撤销
-				</view>
-				<!-- <view class="cu-item" :class="3==TabCur?'text-orange cur':''" @tap="tabSelect" data-id="3">
-					已取消
-				</view> -->
-			</scroll-view>
-
-			<block v-if="TabCur==0">
-				<!-- <navigator class="action" @tap="gotoDetail" > -->
-					<recordCard :cardType="type[0]"/>
-				<!-- </navigator> -->
-			</block>
-			<block v-if="TabCur==1">
-				<!-- <navigator class="action" @tap="gotoAllow"> -->
-					<recordCard :cardType="type[1]" />
-				<!-- </navigator> -->
-			</block>
-			<block v-if="TabCur==2">
-				<!-- <navigator class="action" @tap="gotoDetail" > -->
-					<recordCard :cardType="type[2]" @send="recordDetailed"/>
-				<!-- </navigator> -->
-			</block>
-			<!-- <block v-if="TabCur==3">
-				<navigator class="action" @tap="gotoDetail" >
-					<recordCard :cardType="type[3]" />
-				</navigator>
-			</block> -->
-			
+			<recordCard></recordCard>
 		</scroll-view>
-
+		
 		<view class="DrawerClose" :class="modalName=='viewModal'?'show':''" @tap="hideModal">
 			<text class="cuIcon-pullright"></text>
 		</view> 
 		 <scroll-view scroll-y class="DrawerWindow" :class="modalName=='viewModal'?'show':''">
-
-			<search1 @send="getIndex1"></search1>
+		
+			<search ></search>
 			<view class="padding margin text-center">
 				<view class="cu-btn bg-yellow lg block shadow radius margin-xl" @tap="hideModal">
 					查询
 				</view>
 			</view>
 		</scroll-view>
-
+		
 	</view>
 </template>
 
 <script>
-	import recordCard from "./components/recordCard.vue"
-	import search1 from "./components/search.vue"
-	export default {
-		data() {
-			return {
-				recordData:'',
-				modalName: null,
-				TabCur: 0,
-				scrollLeft: 0,
-				type: [{
-					id: 0,
-					type: "待开会"
-				}, {
-					id: 1,
-					type: "已完成"
-				}, 
-				{
-					id: 2,
-					type: "强制撤销"
-				},
-				// {
-				// 	id: 3,
-				// 	type: "已取消"
-				// }, 
-				],
-			};
-		},
-		onLoad(option) {
-		if(option!=null)
-			{
-				this.TabCur=JSON.parse(option.TabCur);
-			}
-
-		},
-		components: {
-			recordCard,
-			search1
-		},
-		methods: {
-			tabSelect(e) {
-				console.log("tab",e)
-				this.TabCur = e.currentTarget.dataset.id;
-				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
-			},
-			showModal(e) {
-				this.modalName = e.currentTarget.dataset.target
-			},
-			hideModal(e) {
-				this.modalName = null
-			},
-			getIndex1(data) {
-				this.TabCur = data
-				console.log(this.TabCur)
-			},
-			
-			recordDetailed(item){
-				this.recordData=item
-				console.log("recordData",item)
-			}
+import recordCard from "./components/recordCard.vue"
+import search from "./components/search.vue"
+export default {
+	data() {
+		return {
+			recordData:'',
+			modalName: null,
+			scrollLeft: 0,
 		}
-	}
+	},
+	components: {
+		recordCard,
+		search
+	},
+	methods: {
+		showModal(e) {
+			this.modalName = e.currentTarget.dataset.target
+		},
+		hideModal(e) {
+			this.modalName = null
+		},
+		recordDetailed(item){
+			this.recordData=item
+			console.log("recordData",item)
+		}
+	}	
+}
 </script>
 
 <style>
@@ -236,5 +166,4 @@
 	.DrawerPage .cu-bar.tabbar .action {
 		flex: initial;
 	}
-
 </style>

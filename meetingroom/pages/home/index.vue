@@ -48,17 +48,17 @@
 					<view class="nav-title">{{navCard[2].name}}</view>
 					<view class="nav-name">{{navCard[2].secname}}</view>
 					<text :class="navCard[2].icon"></text>
-				</view>
+				</view> -->
+				<navigator hover-class="none" :url="navCard[2].url" :class="navCard[2].style" navigateTo>
+					<view class="nav-title">{{navCard[2].name}}</view>
+					<view class="nav-name">{{navCard[2].secname}}</view>
+					<text :class="navCard[2].icon"></text>
+				</navigator>
 				<navigator hover-class="none" :url="navCard[3].url" :class="navCard[3].style" navigateTo>
 					<view class="nav-title">{{navCard[3].name}}</view>
 					<view class="nav-name">{{navCard[3].secname}}</view>
 					<text :class="navCard[3].icon"></text>
 				</navigator>
-				<navigator hover-class="none" :url="navCard[4].url" :class="navCard[4].style" navigateTo>
-					<view class="nav-title">{{navCard[4].name}}</view>
-					<view class="nav-name">{{navCard[4].secname}}</view>
-					<text :class="navCard[4].icon"></text>
-				</navigator> -->
 			</view>
 <!-- 
 			<view class="cu-modal" :class="modalName=='Modal'?'show':''">
@@ -106,19 +106,34 @@
 						id: 1,
 						name: '会议室预约',
 						secname: 'Appointment',
-						icon: 'cuIcon-newshot',
+						icon: 'cuIcon-edit',
 						url: '../../pagesAppointment/index',
 						style: 'nav-li bg-yellow'
 					},
 					{
-						id: 2,
+						id:2,
+						name: '预约记录',
+						secname: 'List',
+						icon: 'cuIcon-calender',
+						url: '../../pagesList/index',
+						style: 'nav-li bg-blue'
+					},
+					{
+						id: 3,
 						name: '会议室管理',
 						secname: 'Management',
-						icon: 'cuIcon-edit',
+						icon: 'cuIcon-newshot',
 						url: '../../pagesManagement/index',
 						style: 'nav-li bg-mauve'
 					},
-					
+					{
+						id:4,
+						name: '会务任务',
+						secname: 'Task',
+						icon: 'cuIcon-sort',
+						url: '../../pagesTask/index',
+						style: 'nav-li bg-cyan'
+					},
 					
 				],
 				modalName: null,

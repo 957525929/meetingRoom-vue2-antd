@@ -206,14 +206,24 @@
 				{
 					"path":"index",
 					"style":{}
-				},
+				}
+			]
+		},
+		{
+			"root":"pagesList",
+			"pages":[
 				{
-				    "path" : "historyList",
-				    "style" :                                                                                    
-					{
-						
-					}
-				
+					"path":"index",
+					"style":{}
+				}
+			]
+		},
+		{
+			"root":"pagesTask",
+			"pages":[
+				{
+					"path":"index",
+					"style":{}
 				}
 			]
 		}

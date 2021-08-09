@@ -3,13 +3,13 @@
 		<cu-custom bgColor="bg-gradual-green" :isBack="true">
 			<block slot="backText">返回</block>
 			<block slot="content">会议室预约</block>
-			<block slot="right">
+			<!-- <block slot="right">
 				<view class="action">
 					<view class='cuIcon-cu-image'>
 						<text class="cuIcon-copy" @tap="Pagego" data-target="viewModal"></text>
 					</view>
 				</view>
-			</block>
+			</block> -->
 		</cu-custom>
 		<form>
 			<view class="cu-form-group">
@@ -91,7 +91,7 @@
 			</view>
 			<view class="cu-form-group align-start">
 				<view class="title">备注</view>
-				<textarea maxlength="-1" name="input" v-model="meetingdata.remark"></textarea>
+				<textarea placeholder="需要会务安排，请按照需求列出安排事项" maxlength="-1" name="input" v-model="meetingdata.remark"></textarea>
 			</view>
 			<view class="box">
 				<view class="cu-bar btn-group">
@@ -142,23 +142,25 @@
 				modalName: null,
 				radio: 'radio1',
 				//条件选择
-				checkbox: [{
+				checkbox: [
+					{
 					value: 0,
 					name: '白板',
 					checked: true,
-				}, {
-					value: 1,
-					name: '黑板',
-					checked: true,
-				}, {
-					value: 2,
-					name: '电脑',
-					checked: true,
-				}, {
-					value: 3,
-					name: '投影仪',
-					checked: true,
-				}, ],
+					}, {
+						value: 1,
+						name: '黑板',
+						checked: true,
+					}, {
+						value: 2,
+						name: '电脑',
+						checked: true,
+					}, {
+						value: 3,
+						name: '投影仪',
+						checked: true,
+					}, 
+				],
 				//会议室选择
 				campus: [],
 				curIndex: 0,
@@ -176,7 +178,7 @@
 					condition: ["白板", "投影仪"],
 					room: "",
 					affairs: false,
-					remark: "需要会务安排，请按照需求列出安排事项",
+					remark: "",
 				},
 			};
 		},
@@ -293,7 +295,7 @@
 			Pagego() {
 				console.log(111);
 				uni.navigateTo({
-					url: './historyList'
+					url: '/pagesList/index'
 				});
 			}
 		}

@@ -127,7 +127,6 @@
 </template>
 
 <script>
-
 	export default {
 		data() {
 			return {
@@ -191,7 +190,7 @@
 					{
 						index: 3,
 						name: '自然地理学术研讨会',
-						campus: '仓山校区',
+						campus: '旗山校区',
 						time: new Date().getFullYear() + "年" +
 							(new Date().getMonth() ) + "月" +
 							(new Date().getDate()) + "日" ,
@@ -315,7 +314,7 @@
 				this.modalName1 = null
 				//方法一导航
 				uni.navigateTo({
-					url: './index?itemdata='+JSON.stringify(this.itemdata)
+					url: '/pagesAppointment/index?itemdata='+JSON.stringify(this.itemdata)
 				});	
 				//方法二：回到上一页
 				// uni.navigateBack({
