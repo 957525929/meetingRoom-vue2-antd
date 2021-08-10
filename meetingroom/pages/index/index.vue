@@ -47,6 +47,7 @@
 				backgroundRepeat: 'no-repeat'
 			});
 			_this.wxlogin();
+			
 		},
 		methods: {
 			NavChange: function(e) {

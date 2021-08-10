@@ -2,56 +2,6 @@
 const reclassify = {
 	// namespaced: true,
 	state:{
-		// 垃圾分类
-		// trashTypeDetail:[{
-		// 	group:'A',
-		// 	content:[{
-		// 		id:'0',
-		// 		title:'可回收物',
-		// 		imgUrl:'/static/public/recycle-color.png',
-		// 		key:'recycle',
-		// 		backColor:'#7C98C8',
-		// 		throwGuide:'',
-		// 		type:'C',
-		// 		secContent:[],
-		// 		bagImg:'/static/home/recycleBag.png'
-		// 	},{
-		// 		id:'1',
-		// 		title:'厨余垃圾',
-		// 		imgUrl:'/static/public/kitchen-color.png',
-		// 		key:'kitchen',
-		// 		backColor:'#53CEA0',
-		// 		throwGuide:'',
-		// 		type:'A',
-		// 		secContent:[],
-		// 		bagImg:'/static/home/kitchenBag.png'
-		// 	}],
-		// },{
-		// 	group:'B',
-		// 	content:[{
-		// 		id:'2',
-		// 		title:'有害垃圾',
-		// 		imgUrl:'/static/public/harm-color.png',
-		// 		key:'harm',
-		// 		backColor:'#F79B90',
-		// 		throwGuide:'',
-		// 		type:'D',
-		// 		secContent:[],
-		// 		bagImg:'/static/home/harmBag.png'
-		// 	},{
-		// 		id:'3',
-		// 		title:'其他垃圾',
-		// 		imgUrl:'/static/public/other-color.png',
-		// 		key:'other',
-		// 		backColor:'#FDBB37',
-		// 		throwGuide:'',
-		// 		type:'B',
-		// 		secContent:[],
-		// 		bagImg:'/static/home/otherBag.png'
-		// 	}]					
-		// }],
-		// 问题投诉
-		// complaintText:"",
 		comData:{
 			address:'',
 			city:"",
@@ -140,6 +90,7 @@ const reclassify = {
 		}
 	},
 	actions:{
+		
 	}
 }
 export default reclassify

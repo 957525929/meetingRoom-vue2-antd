@@ -91,30 +91,36 @@
 			loginSever(account, password) {
 				var _that = this
 				var userinfo = [];
-				userinfo.account = '13023818127';
-				userinfo.password = '123456';
+				
+				// userinfo.account = '13023818127';
+				// userinfo.password = '123456';
+				// _that.setUserInfo(userinfo);
+				// uni.setStorageSync('token', 'sfdsafas12312sdff')
+				// uni.setStorageSync('user_id', 1)
+				
+				this.globalApi.loginIn({
+					telephone: account,
+					password: password,
+				}).then(res => {
+					if(res.code == 200)
+					{
+						console.log("token",res.data)
+						var userinfo = {};
+						userinfo.token = res.data;
+						userinfo.account = account;
+						userinfo.password = password;
+						console.log("userinfo",userinfo)
+						//保存用户信息
+						_that.setUserInfo(userinfo);
+						uni.setStorageSync('token', userinfo.token)
+						uni.navigateTo({
+							url: '../index/index'
+						})
+					}
+				});
+				
 
-				_that.setUserInfo(userinfo);
-
-				uni.setStorageSync('token', 'sfdsafas12312sdff')
-				uni.setStorageSync('user_id', 1)
-				uni.navigateTo({
-					url: '../index/index'
-				})
-
-				// this.globalApi.loginIn({
-				// 	telephone: account,
-				// 	password: password,
-				// }).then(res => {
-				// 	var userinfo = res.data;
-				// 	userinfo.account = account;
-				// 	userinfo.password = password;
-
-				// 	_that.setUserInfo(userinfo);
-
-				// 	uni.setStorageSync('token', userinfo.token)
-				// 	uni.setStorageSync('user_id', userinfo.user_id)
-				// });
+				
 			}
 		}
 	}
