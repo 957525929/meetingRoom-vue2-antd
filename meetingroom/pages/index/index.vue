@@ -47,7 +47,7 @@
 				backgroundRepeat: 'no-repeat'
 			});
 			_this.wxlogin();
-			
+			this.$store.dispatch("getArea");
 		},
 		methods: {
 			NavChange: function(e) {

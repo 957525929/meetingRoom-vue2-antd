@@ -91,7 +91,8 @@
 			</view>
 			<view class="cu-form-group align-start">
 				<view class="title">备注</view>
-				<textarea placeholder="需要会务安排，请按照需求列出安排事项" maxlength="-1" name="input" v-model="meetingdata.remark"></textarea>
+				<textarea placeholder="需要会务安排，请按照需求列出安排事项" maxlength="-1" name="input"
+					v-model="meetingdata.remark"></textarea>
 			</view>
 			<view class="box">
 				<view class="cu-bar btn-group">
@@ -128,7 +129,21 @@
 	import {
 		objectMultiArray
 	} from './data/areaTree.js'
+	import {
+		mapState,
+		mapGetters
+	} from "vuex";
 	export default {
+		computed: {
+			...mapGetters({
+				area: "area",
+			}),
+			...mapState({
+				tree: (state) => state.area
+				// userId: (state) => state.userId,
+				// launchFlag: (state) => state.launchFlag,
+			}),
+		},
 		data() {
 			return {
 				objectMultiArray,
@@ -142,25 +157,23 @@
 				modalName: null,
 				radio: 'radio1',
 				//条件选择
-				checkbox: [
-					{
+				checkbox: [{
 					value: 0,
 					name: '白板',
 					checked: true,
-					}, {
-						value: 1,
-						name: '黑板',
-						checked: true,
-					}, {
-						value: 2,
-						name: '电脑',
-						checked: true,
-					}, {
-						value: 3,
-						name: '投影仪',
-						checked: true,
-					}, 
-				],
+				}, {
+					value: 1,
+					name: '黑板',
+					checked: true,
+				}, {
+					value: 2,
+					name: '电脑',
+					checked: true,
+				}, {
+					value: 3,
+					name: '投影仪',
+					checked: true,
+				}, ],
 				//会议室选择
 				campus: [],
 				curIndex: 0,
@@ -187,7 +200,7 @@
 				this.itemdata = JSON.parse(option.itemdata);
 				this.meetingdata.name = this.itemdata.name;
 				this.meetingdata.campus = this.itemdata.campus;
-				this.curIndex = this.objectMultiArray.findIndex(value=>value.name == this.meetingdata.campus);
+				this.curIndex = this.objectMultiArray.findIndex(value => value.name == this.meetingdata.campus);
 				this.meetingdata.peoples = this.itemdata.peoples;
 				this.meetingdata.time = this.itemdata.time;
 				this.meetingdata.period = this.itemdata.period;
@@ -196,6 +209,9 @@
 				console.log("主页面", this.itemdata);
 			}
 			this.init();
+		},
+		mounted() {
+			console.log(this.area);
 		},
 		methods: {
 			init() {
@@ -285,7 +301,7 @@
 						}
 					}
 				}
-				return  arr;
+				return arr;
 			},
 			//是否会务安排
 			SwitchC(e) {

@@ -20,7 +20,7 @@
 				</view>
 				<view class="form-login cu-form-group margin-top">
 					<view class="title">密码</view>
-					<input placeholder="请输入密码" name="input" v-model="password"></input>
+					<input placeholder="请输入密码" name="input" type="password" v-model="password"></input>
 					<text class='cuIcon-attention'></text>
 				</view>
 			</view>
@@ -45,6 +45,7 @@
 	export default {
 		data() {
 			return {
+				pwd:true,
 				username: '13023818127', //用户/电话
 				password: '123456', //密码
 				labelPosition: 'left',
@@ -63,7 +64,6 @@
 			}
 		},
 		methods: {
-
 			gourl(url) {
 				uni.navigateTo({
 					url: url
@@ -90,37 +90,21 @@
 			},
 			loginSever(account, password) {
 				var _that = this
-				var userinfo = [];
-				
-				// userinfo.account = '13023818127';
-				// userinfo.password = '123456';
-				// _that.setUserInfo(userinfo);
-				// uni.setStorageSync('token', 'sfdsafas12312sdff')
-				// uni.setStorageSync('user_id', 1)
-				
 				this.globalApi.loginIn({
 					telephone: account,
 					password: password,
 				}).then(res => {
-					if(res.code == 200)
-					{
-						console.log("token",res.data)
-						var userinfo = {};
-						userinfo.token = res.data;
-						userinfo.account = account;
-						userinfo.password = password;
-						console.log("userinfo",userinfo)
-						//保存用户信息
-						_that.setUserInfo(userinfo);
-						uni.setStorageSync('token', userinfo.token)
-						uni.navigateTo({
-							url: '../index/index'
-						})
-					}
+					var token = res.data;
+					var userinfo = [];
+					userinfo.account = account;
+					userinfo.password = password;
+					_that.setUserInfo(userinfo);
+					uni.setStorageSync('token', token)
+					uni.setStorageSync('user_id', 1)
+					uni.navigateTo({
+						url: '../index/index'
+					})
 				});
-				
-
-				
 			}
 		}
 	}
