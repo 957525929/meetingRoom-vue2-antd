@@ -27,11 +27,11 @@ const codeMessage = {
 // 生产环境（production）：http://39.101.213.6:13018/api/ || https://gatc.wkbiot.com/api/
 // 开发环境（development）：http://39.100.85.99:13018/api/ || http://172.16.0.125:13018/api/||"http://fzzt.fzjhdn.com:13018/api/"
 // const socketUrl = process.env.NODE_ENV === 'development'?"ws://172.16.0.125:13018/websocket/":"ws://fzzt.fzjhdn.com:13018/websocket/"
-const api = process.env.NODE_ENV === 'development' ? "http://172.16.3.116:14054/api/meetingroomapp/" :
-	"http://172.16.3.116:14054/api/meetingroomapp/"
-const socketUrl = process.env.NODE_ENV === 'development' ? "ws://172.16.3.116:14054/websocket/" :
-	"ws://172.16.3.116:14054/websocket/"
- const imgsUrl = "http://172.16.3.116:14054/"
+const api = process.env.NODE_ENV === 'development' ? "http://172.16.2.124:14054/api/meetingroomapp/" :
+	"http://172.16.2.124:14054/api/meetingroomapp/"
+const socketUrl = process.env.NODE_ENV === 'development' ? "ws://172.16.2.124:14054/websocket/" :
+	"ws://172.16.2.124:14054/websocket/"
+ const imgsUrl = "http://172.16.2.124:14054/"
 const self = this
 const request = (url, param) => {
 	// if(param){

@@ -4,6 +4,7 @@ import home from './modules/home.js'
 import upload from './modules/upload.js'
 import notice from './modules/notice.js'
 import person from './modules/person.js'
+import meeting from './modules/meeting.js'
 
 import util from '../common/util.js'
 import noticeMenu from './content.js'
@@ -19,7 +20,8 @@ const store = new Vuex.Store({
 		home,
 		upload,
 		notice,
-		person
+		person,
+		meeting
 	},
 	state: {
 		// 启动页

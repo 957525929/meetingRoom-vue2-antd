@@ -37,7 +37,7 @@
 					<view v-if="curData.affairs==false" class="m-bottom">
 						【是否会务安排】：否
 					</view>
-					<view v-if="curData.type=='强制撤销'" class="m-bottom">
+					<view v-if="curData.status=='强制撤销'" class="m-bottom">
 						【强制撤销原因】：{{curData.reason}}
 					</view>
 					<view class="m-bottom">
@@ -48,7 +48,7 @@
 		</view>
 		<view v-for="(item,index) in meetingdata" :key="index">
 			<!-- 判断传递过来的值显示对应状态 -->
-			<view v-if="item.type==cardType.type">
+			<view v-if="item.status==cardType.status">
 				<view class="card" @tap="recordDetail(item)">
 					<span class="picture">
 						<!-- 显示不同图片 -->
@@ -66,16 +66,10 @@
 						</view>
 					</span>
 					<span class="card-right">
-						<!-- 切换不同颜色 -->
-						<!-- <view :style="styleObject[cardType.id]">
-							<view style="font-size: 15px;">
-								{{item.type}}
-							</view>
-						</view> -->
-						<view v-if="item.type=='待开会'" class="text-red" style="font-size: 15px;" @tap.stop="showModal" data-target="DialogModal1">
+						<view v-if="item.status=='待开会'" class="text-red" style="font-size: 15px;" @tap.stop="showModal" data-target="DialogModal1">
 							取消
 						</view>
-						<view v-if="item.type=='强制撤销'" class="text-red" style="font-size: 15px" @tap.stop="showModal2($event,item)"  data-target="DialogModal2">
+						<view v-if="item.status=='强制撤销'" class="text-red" style="font-size: 15px" @tap.stop="showModal2($event,item)"  data-target="DialogModal2">
 							重新预约
 						</view>
 					</span>
@@ -143,7 +137,7 @@
 						time: new Date().getFullYear() + "年" +
 							(new Date().getMonth() + 1) + "月" +
 							(new Date().getDate()+1) + "日" ,
-						type: '待开会',
+						status: '待开会',
 						cancel: '取消',
 						period:"上午",
 						peoples:"10人",
@@ -160,7 +154,7 @@
 						time: new Date().getFullYear() + "年" +
 							(new Date().getMonth() + 1) + "月" +
 							(new Date().getDate()+1) + "日" ,
-						type: '待开会',
+						status: '待开会',
 						cancel: '取消',
 						period:"下午",
 						condition:["白板","投影仪"],
@@ -177,7 +171,7 @@
 						time: new Date().getFullYear() + "年" +
 							(new Date().getMonth() ) + "月" +
 							(new Date().getDate()) + "日" ,
-						type: '已完成',
+						status: '已完成',
 						cancel: '',
 						period:"上午",
 						condition:["白板","投影仪","电脑"],
@@ -194,7 +188,7 @@
 						time: new Date().getFullYear() + "年" +
 							(new Date().getMonth() ) + "月" +
 							(new Date().getDate()) + "日" ,
-						type: '已完成',
+						status: '已完成',
 						cancel: '',
 						period:"下午",
 						condition:["白板","投影仪","电脑"],
@@ -211,7 +205,7 @@
 						time: new Date().getFullYear() + "年" +
 							(new Date().getMonth()+2 ) + "月" +
 							(new Date().getDate()-1) + "日" ,
-						type: '待开会',
+						status: '待开会',
 						cancel: '',
 						period:"上午",
 						condition:["白板","投影仪","电脑"],
@@ -228,7 +222,7 @@
 						time: new Date().getFullYear() + "年" +
 							(new Date().getMonth() +2) + "月" +
 							(new Date().getDate()) + "日" ,
-						type: '待开会',
+						status: '待开会',
 						cancel: '',
 						period:"上午",
 						condition:["白板","投影仪","电脑"],
@@ -245,7 +239,7 @@
 						time: new Date().getFullYear() + "年" +
 							(new Date().getMonth()+1) + "月" +
 							(new Date().getDate()+1) + "日" ,
-						type: '强制撤销',
+						status: '强制撤销',
 						cancel: '',
 						period:"下午",
 						condition:["白板","投影仪","电脑"],
@@ -288,9 +282,29 @@
 
 		props: ["cardType"],
 		mounted() {
+			this.getList();
 			console.log("cardType",this.cardType.id)
 		},
 		methods: {
+			//获取全部
+			getList() {
+				this.meetingApi.getAppointmentList({
+					pageNum: 1,
+					pageSize: 20,
+				}).then(res => {
+					console.log("res",res)
+					if(res.code == 200)
+					{
+						//根据返回参数item的状态匹配  v-if="item.type==cardType.type"
+						// //同步操作
+						// this.$store.commit('getAppointList',{
+						// 	appiontmentList:res.data.list,
+						// })
+						
+					}
+					
+				})
+			},
 			showModal(e) {
 				this.modalName = e.currentTarget.dataset.target
 			},

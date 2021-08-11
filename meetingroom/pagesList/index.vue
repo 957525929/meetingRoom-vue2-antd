@@ -56,7 +56,7 @@
 		</view> 
 		 <scroll-view scroll-y class="DrawerWindow" :class="modalName=='viewModal'?'show':''">
 
-			<search1 @send="getIndex1"></search1>
+			<search @send="getIndex1"></search>
 			<view class="padding margin text-center">
 				<view class="cu-btn bg-yellow lg block shadow radius margin-xl" @tap="hideModal">
 					查询
@@ -69,7 +69,7 @@
 
 <script>
 	import recordCard from "./components/recordCard.vue"
-	import search1 from "./components/search.vue"
+	import search from "./components/search.vue"
 	export default {
 		data() {
 			return {
@@ -96,6 +96,7 @@
 			};
 		},
 		onLoad(option) {
+			this.getList();
 			if(option.TabCur)
 				{
 					this.TabCur=option.TabCur;
@@ -103,9 +104,26 @@
 		},
 		components: {
 			recordCard,
-			search1
+			search
 		},
 		methods: {
+			getList() {
+				this.meetingApi.getAppointmentList({
+					pageNum: 1,
+					pageSize: 20,
+				}).then(res => {
+					console.log("res",res)
+					if(res.code == 200)
+					{
+						// //同步操作
+						// this.$store.commit('getAppointList',{
+						// 	appiontmentList:res.data.list,
+						// })
+						
+					}
+					
+				})
+			},
 			tabSelect(e) {
 				console.log("tab",e)
 				this.TabCur = e.currentTarget.dataset.id;

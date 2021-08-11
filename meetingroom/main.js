@@ -24,7 +24,7 @@ import globalApiList from 'common/http/api/global.js'
 Vue.prototype.globalApi = globalApiList
 
 import meetingApiList from 'common/http/api/meeting.js'
-Vue.prototype.globalApi = meetingApiList
+Vue.prototype.meetingApi = meetingApiList
 // 提示信息
 import tool from 'common/util.js'
 Vue.prototype.$msg = tool.msg
@@ -37,8 +37,6 @@ Vue.component('scan',scan)
 
 import person from './pages/person/index.vue'
 Vue.component('person',person)
-
-
 
 import basics from './pages/basics/home.vue'
 Vue.component('basics',basics)

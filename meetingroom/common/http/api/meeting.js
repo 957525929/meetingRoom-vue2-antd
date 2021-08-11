@@ -37,3 +37,4 @@ const meetingApiList = {
 		return http.request(`ReservationController/getPeriod`,{})
 	},
 }
+export default meetingApiList

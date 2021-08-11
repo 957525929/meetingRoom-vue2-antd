@@ -39,7 +39,7 @@
 			</view>
 			<view class="cu-form-group">
 				<text class="cuIcon-title text-orange "></text> 会议时段
-				<picker @change="PickerChange" :value="index" :range="time">
+				<picker @change="PickerChange" :value="index" :range="period">
 					<view class="picker">
 						{{meetingdata.period}}
 					</view>
@@ -96,7 +96,7 @@
 			</view>
 			<view class="box">
 				<view class="cu-bar btn-group">
-					<button class="cu-btn bg-orange shadow-blur round lg" @tap="showModal"
+					<button class="cu-btn bg-orange shadow-blur round lg" @tap="showModaltijiao"
 						data-target="Modal">提交</button>
 				</view>
 			</view>
@@ -118,9 +118,6 @@
 					</view>
 				</view>
 			</view>
-
-
-
 		</form>
 	</view>
 </template>
@@ -148,50 +145,75 @@
 			return {
 				objectMultiArray,
 				itemdata: {},
-				date: '2021年07月25',
 				index: 0,
-				time: ['上午', '下午', '晚上', '全天'],
-				switchA: false,
-				switchB: true,
 				switchC: false,
 				modalName: null,
 				radio: 'radio1',
-				//条件选择
-				checkbox: [{
-					value: 0,
-					name: '白板',
-					checked: true,
-				}, {
-					value: 1,
-					name: '黑板',
-					checked: true,
-				}, {
-					value: 2,
-					name: '电脑',
-					checked: true,
-				}, {
-					value: 3,
-					name: '投影仪',
-					checked: true,
-				}, ],
-				//会议室选择
+				time:"",
+				date: '2021年08月25',
+				//获取的条件选择列表（text）
+				period: [],
 				campus: [],
+				
+				//条件选择
+				checkbox: 
+					[{
+						value: 0,
+						name: '白板',
+						checked: true,
+					}, {
+						value: 1,
+						name: '黑板',
+						checked: true,
+					}, {
+						value: 2,
+						name: '电脑',
+						checked: true,
+					}, {
+						value: 3,
+						name: '投影仪',
+						checked: true,
+					}, 
+				],
+				//会议室选择
 				curIndex: 0,
 				multiIndex: [0, 0],
 				multiArray: [
 					[],
 					[]
 				],
+				//当前显示
 				meetingdata: {
 					name: "学科研讨会议",
 					campus: "旗山校区",
-					peoples: "10人",
-					time: "2021-07-25",
+					peoples: "10",
+					time: "2021-08-25",
 					period: "上午",
-					condition: ["白板", "投影仪"],
+					condition: [],
 					room: "",
 					affairs: false,
-					remark: "",
+					remark: "无",
+				},
+				//筛选会议室参数
+				roomparams:{
+					campus:"",
+				//	date:"",
+					period:"1",
+				//	number:"",
+					blackboard:"",
+					whiteboard:"",
+					Pc:"",
+					projector:"",
+				},
+				//会议室预约参数
+				meetingparams: {
+					period:"1",
+					meetingRoomId:"",
+				//	meetingName:"",
+				//	date:"",
+					needArragnement:"0",
+				//	number:"",
+				//	remark:"",
 				},
 			};
 		},
@@ -211,7 +233,9 @@
 			this.init();
 		},
 		mounted() {
+			this.getOptionList();
 			console.log(this.area);
+			
 		},
 		methods: {
 			init() {
@@ -219,9 +243,9 @@
 				this.campus = [];
 				this.multiArray[0] = [];
 				this.multiArray[1] = [];
-				for (var i = 0; i < this.objectMultiArray.length; i++) {
-					this.campus.push(this.objectMultiArray[i].name);
-				}
+				// for (var i = 0; i < this.objectMultiArray.length; i++) {
+				// 	this.campus.push(this.objectMultiArray[i].name);
+				// }
 				for (var j = 0; j < this.objectMultiArray[this.curIndex].tower.length; j++) {
 					this.multiArray[0].push(this.objectMultiArray[this.curIndex].tower[j].name);
 				}
@@ -231,40 +255,47 @@
 						.name);
 				}
 			},
-			//时段选择
+			//获取初始条件选项
+			getOptionList() 
+			{
+				//获取校区列表
+				this.meetingApi.getPlace({
+				}).then(res => 
+				{
+					console.log("data",res.data)
+					let Placelist = res.data;
+					Placelist.forEach((element) => this.campus.push(element.placeName))	
+				});
+				//获取午别列表
+				this.meetingApi.getPeriod({
+				}).then(res => 
+				{
+					console.log("data",res.data)
+					let Periodlist = res.data;
+					Periodlist.forEach((element) => this.period.push(element.dictValue))	
+				});
+					
+			},
+			//午别选择
 			PickerChange(e) {
 				this.index = e.detail.value
-				this.meetingdata.period = this.time[this.index]
+				this.meetingdata.period = this.period[this.index]
+				this.meetingparams.period = e.detail.value
+				this.roomparams.period = e.detail.value
 			},
 			//校区选择
 			PickerChangecampus(e) {
 				this.curIndex = e.detail.value;
+				this.roomparams.campus = this.curIndex
+				console.log("校区选择参数",this.roomparams.campus)
 				this.multiIndex = [0, 0];
 				this.init();
 			},
+			//时间选择
 			DateChange(e) {
 				this.meetingdata.time = e.detail.value
 			},
-			SwitchA(e) {
-				this.switchA = e.detail.value
-			},
-			SwitchB(e) {
-				this.switchB = e.detail.value
-			},
-			showModal(e) {
-				this.modalName = e.currentTarget.dataset.target
-				console.log(this.meetingdata)
-			},
-			hideModal(e) {
-				this.modalName = null
-				this.Pagego();
-			},
-			hideChooseModal(e) {
-				this.modalName = null
-			},
-			RadioChange(e) {
-				this.radio = e.detail.value
-			},
+
 			//条件选择
 			ChooseCheckbox(e) {
 				console.log(e)
@@ -278,6 +309,72 @@
 					}
 				}
 			},
+			//会议室基本条件选择
+			hideChooseModal(e) {
+				this.modalName = null
+				if(this.checkbox[0].checked == true)
+				{
+					this.roomparams.whiteboard = 1;
+					this.meetingdata.condition.push(this.checkbox[0].name)
+				}
+				else 
+					this.roomparams.whiteboard = 0;
+				if(this.checkbox[1].checked == true)
+				{
+					this.roomparams.blackboard = 1;
+					this.meetingdata.condition.push(this.checkbox[1].name)
+				}
+				else 
+					this.roomparams.blackboard = 0;
+				if(this.checkbox[2].checked == true)
+				{
+					this.roomparams.Pc = 1;
+					this.meetingdata.condition.push(this.checkbox[2].name)
+				}
+				else 
+					this.roomparams.Pc = 0;
+				if(this.checkbox[3].checked == true)
+				{
+					this.roomparams.projector = 1;
+					this.meetingdata.condition.push(this.checkbox[3].name)
+				}
+				else 
+					this.roomparams.projector = 0;
+				this.GetroomList();
+				
+			},
+			
+			
+			RadioChange(e) {
+				this.radio = e.detail.value
+			},
+			
+			//筛选出符合条件会议室列表
+			GetroomList() {
+				this.meetingApi.getMeetingRoom({
+					campus: 1,
+					date: this.meetingdata.time,
+					period:this.roomparams.period,
+					number:this.meetingdata.peoples,
+					blackboard:this.roomparams.blackboard,
+					whiteboard:this.roomparams.whiteboard,
+					Pc:this.roomparams.Pc,
+					projector:this.roomparams.projector,
+				}).then(res => {
+					console.log("res",res)
+					if(res.code == 200)
+					{
+						// //同步操作
+						// this.$store.commit('getAppointList',{
+						// 	appiontmentList:res.data.list,
+						// })
+						
+					}
+					
+				})
+			},
+			
+			
 			//会议室选择
 			MultiChange(e) {
 				this.multiIndex = e.detail.value
@@ -307,6 +404,44 @@
 			SwitchC(e) {
 				this.switchC = e.detail.value
 				this.meetingdata.affairs = this.switchC
+				this.meetingparams.needArragnement = this.switchC
+			},
+
+			//预约会议室
+			addReservation() {
+				this.meetingApi.meetingAppointment({
+					period:this.meetingparams.period,
+					meetingRoomId:"2",
+					meetingName:this.meetingdata.name,
+					dateDay:this.meetingdata.time.toString(),
+					number:this.meetingdata.peoples,
+					needArragnement:this.meetingparams.needArragnement,
+					remark:this.meetingdata.remark
+				}).then(res => {
+					console.log("res",res)
+					if(res.code == 200)
+					{
+						// //同步操作
+						// this.$store.commit('getAppointList',{
+						// 	appiontmentList:res.data.list,
+						// })
+						
+					}
+					
+				})
+			},
+			showModal(e) {
+				this.modalName = e.currentTarget.dataset.target
+		
+			},
+			showModaltijiao(e) {
+				this.modalName = e.currentTarget.dataset.target
+				this.addReservation();
+	
+			},
+			hideModal(e) {
+				this.modalName = null
+				this.Pagego();
 			},
 			Pagego() {
 				console.log(111);
