@@ -143,7 +143,21 @@
 		},
 		data() {
 			return {
-				objectMultiArray,
+				objectMultiArray:[
+						{
+							name:'旗山校区',
+							tower:[
+								{name:'',room:[{name:"",id:""}],
+								},
+							],
+						},
+					],
+				// roomList:[
+				// 	{
+				// 	meetingroomId:'',
+				// 	area : [],
+				// 	},
+				// ],
 				itemdata: {},
 				index: 0,
 				switchC: false,
@@ -160,22 +174,23 @@
 					[{
 						value: 0,
 						name: '白板',
-						checked: true,
+						checked: false,
 					}, {
 						value: 1,
 						name: '黑板',
-						checked: true,
+						checked: false,
 					}, {
 						value: 2,
 						name: '电脑',
-						checked: true,
+						checked: false,
 					}, {
 						value: 3,
 						name: '投影仪',
-						checked: true,
+						checked: false,
 					}, 
 				],
 				//会议室选择
+	
 				curIndex: 0,
 				multiIndex: [0, 0],
 				multiArray: [
@@ -186,7 +201,7 @@
 				meetingdata: {
 					name: "学科研讨会议",
 					campus: "旗山校区",
-					peoples: "10",
+					peoples: "50",
 					time: "2021-08-25",
 					period: "上午",
 					condition: [],
@@ -196,10 +211,8 @@
 				},
 				//筛选会议室参数
 				roomparams:{
-					campus:"",
-				//	date:"",
+					//campus:"0",
 					period:"1",
-				//	number:"",
 					blackboard:"",
 					whiteboard:"",
 					Pc:"",
@@ -209,28 +222,24 @@
 				meetingparams: {
 					period:"1",
 					meetingRoomId:"",
-				//	meetingName:"",
-				//	date:"",
 					needArragnement:"0",
-				//	number:"",
-				//	remark:"",
 				},
 			};
 		},
 		onLoad(option) {
-			if (option.itemdata != null) {
-				this.itemdata = JSON.parse(option.itemdata);
-				this.meetingdata.name = this.itemdata.name;
-				this.meetingdata.campus = this.itemdata.campus;
-				this.curIndex = this.objectMultiArray.findIndex(value => value.name == this.meetingdata.campus);
-				this.meetingdata.peoples = this.itemdata.peoples;
-				this.meetingdata.time = this.itemdata.time;
-				this.meetingdata.period = this.itemdata.period;
-				this.switchC = this.itemdata.affairs;
-				this.meetingdata.remark = this.itemdata.remark;
-				console.log("主页面", this.itemdata);
-			}
-			this.init();
+			// if (option.itemdata != null) {
+			// 	this.itemdata = JSON.parse(option.itemdata);
+			// 	this.meetingdata.name = this.itemdata.name;
+			// 	this.meetingdata.campus = this.itemdata.campus;
+			// 	this.curIndex = this.objectMultiArray.findIndex(value => value.name == this.meetingdata.campus);
+			// 	this.meetingdata.peoples = this.itemdata.peoples;
+			// 	this.meetingdata.time = this.itemdata.time;
+			// 	this.meetingdata.period = this.itemdata.period;
+			// 	this.switchC = this.itemdata.affairs;
+			// 	this.meetingdata.remark = this.itemdata.remark;
+			// 	console.log("主页面", this.itemdata);
+			// }
+			//this.init();
 		},
 		mounted() {
 			this.getOptionList();
@@ -239,8 +248,8 @@
 		},
 		methods: {
 			init() {
-				this.meetingdata.campus = this.objectMultiArray[this.curIndex].name;
-				this.campus = [];
+				//this.meetingdata.campus = this.objectMultiArray[this.curIndex].name;
+				//this.campus = [];
 				this.multiArray[0] = [];
 				this.multiArray[1] = [];
 				// for (var i = 0; i < this.objectMultiArray.length; i++) {
@@ -286,10 +295,10 @@
 			//校区选择
 			PickerChangecampus(e) {
 				this.curIndex = e.detail.value;
-				this.roomparams.campus = this.curIndex
-				console.log("校区选择参数",this.roomparams.campus)
+				this.meetingdata.campus = this.campus[this.curIndex]
+				console.log("校区选择参数",this.meetingdata.campus)
 				this.multiIndex = [0, 0];
-				this.init();
+				
 			},
 			//时间选择
 			DateChange(e) {
@@ -352,7 +361,7 @@
 			//筛选出符合条件会议室列表
 			GetroomList() {
 				this.meetingApi.getMeetingRoom({
-					campus: 1,
+					campus: this.meetingdata.campus,
 					date: this.meetingdata.time,
 					period:this.roomparams.period,
 					number:this.meetingdata.peoples,
@@ -364,11 +373,103 @@
 					console.log("res",res)
 					if(res.code == 200)
 					{
-						// //同步操作
-						// this.$store.commit('getAppointList',{
-						// 	appiontmentList:res.data.list,
-						// })
+						for(let i=0,len=res.data.length;i<len;i++)
+						{
+							let roomparam  = {}
+							roomparam.meetingroomId = "",
+							roomparam.area = [],
+							console.log("111",this.objectMultiArray[0].tower)
+							roomparam.area = res.data[i].placeName.split('.')
+							roomparam.meetingroomId = res.data[i].meetingroomId
+							if(roomparam.area[0] == '旗山校区')
+							  {
+								  console.log("1222",this.objectMultiArray[0].tower)
+								  if(this.objectMultiArray[0].tower[0].name == "")	//objectMultiArray不为空
+								  {
+									this.objectMultiArray[0].tower[0].name = roomparam.area[1]
+									this.objectMultiArray[0].tower[0].room[0].name = roomparam.area[2]
+									this.objectMultiArray[0].tower[0].room[0].id = roomparam.meetingroomId  
+									console.log("首次创建",this.objectMultiArray)
+								  }
+								  else		//objectMultiArray为空
+								  {
+									  //遍历是否有该楼房
+									  let arr =[]
+									  this.objectMultiArray[0].tower.forEach((element) => arr.push(element.name))	
+									  let a = arr.indexOf(roomparam.area[1])
+										//遍历是否有该楼房
+										//	let a = this.objectMultiArray[0].tower.name.indexOf(roomparam.area[1])
+										console.log("index",a)
+										if(a == -1)		//没有该楼房，新建该楼房
+											{
+												//添加新楼，同时添加新房间
+												let build = {}
+												build.name = ""
+												build.room = []
+												build.room.name = ""
+												build.room.id = ""
+												
+												build.name = roomparam.area[1]
+												build.room.name = roomparam.area[2]
+												build.room.id = roomparam.meetingroomId
+												this.objectMultiArray[0].tower.push(build)	
+											}
+										else		//已经有该楼
+											{
+												console.log("1",this.objectMultiArray[0].tower)
+												//添加新房间
+												let rooms = {}
+												rooms.name = ""
+												rooms.id = ""
+												rooms.name = roomparam.area[2]
+												rooms.id = roomparam.meetingroomId
+												this.objectMultiArray[0].tower[a].push(rooms)
+												console.log("2",this.objectMultiArray[0].tower[a])
+											}
+								  }
+								  
+							  }
+							else 		//仓山校区
+							{
+								// console.log("333")
+								// this.roomList[i].meetingroomId = res.data[i].meetingroomId
+								// this.roomList[i].area = res.data[i].placeName.split('.')
+								// if(this.roomList[i].area[0] == '旗山校区')
+								//   {
+								// 	  console.log("444")
+								// 	  if(this.objectMultiArray[0].tower != null)	//objectMultiArray不为空
+								// 	  {
+								// 		this.objectMultiArray[0].tower[0].name = this.roomList[i].area[1]
+								// 		this.objectMultiArray[0].tower[0].room[0].name = this.roomList[i].area[2]
+								// 		this.objectMultiArray[0].tower[0].room[0].id = this.roomList[i].meetingroomId  
+								// 		console.log("首次创建",this.objectMultiArray)
+								// 	  }
+								// 	  else		//objectMultiArray为空
+								// 	  {
+								// 		  //遍历是否有该楼房
+								// 			let a = this.objectMultiArray[0].tower.indexOf(this.roomList[i].area[1])
+								// 			if(a == -1)		//没有该楼房，新建该楼房
+								// 				{
+								// 					let build = {name:"",room:[]}
+								// 					build.name = this.roomList[i].area[1]
+								// 					build.room[0].name = this.roomList[i].area[2]
+								// 					build.room[0].id = this.roomList[i].meetingroomId
+								// 					this.objectMultiArray[0].tower.push(build)	
+								// 				}
+								// 			else		//已经有该楼房
+								// 				{
+								// 					let rooms = {name:'',id:''}
+								// 					rooms.name = this.roomList[i].area[2]
+								// 					rooms.id = this.roomList[i].meetingroomId
+								// 					this.objectMultiArray[0].tower[a].push(rooms)
+								  
+								// 				}
+								// 		}
+								// 	}
+							}
+						}
 						
+						this.init()
 					}
 					
 				})
@@ -388,6 +489,7 @@
 						this.multiArray[1] = result
 						break;
 				};
+				
 			},
 			searchColumn() {
 				var arr = [];
@@ -395,6 +497,7 @@
 					if (j == this.multiIndex[0]) {
 						for (var k = 0; k < this.objectMultiArray[this.curIndex].tower[j].room.length; k++) {
 							arr.push(this.objectMultiArray[this.curIndex].tower[j].room[k].name);
+							arr.push(this.objectMultiArray[this.curIndex].tower[j].room[k].id);
 						}
 					}
 				}
@@ -410,13 +513,14 @@
 			//预约会议室
 			addReservation() {
 				this.meetingApi.meetingAppointment({
-					period:this.meetingparams.period,
-					meetingRoomId:"2",
+					period:parseInt(this.meetingparams.period),
+					//meetingRoomId:parseInt(this.meetingparams.meetingRoomId),
+					meetingRoomId:2,
 					meetingName:this.meetingdata.name,
 					dateDay:this.meetingdata.time.toString(),
-					number:this.meetingdata.peoples,
-					needArragnement:this.meetingparams.needArragnement,
-					remark:this.meetingdata.remark
+					number:parseInt(this.meetingdata.peoples),
+					needArrangement:parseInt(this.meetingparams.needArragnement),
+					remark:this.meetingdata.remark,
 				}).then(res => {
 					console.log("res",res)
 					if(res.code == 200)

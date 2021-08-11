@@ -11,65 +11,82 @@
 				</view>
 				<view class="padding-xl m-view" style="text-align: left;">
 					<view class="m-bottom">
-						【会议名称】：{{curData.name}}
+						【会议名称】：{{curData.meetingName}}
 					</view>
 					<view class="m-bottom">
-						【会议时间】：{{curData.time}}
+						【会议时间】：{{curData.dateDay}}
 					</view>
+					<view v-if="curData.period==0" class="m-bottom">
+						【会议时段】：上午
+					</view>
+					<view v-if="curData.period==1" class="m-bottom">
+						【会议时段】：下午
+					</view>
+					<view v-if="curData.period==2" class="m-bottom">
+						【会议时段】：晚上
+					</view>
+					<view v-if="curData.period==3" class="m-bottom">
+						【会议时段】：全天
+					</view>
+
+
 					<view class="m-bottom">
-						【会议时段】：{{curData.period}}
+						【预约会议室】：{{curData.meetingRoomName}}
 					</view>
-<!-- 					<view class="m-bottom">
-						校区：{{curData.campus}}
+					<!-- <view class="m-bottom">
+						【基本条件】：{{curData.condition}}
 					</view> -->
 					<view class="m-bottom">
-						【预约会议室】：{{curData.room}}
+						【参会人数】：{{curData.number}}
 					</view>
-					<view class="m-bottom">
-						【基本条件】：{{curData.condition}}
-					</view>
-					<view class="m-bottom">
-						【参会人数】：{{curData.peoples}}
-					</view>
-					<view v-if="curData.affairs==true" class="m-bottom">	
+					<view v-if="curData.needArrangement==1" class="m-bottom">	
 						【是否会务安排】：是
 					</view>
-					<view v-if="curData.affairs==false" class="m-bottom">
+					<view v-if="curData.needArrangement==0" class="m-bottom">
 						【是否会务安排】：否
 					</view>
-					<view v-if="curData.status=='强制撤销'" class="m-bottom">
+					<!-- <view v-if="curData.status=='强制撤销'" class="m-bottom">
 						【强制撤销原因】：{{curData.reason}}
-					</view>
+					</view> -->
 					<view class="m-bottom">
 						【备注】：{{curData.remark}}
 					</view>
 				</view>
 			</view>
 		</view>
-		<view v-for="(item,index) in meetingdata" :key="index">
+		<view v-for="(item,index) in meetingList" :key="index">
 			<!-- 判断传递过来的值显示对应状态 -->
-			<view v-if="item.status==cardType.status">
+			<view v-if="item.status==cardType.id">
 				<view class="card" @tap="recordDetail(item)">
 					<span class="picture">
 						<!-- 显示不同图片 -->
-						<image class="card-img" :src="imgSrc[cardType.id]" mode="scaleToFill" style="width: 60px; height: 60px;"></image>
+						<image class="card-img" :src="imgSrc[item.status]" mode="scaleToFill" style="width: 60px; height: 60px;"></image>
 					</span>
 					<span class="card-center">
 						<view>
-							会议名：{{item.name}}
+							会议名：{{item.meetingName}}
 						</view>
 						<view>
-							开会日期：{{item.time}}
+							开会日期：{{item.dateDay}}
 						</view>
-						<view>
-							时段：{{ item.period}}
+						<view v-if="item.period==0">
+							时段：上午
+						</view>
+						<view v-if="item.period==1">
+							时段：下午
+						</view>
+						<view v-if="item.period==2">
+							时段：晚上
+						</view>
+						<view v-if="item.period==3">
+							时段：全天
 						</view>
 					</span>
 					<span class="card-right">
-						<view v-if="item.status=='待开会'" class="text-red" style="font-size: 15px;" @tap.stop="showModal" data-target="DialogModal1">
+						<view v-if="item.status==1" class="text-red" style="font-size: 15px;" @tap.stop="showModal" data-target="DialogModal1">
 							取消
 						</view>
-						<view v-if="item.status=='强制撤销'" class="text-red" style="font-size: 15px" @tap.stop="showModal2($event,item)"  data-target="DialogModal2">
+						<view v-if="item.status==5" class="text-red" style="font-size: 15px" @tap.stop="showModal2($event,item)"  data-target="DialogModal2">
 							重新预约
 						</view>
 					</span>
@@ -129,132 +146,136 @@
 				modalVisable:false,
 				itemdata:{},
 				curData:{},
-				meetingdata: [
-					{
-						index: 0,
-						name: '学科地理学术研讨会',
-						campus: '仓山校区',
-						time: new Date().getFullYear() + "年" +
-							(new Date().getMonth() + 1) + "月" +
-							(new Date().getDate()+1) + "日" ,
-						status: '待开会',
-						cancel: '取消',
-						period:"上午",
-						peoples:"10人",
-						condition:["白板","投影仪"],
-						room:"仓山校区.邵逸夫楼.305",
-						affairs:false,
-						remark:"参与人:学科地理组所有老师",
-						reason:"",
-					},
-					{
-						index: 1,
-						name: '学科地理学术研讨会',
-						campus: '仓山校区',
-						time: new Date().getFullYear() + "年" +
-							(new Date().getMonth() + 1) + "月" +
-							(new Date().getDate()+1) + "日" ,
-						status: '待开会',
-						cancel: '取消',
-						period:"下午",
-						condition:["白板","投影仪"],
-						peoples:"10人",
-						room:"仓山校区.邵逸夫楼.305",
-						affairs:false,
-						remark:"参与人:学科地理组所有老师",
-						reason:"",
-					},
-					{
-						index: 2,
-						name: '自然地理学术研讨会',
-						campus: '旗山校区',
-						time: new Date().getFullYear() + "年" +
-							(new Date().getMonth() ) + "月" +
-							(new Date().getDate()) + "日" ,
-						status: '已完成',
-						cancel: '',
-						period:"上午",
-						condition:["白板","投影仪","电脑"],
-						room:"旗山校区.地理科学学院实验楼.101",
-						peoples:"15人",
-						affairs:true,
-						remark:"参与人:自然地理组所有老师",
-						reason:"",
-					},
-					{
-						index: 3,
-						name: '自然地理学术研讨会',
-						campus: '旗山校区',
-						time: new Date().getFullYear() + "年" +
-							(new Date().getMonth() ) + "月" +
-							(new Date().getDate()) + "日" ,
-						status: '已完成',
-						cancel: '',
-						period:"下午",
-						condition:["白板","投影仪","电脑"],
-						room:"旗山校区.地理科学学院实验楼.101",
-						peoples:"15人",
-						affairs:true,
-						remark:"参与人:自然地理组所有老师",
-						reason:"",
-					},
-					{
-						index: 4,
-						name: '人文地理学术研讨会',
-						campus: '仓山校区',
-						time: new Date().getFullYear() + "年" +
-							(new Date().getMonth()+2 ) + "月" +
-							(new Date().getDate()-1) + "日" ,
-						status: '待开会',
-						cancel: '',
-						period:"上午",
-						condition:["白板","投影仪","电脑"],
-						room:"仓山校区.邵逸夫楼.203",
-						peoples:"12人",
-						affairs:true,
-						remark:"参与人:人文地理组所有老师",
-						reason:"",
-					},
-					{
-						index: 5,
-						name: '自然地理学开题准备会议',
-						campus: '仓山校区',
-						time: new Date().getFullYear() + "年" +
-							(new Date().getMonth() +2) + "月" +
-							(new Date().getDate()) + "日" ,
-						status: '待开会',
-						cancel: '',
-						period:"上午",
-						condition:["白板","投影仪","电脑"],
-						room:"仓山校区.邵逸夫楼.203",
-						peoples:"12人",
-						affairs:true,
-						remark:"参与人:自然地理组所有老师",
-						reason:"",
-					},
-					{
-						index:6,
-						name: '自然地理学开题准备会议',
-						campus: '仓山校区',
-						time: new Date().getFullYear() + "年" +
-							(new Date().getMonth()+1) + "月" +
-							(new Date().getDate()+1) + "日" ,
-						status: '强制撤销',
-						cancel: '',
-						period:"下午",
-						condition:["白板","投影仪","电脑"],
-						room:"仓山校区.邵逸夫楼.305",
-						peoples:"16人",
-						affairs:true,
-						remark:"参与人:自然地理组所有老师",
-						reason:"需要征用该会议室召开紧急会议",
-					},
+				meetingList:[],
+				// meetingdata: [
+				// 	{
+				// 		index: 0,
+				// 		name: '学科地理学术研讨会',
+				// 		campus: '仓山校区',
+				// 		time: new Date().getFullYear() + "年" +
+				// 			(new Date().getMonth() + 1) + "月" +
+				// 			(new Date().getDate()+1) + "日" ,
+				// 		status: '待开会',
+				// 		cancel: '取消',
+				// 		period:"上午",
+				// 		peoples:"10人",
+				// 		condition:["白板","投影仪"],
+				// 		room:"仓山校区.邵逸夫楼.305",
+				// 		affairs:false,
+				// 		remark:"参与人:学科地理组所有老师",
+				// 		reason:"",
+				// 	},
+				// 	{
+				// 		index: 1,
+				// 		name: '学科地理学术研讨会',
+				// 		campus: '仓山校区',
+				// 		time: new Date().getFullYear() + "年" +
+				// 			(new Date().getMonth() + 1) + "月" +
+				// 			(new Date().getDate()+1) + "日" ,
+				// 		status: '待开会',
+				// 		cancel: '取消',
+				// 		period:"下午",
+				// 		condition:["白板","投影仪"],
+				// 		peoples:"10人",
+				// 		room:"仓山校区.邵逸夫楼.305",
+				// 		affairs:false,
+				// 		remark:"参与人:学科地理组所有老师",
+				// 		reason:"",
+				// 	},
+				// 	{
+				// 		index: 2,
+				// 		name: '自然地理学术研讨会',
+				// 		campus: '旗山校区',
+				// 		time: new Date().getFullYear() + "年" +
+				// 			(new Date().getMonth() ) + "月" +
+				// 			(new Date().getDate()) + "日" ,
+				// 		status: '已完成',
+				// 		cancel: '',
+				// 		period:"上午",
+				// 		condition:["白板","投影仪","电脑"],
+				// 		room:"旗山校区.地理科学学院实验楼.101",
+				// 		peoples:"15人",
+				// 		affairs:true,
+				// 		remark:"参与人:自然地理组所有老师",
+				// 		reason:"",
+				// 	},
+				// 	{
+				// 		index: 3,
+				// 		name: '自然地理学术研讨会',
+				// 		campus: '旗山校区',
+				// 		time: new Date().getFullYear() + "年" +
+				// 			(new Date().getMonth() ) + "月" +
+				// 			(new Date().getDate()) + "日" ,
+				// 		status: '已完成',
+				// 		cancel: '',
+				// 		period:"下午",
+				// 		condition:["白板","投影仪","电脑"],
+				// 		room:"旗山校区.地理科学学院实验楼.101",
+				// 		peoples:"15人",
+				// 		affairs:true,
+				// 		remark:"参与人:自然地理组所有老师",
+				// 		reason:"",
+				// 	},
+				// 	{
+				// 		index: 4,
+				// 		name: '人文地理学术研讨会',
+				// 		campus: '仓山校区',
+				// 		time: new Date().getFullYear() + "年" +
+				// 			(new Date().getMonth()+2 ) + "月" +
+				// 			(new Date().getDate()-1) + "日" ,
+				// 		status: '待开会',
+				// 		cancel: '',
+				// 		period:"上午",
+				// 		condition:["白板","投影仪","电脑"],
+				// 		room:"仓山校区.邵逸夫楼.203",
+				// 		peoples:"12人",
+				// 		affairs:true,
+				// 		remark:"参与人:人文地理组所有老师",
+				// 		reason:"",
+				// 	},
+				// 	{
+				// 		index: 5,
+				// 		name: '自然地理学开题准备会议',
+				// 		campus: '仓山校区',
+				// 		time: new Date().getFullYear() + "年" +
+				// 			(new Date().getMonth() +2) + "月" +
+				// 			(new Date().getDate()) + "日" ,
+				// 		status: '待开会',
+				// 		cancel: '',
+				// 		period:"上午",
+				// 		condition:["白板","投影仪","电脑"],
+				// 		room:"仓山校区.邵逸夫楼.203",
+				// 		peoples:"12人",
+				// 		affairs:true,
+				// 		remark:"参与人:自然地理组所有老师",
+				// 		reason:"",
+				// 	},
+				// 	{
+				// 		index:6,
+				// 		name: '自然地理学开题准备会议',
+				// 		campus: '仓山校区',
+				// 		time: new Date().getFullYear() + "年" +
+				// 			(new Date().getMonth()+1) + "月" +
+				// 			(new Date().getDate()+1) + "日" ,
+				// 		status: '强制撤销',
+				// 		cancel: '',
+				// 		period:"下午",
+				// 		condition:["白板","投影仪","电脑"],
+				// 		room:"仓山校区.邵逸夫楼.305",
+				// 		peoples:"16人",
+				// 		affairs:true,
+				// 		remark:"参与人:自然地理组所有老师",
+				// 		reason:"需要征用该会议室召开紧急会议",
+				// 	},
 					
-				],
+				// ],
 				// 图片
 				imgSrc: [
 					"/static/Appointment/waitmeeting.png",
+					"/static/Appointment/waitmeeting.png",
 					"/static/Appointment/complete.png",
+					"/static/Appointment/complete.png",
+					"/static/Appointment/revocation.png",
 					"/static/Appointment/revocation.png",
 				//	"../static/Appointment/cancel.png",
 				],
@@ -295,6 +316,9 @@
 					console.log("res",res)
 					if(res.code == 200)
 					{
+						console.log("list",res.data.list)
+						res.data.list.forEach((element) => this.meetingList.push(element))	
+						console.log("meetingList",this.meetingList)
 						//根据返回参数item的状态匹配  v-if="item.type==cardType.type"
 						// //同步操作
 						// this.$store.commit('getAppointList',{

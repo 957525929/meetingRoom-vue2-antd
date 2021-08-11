@@ -35,12 +35,12 @@
 			</block>
 			<block v-if="TabCur==1">
 				<!-- <navigator class="action" @tap="gotoAllow"> -->
-					<recordCard :cardType="type[1]" />
+					<recordCard :cardType="type[2]" />
 				<!-- </navigator> -->
 			</block>
 			<block v-if="TabCur==2">
 				<!-- <navigator class="action" @tap="gotoDetail" > -->
-					<recordCard :cardType="type[2]" @send="recordDetailed"/>
+					<recordCard :cardType="type[4]" @send="recordDetailed"/>
 				<!-- </navigator> -->
 			</block>
 			<!-- <block v-if="TabCur==3">
@@ -77,21 +77,26 @@
 				modalName: null,
 				TabCur: 0,
 				scrollLeft: 0,
+				meetingList:[],
 				type: [{
-					id: 0,
+					id: 1,
 					type: "待开会"
 				}, {
-					id: 1,
-					type: "已完成"
+					id: 2,
+					type: "开会中"
 				}, 
 				{
-					id: 2,
+					id: 3,
+					type: "已完成"
+				},
+				{
+					id: 4,
+					type: "撤销"
+				}, 
+				{
+					id: 5,
 					type: "强制撤销"
 				},
-				// {
-				// 	id: 3,
-				// 	type: "已取消"
-				// }, 
 				],
 			};
 		},
@@ -115,11 +120,8 @@
 					console.log("res",res)
 					if(res.code == 200)
 					{
-						// //同步操作
-						// this.$store.commit('getAppointList',{
-						// 	appiontmentList:res.data.list,
-						// })
-						
+						console.log("list",res.data.list)
+						this.meetingList = res.data.list
 					}
 					
 				})
