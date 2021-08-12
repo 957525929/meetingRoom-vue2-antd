@@ -36,5 +36,16 @@ const meetingApiList = {
 	getPeriod:()=>{
 		return http.request(`ReservationController/getPeriod`,{})
 	},
+	//撤销预约
+	cancelReservation:(params)=>{
+		return http.request(`ReservationController/cancelReservation`, {
+			data:{
+				...params
+			},
+			method:"POST",
+			hideLoading:true
+		})
+		
+	},
 }
 export default meetingApiList

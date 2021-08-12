@@ -83,7 +83,7 @@
 						</view>
 					</span>
 					<span class="card-right">
-						<view v-if="item.status==1" class="text-red" style="font-size: 15px;" @tap.stop="showModal" data-target="DialogModal1">
+						<view v-if="item.status==1" class="text-red" style="font-size: 15px;" @tap.stop="showModal($event,item)" data-target="DialogModal1">
 							取消
 						</view>
 						<view v-if="item.status==5" class="text-red" style="font-size: 15px" @tap.stop="showModal2($event,item)"  data-target="DialogModal2">
@@ -329,17 +329,32 @@
 					
 				})
 			},
-			showModal(e) {
+			//取消预约弹框
+			showModal(e,item) {
+				console.log("item",item)
+				this.curData.reserveId = item.reserveId
+				console.log("取消",this.curData.reserveId)
 				this.modalName = e.currentTarget.dataset.target
 			},
+			//确认取消预约
 			hideModal(e) {
 				this.modalName = null
+				this.meetingApi.cancelReservation({
+					cancelRemark:"",
+					//id:32,
+					id: parseInt(this.curData.reserveId),
+				}).then(res => 
+				{
+					console.log("data",res.data)
+					
+				});
+				
 			},
 			showModal2(e,item) {
 				//console.log("111",e,item)
 				this.itemdata=item;
 				this.modalName1 = e.currentTarget.dataset.target;
-				console.log("111",this.itemdata)
+				
 			},
 			hideModal2(e) {
 				this.modalName1 = null
@@ -350,6 +365,7 @@
 			//跳转
 			goForm(e) {
 				this.modalName1 = null
+				
 				//方法一导航
 				uni.navigateTo({
 					url: '/pagesAppointment/index?itemdata='+JSON.stringify(this.itemdata)
@@ -360,9 +376,10 @@
 				// });
 			},
 			recordDetail(item){
-				console.log(item)
+				console.log("item",item)
 				this.modalVisable = true;
 				this.curData=item;
+				
 				//this.$emit('send',item)
 			},
 		

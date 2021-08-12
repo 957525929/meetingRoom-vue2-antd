@@ -101,7 +101,7 @@
 			};
 		},
 		onLoad(option) {
-			this.getList();
+			//this.getList();
 			if(option.TabCur)
 				{
 					this.TabCur=option.TabCur;
@@ -112,20 +112,20 @@
 			search
 		},
 		methods: {
-			getList() {
-				this.meetingApi.getAppointmentList({
-					pageNum: 1,
-					pageSize: 20,
-				}).then(res => {
-					console.log("res",res)
-					if(res.code == 200)
-					{
-						console.log("list",res.data.list)
-						this.meetingList = res.data.list
-					}
+			// getList() {
+			// 	this.meetingApi.getAppointmentList({
+			// 		pageNum: 1,
+			// 		pageSize: 20,
+			// 	}).then(res => {
+			// 		console.log("res",res)
+			// 		if(res.code == 200)
+			// 		{
+			// 			console.log("list",res.data.list)
+			// 			this.meetingList = res.data.list
+			// 		}
 					
-				})
-			},
+			// 	})
+			// },
 			tabSelect(e) {
 				console.log("tab",e)
 				this.TabCur = e.currentTarget.dataset.id;
