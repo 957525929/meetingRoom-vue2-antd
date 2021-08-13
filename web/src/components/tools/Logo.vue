@@ -7,7 +7,7 @@
       <img v-else src="~@/assets/logo.png" alt="logo">
       <!-- update-begin- author:sunjianlei --- date:20190814 --- for: logo颜色根据主题颜色变化 -->
 
-      <h1 v-if="showTitle">{{ title }}</h1>
+      <h1 v-if="showTitle" style="font-size:17px">{{ title }}</h1>
     </router-link>
   </div>
 </template>
@@ -21,7 +21,7 @@
     props: {
       title: {
         type: String,
-        default: '资产管理平台',
+        default: '会议室预约平台',
         required: false
       },
       showTitle: {

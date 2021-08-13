@@ -5,7 +5,7 @@
         <div class="header">
           <a href="/">
             <img src="~@/assets/logo.png" class="logo" alt="logo">
-            <span class="title">福建师大地理所/地科院资产管理平台</span>
+            <span class="title">会议室预约平台</span>
           </a>
         </div>
         <div class="desc">
