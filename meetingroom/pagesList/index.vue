@@ -30,17 +30,17 @@
 
 			<block v-if="TabCur==0">
 				<!-- <navigator class="action" @tap="gotoDetail" > -->
-					<recordCard :cardType="type[0]"/>
+					<recordCard :cardType="type[0].id" :start="starttime" :end="endtime"/>
 				<!-- </navigator> -->
 			</block>
 			<block v-if="TabCur==1">
 				<!-- <navigator class="action" @tap="gotoAllow"> -->
-					<recordCard :cardType="type[2]" />
+					<recordCard :cardType="type[2].id" :start="starttime" :end="endtime"/>
 				<!-- </navigator> -->
 			</block>
 			<block v-if="TabCur==2">
 				<!-- <navigator class="action" @tap="gotoDetail" > -->
-					<recordCard :cardType="type[4]" @send="recordDetailed"/>
+					<recordCard :cardType="type[4].id" @send="recordDetailed" :start="starttime" :end="endtime"/>
 				<!-- </navigator> -->
 			</block>
 			<!-- <block v-if="TabCur==3">
@@ -56,7 +56,7 @@
 		</view> 
 		 <scroll-view scroll-y class="DrawerWindow" :class="modalName=='viewModal'?'show':''">
 
-			<search @send="getIndex1"></search>
+			<search @send="getIndex1" @starttime="getstarttime" @endtime="getendtime"></search>
 			<view class="padding margin text-center">
 				<view class="cu-btn bg-yellow lg block shadow radius margin-xl" @tap="hideModal">
 					查询
@@ -76,6 +76,8 @@
 				recordData:'',
 				modalName: null,
 				TabCur: 0,
+				starttime:'',
+				endtime:'',
 				scrollLeft: 0,
 				meetingList:[],
 				type: [{
@@ -100,13 +102,14 @@
 				],
 			};
 		},
-		onLoad(option) {
-			//this.getList();
-			if(option.TabCur)
-				{
-					this.TabCur=option.TabCur;
-				}
-		},
+		// onLoad(option) {
+		// 	//this.getList();
+		// 	console.log("option",option)
+		// 	if(option.TabCur)
+		// 		{
+		// 			this.TabCur=option.TabCur;
+		// 		}
+		// },
 		components: {
 			recordCard,
 			search
@@ -136,16 +139,23 @@
 			},
 			hideModal(e) {
 				this.modalName = null
+				 this.$refs.recordCard.getList(this.TabCur);
 			},
 			getIndex1(data) {
 				this.TabCur = data
 				console.log(this.TabCur)
 			},
-			
+			getstarttime(data) {
+				this.starttime  = data
+			},
+			getendtime(data) {
+				this.endtime  = data
+				console.log("endtime",this.endtime)
+			},
 			recordDetailed(item){
 				this.recordData=item
 				console.log("recordData",item)
-			}
+			},
 		}
 	}
 </script>

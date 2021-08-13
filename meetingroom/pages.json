@@ -214,7 +214,7 @@
 			"pages":[
 				{
 					"path":"index",
-					"style":{}
+					"style":{"enablePullDownRefresh": true}
 				}
 			]
 		},

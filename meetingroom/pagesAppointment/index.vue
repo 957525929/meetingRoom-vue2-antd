@@ -29,7 +29,7 @@
 				<text class="cuIcon-title text-orange"></text>参会人数
 				<input v-model="meetingdata.peoples" name="input" style="padding-left: 10px;"></input>
 			</view>
-			<view class="cu-form-group" style="margin-top: 10px;">
+			<view class="cu-form-group" >
 				<text class="cuIcon-title text-orange "></text> 会议日期
 				<picker mode="date" :value="date" start="2015年09月01" end="2030年09月01" @change="DateChange">
 					<view class="picker">
@@ -45,15 +45,16 @@
 					</view>
 				</picker>
 			</view>
-			<view class="cu-bar bg-white margin-top" style="margin-top: 0;">
+			
+			<view class="cu-bar bg-white margin-top" style="margin-top: 15px;margin-bottom: 0px;">
 				<view class="action">
-					<text></text> 基本条件
+					<text></text> 会议室基本条件
 				</view>
 				<view class="action">
 					<button class="cu-btn bg-green shadow" @tap="showModal" data-target="ChooseModal">选择</button>
 				</view>
 			</view>
-			<view class="bg-white margin-top" style="margin-top: 0;">
+			<view class="bg-white" >
 				<view style="margin-left: 3%;">
 					<view v-for="(item,index)  in checkbox" v-if="item.checked" :key="index"
 						class="cu-tag round bg-blue light" style="font-size: 14.5px;">{{item.name}}</view>
@@ -74,6 +75,10 @@
 					</view>
 				</view>
 			</view>
+			<view class="cu-form-group" style="margin-top: 0px;">
+				<text ></text>
+				<button class="cu-btn bg-green shadow" @tap="selectRoom" data-target="ChooseModal">筛选会议室</button>
+			</view>
 			<view class="cu-form-group" >
 				<text class="cuIcon-title text-orange"></text>会议地点
 				<picker mode="multiSelector" @change="MultiChange" @columnchange="MultiColumnChange" :value="multiIndex"
@@ -85,7 +90,7 @@
 
 				<!-- <text class='cuIcon-locationfill text-orange'></text> -->
 			</view>
-			<view class="cu-form-group margin-top">
+			<view class="cu-form-group margin-top" style="margin-top: 15px;">
 				<view class="title">是否会务安排</view>
 				<switch @change="SwitchC" :class="switchC?'checked':''" :checked="switchC?true:false"></switch>
 			</view>
@@ -109,11 +114,11 @@
 						</view>
 					</view>
 					<view class="padding-xl">
-						您已成功提交会议室预约申请
+						您提交的会议室预约申请已{{this.message}}
 					</view>
 					<view class="cu-bar bg-white justify-end">
 						<view class="action">
-							<button class="cu-btn bg-green margin-left" @tap="hideModal">确定</button>
+							<button class="cu-btn bg-green margin-left" @tap="hideModalOK">确定</button>
 						</view>
 					</view>
 				</view>
@@ -123,24 +128,24 @@
 </template>
 
 <script>
-	import {
-		objectMultiArray
-	} from './data/areaTree.js'
-	import {
-		mapState,
-		mapGetters
-	} from "vuex";
+	// import {
+	// 	objectMultiArray
+	// } from './data/areaTree.js'
+	// import {
+	// 	mapState,
+	// 	mapGetters
+	// } from "vuex";
 	export default {
-		computed: {
-			...mapGetters({
-				area: "area",
-			}),
-			...mapState({
-				tree: (state) => state.area
-				// userId: (state) => state.userId,
-				// launchFlag: (state) => state.launchFlag,
-			}),
-		},
+		// computed: {
+		// 	...mapGetters({
+		// 		area: "area",
+		// 	}),
+		// 	...mapState({
+		// 		tree: (state) => state.area
+		// 		// userId: (state) => state.userId,
+		// 		// launchFlag: (state) => state.launchFlag,
+		// 	}),
+		// },
 		data() {
 			return {
 				objectMultiArray:[
@@ -207,7 +212,7 @@
 					name: "学科研讨会议",
 					campus: "旗山校区",
 					peoples: "50",
-					time: "2021-08-25",
+					time: "2021-09-25",
 					period: "上午",
 					condition: [],
 					room: "",
@@ -229,6 +234,7 @@
 					meetingRoomId:"",
 					needArragnement:"0",
 				},
+				message:"",
 			};
 		},
 		onLoad(option) {
@@ -243,6 +249,7 @@
 				this.meetingdata.remark = this.itemdata.remark;
 				this.meetingparams.period = this.itemdata.period;
 				this.meetingparams.meetingRoomId = this.itemdata.meetingRoomId;
+				//this.meetingparams
 				this.needArragnement = this.itemdata.needArrangement;
 				//显示
 				if(this.itemdata.needArrangement == '0')
@@ -265,12 +272,10 @@
 		},
 		mounted() {
 			this.getOptionList();
-			
-			console.log(this.area);
-			
+			console.log("初次建树");
+			this.GetroomList();
 		},
-		methods: {
-			
+		methods: {	
 			//获取初始条件选项
 			getOptionList() 
 			{
@@ -278,7 +283,7 @@
 				this.meetingApi.getPlace({
 				}).then(res => 
 				{
-					console.log("data",res.data)
+					console.log("校区列表",res.data)
 					let Placelist = res.data;
 					Placelist.forEach((element) => this.campus.push(element.placeName))	
 				});
@@ -286,7 +291,7 @@
 				this.meetingApi.getPeriod({
 				}).then(res => 
 				{
-					console.log("data",res.data)
+					console.log("午别列表",res.data)
 					let Periodlist = res.data;
 					Periodlist.forEach((element) => this.period.push(element.dictValue))	
 				});
@@ -298,27 +303,31 @@
 				this.meetingdata.period = this.period[this.index]
 				this.meetingparams.period = e.detail.value
 				this.roomparams.period = e.detail.value
+				this.objectMultiArray  = []
+				this.objectMultiArray = this.object
+				console.log("午别选择监听树为空",this.objectMultiArray)
 			},
 			//校区选择
 			PickerChangecampus(e) {
 				this.curIndex = e.detail.value;
 				this.meetingdata.campus = this.campus[this.curIndex]
 				console.log("校区选择参数",this.meetingdata.campus)
-				this.multiIndex = [0, 0];
-				
+				//this.objectMultiArray.splice(0,this.objectMultiArray.length);
+				this.objectMultiArray  = []
+				this.objectMultiArray = this.object
+				console.log("校区选择监听树为空",this.objectMultiArray)
 			},
 			//时间选择
 			DateChange(e) {
 				this.meetingdata.time = e.detail.value
+				//this.objectMultiArray.splice(0,this.objectMultiArray.length);
+				this.objectMultiArray  = []
 				this.objectMultiArray = this.object
-				this.areastring = ""
-				this.totalrooms = []
-				this.multiIndex = [0, 0]
-				this.multiArray= [[],[]]
-				console.log("树为空",this.objectMultiArray,this.areastring,this.totalrooms)
+				//this.objectMultiArray = this.object
+				console.log("时间选择监听树为空",this.objectMultiArray)
 			},
 
-			//条件选择
+			//会议室条件选择
 			ChooseCheckbox(e) {
 				console.log(e)
 				let items = this.checkbox;
@@ -330,6 +339,9 @@
 						break
 					}
 				}
+				this.objectMultiArray  = []
+				this.objectMultiArray = this.object
+				console.log("会议室条件选择监听树为空",this.objectMultiArray,this.areastring,this.totalrooms)
 			},
 			//会议室基本条件选择
 			hideChooseModal(e) {
@@ -362,17 +374,16 @@
 				}
 				else 
 					this.roomparams.projector = 0;
-				this.GetroomList()
+				
 				
 			},
-
-			RadioChange(e) {
-				this.radio = e.detail.value
+			selectRoom() {
+				this.GetroomList()
 			},
-			
 			//筛选出符合条件会议室列表
 			GetroomList() {
-
+				this.areastring = ""
+				this.totalrooms = []
 				//this.objectMultiArray = this.object
 				// console.log("树为空",this.objectMultiArray)
 				//this.objectMultiArray[0] = {}
@@ -388,7 +399,7 @@
 				}).then(res => {
 					console.log("res",res)
 					if(res.code == 200)
-					{
+					{	
 						for(let i=0,len=res.data.length;i<len;i++)
 						{
 							let roomparam  = {}
@@ -400,14 +411,31 @@
 							roomsel.placeName = res.data[i].placeName
 							roomsel.meetingroomId = res.data[i].meetingroomId
 							this.totalrooms.push(roomsel)
-							
-						  if(this.objectMultiArray[0].tower[0].name == "")	//objectMultiArray为空
-						  {
-							this.objectMultiArray[0].tower[0].name = roomparam.area[1]
-							this.objectMultiArray[0].tower[0].room[0].name = roomparam.area[2]
-							this.objectMultiArray[0].tower[0].room[0].id = roomparam.meetingroomId  
-							console.log("首次创建",this.objectMultiArray)
-						  }
+							this.objectMultiArray[0].name = roomparam.area[0]
+							if(this.objectMultiArray[0].tower[0].name == "")
+							{
+								// let build = {}
+								// build.name = ""
+								// build.room = [{}]
+								// build.room[0].name = ""
+								// build.room[0].id = ""
+								// build.name = roomparam.area[1]
+								// build.room[0].name = roomparam.area[2]
+								// build.room[0].id = roomparam.meetingroomId
+								// this.objectMultiArray[0].tower.push(build)	
+								this.objectMultiArray[0].tower[0].name = roomparam.area[1]
+								this.objectMultiArray[0].tower[0].room[0].name = roomparam.area[2]
+								this.objectMultiArray[0].tower[0].room[0].id = roomparam.meetingroomId  
+								console.log("首次创建",this.objectMultiArray)
+							}
+						 //  if(this.objectMultiArray[0].tower[0].name == "")	//objectMultiArray为空
+						 //  {
+							  
+							// this.objectMultiArray[0].tower[0].name = roomparam.area[1]
+							// this.objectMultiArray[0].tower[0].room[0].name = roomparam.area[2]
+							// this.objectMultiArray[0].tower[0].room[0].id = roomparam.meetingroomId  
+							// console.log("首次创建",this.objectMultiArray)
+						 //  }
 						  else		//objectMultiArray不为空
 						  {
 							  //遍历是否有该楼房
@@ -452,14 +480,34 @@
 			init() {
 				this.multiArray[0] = [];
 				this.multiArray[1] = [];
-				for (var j = 0; j < this.objectMultiArray[this.curIndex].tower.length; j++) {
-						this.multiArray[0].push(this.objectMultiArray[this.curIndex].tower[j].name);
+				console.log("当前树",this.objectMultiArray)
+				console.log("当前序号",this.multiIndex[0],this.multiIndex[1])
+				console.log("当前会议室",this.multiArray)
+	
+				//此树不分校区，所以永远取this.objectMultiArray[0]
+				for (var j = 0; j < this.objectMultiArray[0].tower.length; j++) {
+					this.$set(this.multiArray[0], j, this.objectMultiArray[0].tower[j].name);
+						//this.multiArray[0].push(this.objectMultiArray[0].tower[j].name);
 				}
-				for (var k = 0; k < this.objectMultiArray[this.curIndex].tower[this.multiIndex[1]].room
+				for (var k = 0; k < this.objectMultiArray[0].tower[this.multiIndex[1]].room
 					.length; k++) {
-					this.multiArray[1].push(this.objectMultiArray[this.curIndex].tower[this.multiIndex[1]].room[k]
-						.name);
+					this.$set(this.multiArray[1], k, this.objectMultiArray[0].tower[this.multiIndex[1]].room[k].name);
+					// this.multiArray[1].push(this.objectMultiArray[0].tower[this.multiIndex[1]].room[k]
+					// 	.name);
 				}
+				//建立树后默认选择首行首列
+				this.multiIndex[0] = 0
+				this.multiIndex[1] = 0
+				console.log("当前会议室",this.multiArray[0][this.multiIndex[0]],this.multiArray[1][this.multiIndex[1]])
+				//{{multiArray[0][multiIndex[0]]}}.{{multiArray[1][multiIndex[1]]}}
+				// for (var j = 0; j < this.objectMultiArray[this.curIndex].tower.length; j++) {
+				// 		this.multiArray[0].push(this.objectMultiArray[this.curIndex].tower[j].name);
+				// }
+				// for (var k = 0; k < this.objectMultiArray[this.curIndex].tower[this.multiIndex[1]].room
+				// 	.length; k++) {
+				// 	this.multiArray[1].push(this.objectMultiArray[this.curIndex].tower[this.multiIndex[1]].room[k]
+				// 		.name);
+				// }
 			},
 			//会议室选择
 			MultiChange(e) {
@@ -479,10 +527,9 @@
 				};
 				//获取会议室id
 				this.areastring = this.meetingdata.campus+ '.'+this.multiArray[0][this.multiIndex[0]]+'.'+this.multiArray[1][this.multiIndex[1]]
-
 				for(let i=0;i<this.totalrooms.length;i++)
 				{
-					console.log("遍历",this.totalrooms[i].placeName)
+					//console.log("遍历",this.totalrooms[i].placeName)
 					if(this.areastring == this.totalrooms[i].placeName)
 					{
 						this.meetingparams.meetingRoomId = this.totalrooms[i].meetingroomId
@@ -490,19 +537,24 @@
 					}
 						
 				}
-				console.log("id",this.meetingparams.meetingRoomId)
+				console.log("会议室id",this.meetingparams.meetingRoomId)
 			},
 			searchColumn() {
 				var arr = [];
-				for (var j = 0; j < this.objectMultiArray[this.curIndex].tower.length; j++) {
+				for (var j = 0; j < this.objectMultiArray[0].tower.length; j++) {
 					if (j == this.multiIndex[0]) {
-						for (var k = 0; k < this.objectMultiArray[this.curIndex].tower[j].room.length; k++) {
-							arr.push(this.objectMultiArray[this.curIndex].tower[j].room[k].name);
-						//	arr.push(this.objectMultiArray[this.curIndex].tower[j].room[k].id);
+						for (var k = 0; k < this.objectMultiArray[0].tower[j].room.length; k++) {
+							arr.push(this.objectMultiArray[0].tower[j].room[k].name);
 						}
 					}
 				}
-			
+				// for (var j = 0; j < this.objectMultiArray[this.curIndex].tower.length; j++) {
+				// 	if (j == this.multiIndex[0]) {
+				// 		for (var k = 0; k < this.objectMultiArray[this.curIndex].tower[j].room.length; k++) {
+				// 			arr.push(this.objectMultiArray[this.curIndex].tower[j].room[k].name);
+				// 		}
+				// 	}
+				// }
 				return arr;
 			},
 			//是否会务安排
@@ -527,12 +579,11 @@
 					console.log("res",res)
 					if(res.code == 200)
 					{
-						
+						this.message = res.message
 						// //同步操作
 						// this.$store.commit('getAppointList',{
 						// 	appiontmentList:res.data.list,
 						// })
-						
 					}
 					
 				})
@@ -546,9 +597,12 @@
 				this.addReservation();
 	
 			},
-			hideModal(e) {
+			hideModalOK(e) {
 				this.modalName = null
 				this.Pagego();
+			},
+			hideModal(e) {
+				this.modalName = null
 			},
 			Pagego() {
 				console.log(111);

@@ -54,46 +54,57 @@
 				</view>
 			</view>
 		</view>
-		<view v-for="(item,index) in meetingList" :key="index">
-			<!-- 判断传递过来的值显示对应状态 -->
-			<view v-if="item.status==cardType.id">
-				<view class="card" @tap="recordDetail(item)">
-					<span class="picture">
-						<!-- 显示不同图片 -->
-						<image class="card-img" :src="imgSrc[item.status]" mode="scaleToFill" style="width: 60px; height: 60px;"></image>
-					</span>
-					<span class="card-center">
-						<view>
-							会议名：{{item.meetingName}}
-						</view>
-						<view>
-							开会日期：{{item.dateDay}}
-						</view>
-						<view v-if="item.period==0">
-							时段：上午
-						</view>
-						<view v-if="item.period==1">
-							时段：下午
-						</view>
-						<view v-if="item.period==2">
-							时段：晚上
-						</view>
-						<view v-if="item.period==3">
-							时段：全天
-						</view>
-					</span>
-					<span class="card-right">
-						<view v-if="item.status==1" class="text-red" style="font-size: 15px;" @tap.stop="showModal($event,item)" data-target="DialogModal1">
-							取消
-						</view>
-						<view v-if="item.status==5" class="text-red" style="font-size: 15px" @tap.stop="showModal2($event,item)"  data-target="DialogModal2">
-							重新预约
-						</view>
-					</span>
+		<hr-pull-load
+		 @refresh='refresh'
+		 @loadMore='loadMore'
+		 :height='-1'
+		 :pullHeight='50'
+		 :maxHeight='100'
+		 :lowerThreshold='20'
+		 :bottomTips='bottomTips'
+		 :isAllowPull="true"
+		 :isTab='false'
+		 ref='hrPullLoad'>
+			<view v-for="(item,index) in meetingList" :key="index">
+				<!-- 判断传递过来的值显示对应状态 -->
+				<view v-if="item.status==cardType.id">
+					<view class="card" @tap="recordDetail(item)">
+						<span class="picture">
+							<!-- 显示不同图片 -->
+							<image class="card-img" :src="imgSrc[item.status]" mode="scaleToFill" style="width: 60px; height: 60px;"></image>
+						</span>
+						<span class="card-center">
+							<view>
+								会议名：{{item.meetingName}}
+							</view>
+							<view>
+								开会日期：{{item.dateDay}}
+							</view>
+							<view v-if="item.period==0">
+								时段：上午
+							</view>
+							<view v-if="item.period==1">
+								时段：下午
+							</view>
+							<view v-if="item.period==2">
+								时段：晚上
+							</view>
+							<view v-if="item.period==3">
+								时段：全天
+							</view>
+						</span>
+						<span class="card-right">
+							<view v-if="item.status==1" class="text-red" style="font-size: 15px;" @tap.stop="showModal($event,item)" data-target="DialogModal1">
+								取消
+							</view>
+							<view v-if="item.status==5" class="text-red" style="font-size: 15px" @tap.stop="showModal2($event,item)"  data-target="DialogModal2">
+								重新预约
+							</view>
+						</span>
+					</view>
 				</view>
 			</view>
-		</view>
-
+		</hr-pull-load>
 		<view class="cu-modal" :class="modalName=='DialogModal1'?'show':''">
 			<view class="cu-dialog">
 				<view class="cu-bar bg-white justify-end">
@@ -138,137 +149,23 @@
 </template>
 
 <script>
+import hrPullLoad from '@/components/hr-pull-load/hr-pull-load.vue'
+import noResult from '@/components/noResult.vue'
 	export default {
 		data() {
 			return {
+				bottomTips:'',
+				currentPage:1,
+				pageSize:10,
+				tabIndex: 0,
 				modalName: null,
 				modalName1: null,
 				modalVisable:false,
 				itemdata:{},
 				curData:{},
+				time:"",
+				time1:"",
 				meetingList:[],
-				// meetingdata: [
-				// 	{
-				// 		index: 0,
-				// 		name: '学科地理学术研讨会',
-				// 		campus: '仓山校区',
-				// 		time: new Date().getFullYear() + "年" +
-				// 			(new Date().getMonth() + 1) + "月" +
-				// 			(new Date().getDate()+1) + "日" ,
-				// 		status: '待开会',
-				// 		cancel: '取消',
-				// 		period:"上午",
-				// 		peoples:"10人",
-				// 		condition:["白板","投影仪"],
-				// 		room:"仓山校区.邵逸夫楼.305",
-				// 		affairs:false,
-				// 		remark:"参与人:学科地理组所有老师",
-				// 		reason:"",
-				// 	},
-				// 	{
-				// 		index: 1,
-				// 		name: '学科地理学术研讨会',
-				// 		campus: '仓山校区',
-				// 		time: new Date().getFullYear() + "年" +
-				// 			(new Date().getMonth() + 1) + "月" +
-				// 			(new Date().getDate()+1) + "日" ,
-				// 		status: '待开会',
-				// 		cancel: '取消',
-				// 		period:"下午",
-				// 		condition:["白板","投影仪"],
-				// 		peoples:"10人",
-				// 		room:"仓山校区.邵逸夫楼.305",
-				// 		affairs:false,
-				// 		remark:"参与人:学科地理组所有老师",
-				// 		reason:"",
-				// 	},
-				// 	{
-				// 		index: 2,
-				// 		name: '自然地理学术研讨会',
-				// 		campus: '旗山校区',
-				// 		time: new Date().getFullYear() + "年" +
-				// 			(new Date().getMonth() ) + "月" +
-				// 			(new Date().getDate()) + "日" ,
-				// 		status: '已完成',
-				// 		cancel: '',
-				// 		period:"上午",
-				// 		condition:["白板","投影仪","电脑"],
-				// 		room:"旗山校区.地理科学学院实验楼.101",
-				// 		peoples:"15人",
-				// 		affairs:true,
-				// 		remark:"参与人:自然地理组所有老师",
-				// 		reason:"",
-				// 	},
-				// 	{
-				// 		index: 3,
-				// 		name: '自然地理学术研讨会',
-				// 		campus: '旗山校区',
-				// 		time: new Date().getFullYear() + "年" +
-				// 			(new Date().getMonth() ) + "月" +
-				// 			(new Date().getDate()) + "日" ,
-				// 		status: '已完成',
-				// 		cancel: '',
-				// 		period:"下午",
-				// 		condition:["白板","投影仪","电脑"],
-				// 		room:"旗山校区.地理科学学院实验楼.101",
-				// 		peoples:"15人",
-				// 		affairs:true,
-				// 		remark:"参与人:自然地理组所有老师",
-				// 		reason:"",
-				// 	},
-				// 	{
-				// 		index: 4,
-				// 		name: '人文地理学术研讨会',
-				// 		campus: '仓山校区',
-				// 		time: new Date().getFullYear() + "年" +
-				// 			(new Date().getMonth()+2 ) + "月" +
-				// 			(new Date().getDate()-1) + "日" ,
-				// 		status: '待开会',
-				// 		cancel: '',
-				// 		period:"上午",
-				// 		condition:["白板","投影仪","电脑"],
-				// 		room:"仓山校区.邵逸夫楼.203",
-				// 		peoples:"12人",
-				// 		affairs:true,
-				// 		remark:"参与人:人文地理组所有老师",
-				// 		reason:"",
-				// 	},
-				// 	{
-				// 		index: 5,
-				// 		name: '自然地理学开题准备会议',
-				// 		campus: '仓山校区',
-				// 		time: new Date().getFullYear() + "年" +
-				// 			(new Date().getMonth() +2) + "月" +
-				// 			(new Date().getDate()) + "日" ,
-				// 		status: '待开会',
-				// 		cancel: '',
-				// 		period:"上午",
-				// 		condition:["白板","投影仪","电脑"],
-				// 		room:"仓山校区.邵逸夫楼.203",
-				// 		peoples:"12人",
-				// 		affairs:true,
-				// 		remark:"参与人:自然地理组所有老师",
-				// 		reason:"",
-				// 	},
-				// 	{
-				// 		index:6,
-				// 		name: '自然地理学开题准备会议',
-				// 		campus: '仓山校区',
-				// 		time: new Date().getFullYear() + "年" +
-				// 			(new Date().getMonth()+1) + "月" +
-				// 			(new Date().getDate()+1) + "日" ,
-				// 		status: '强制撤销',
-				// 		cancel: '',
-				// 		period:"下午",
-				// 		condition:["白板","投影仪","电脑"],
-				// 		room:"仓山校区.邵逸夫楼.305",
-				// 		peoples:"16人",
-				// 		affairs:true,
-				// 		remark:"参与人:自然地理组所有老师",
-				// 		reason:"需要征用该会议室召开紧急会议",
-				// 	},
-					
-				// ],
 				// 图片
 				imgSrc: [
 					"/static/Appointment/waitmeeting.png",
@@ -300,38 +197,122 @@
 
 			}
 		},
-
-		props: ["cardType"],
+		created: function() {
+		//	let aTime = new Date();
+		
+			this.time =new Date().getFullYear() + "-" +(new Date().getMonth() + 1) + "-" +(new Date().getDate()+1)  ;
+			this.time1 = new Date().getFullYear() + "-" +(new Date().getMonth() + 2) + "-" +(new Date().getDate()+1) ;
+			// let aData = new Date();
+		
+			// this.date =
+			// 	aData.getFullYear() + "-" +
+			// 	(aData.getMonth() + 1) + "-" +
+			// 	(aData.getDate())
+		},
+		//props:["cardType","starttime","endtime"],
+		props:{
+			cardType: {
+				type: Number,
+				default: 1
+			},
+			start: {
+				type: String,
+				default: this.time
+			},
+			end: {
+				type: String,
+				default: this.time1
+			},
+		},
+		watch: {
+		    cardType: function (newcardType, oldcardType) {
+		      this.getList(1)
+			  // console.log("gaiiba",this.cardType,this.start,this.end)
+		    }
+		 },
 		mounted() {
 			this.getList();
-			console.log("cardType",this.cardType.id)
+			
 		},
 		methods: {
 			//获取全部
-			getList() {
-				this.meetingApi.getAppointmentList({
-					pageNum: 1,
-					pageSize: 20,
-				}).then(res => {
-					console.log("res",res)
-					if(res.code == 200)
-					{
-						console.log("list",res.data.list)
-						res.data.list.forEach((element) => this.meetingList.push(element))	
-						console.log("meetingList",this.meetingList)
-						//根据返回参数item的状态匹配  v-if="item.type==cardType.type"
-						// //同步操作
-						// this.$store.commit('getAppointList',{
-						// 	appiontmentList:res.data.list,
-						// })
+			getList(type) {
+				let self=this;
+				if(type==1)
+				{
+					uni.showLoading({
+						title: '正在加载',
+						});
+				}
+				setTimeout(()=>{
+					this.meetingList.length = 0
+					this.meetingApi.getAppointmentList({
+						pageNum: self.currentPage,
+						pageSize:self.pageSize,
+						status: self.cardType.id,
+						//时间查询
+						reservationStartTime: self.start,
+						reservationEndTime:self.end,
+					}).then(res => {
+						console.log("res",res)
+						if(res.code == 200)
+						{
+							if(res.data.list.length > 0)
+							{
+								if(type==1)
+								{
+									 console.log("type=1");
+									self.meetingList=[];
+									self.meetingList=res.data.list;
+								}
+								else if(type==2){
+									console.log("type=2");
+									self.meetingList=self.meetingList.concat(res.data.list);
+								}
+								
+								
+								if(self.meetingList.length<self.pageSize){
+									self.bottomTips = "nomore";
+								}else{
+									self.bottomTips = "more";
+								}
+							}
+							//console.log("list",res.data.list)
+							//res.data.list.forEach((element) => self.meetingList.push(element))	
+							console.log("meetingList",self.meetingList)
+							//根据返回参数item的状态匹配  v-if="item.type==cardType.type"
+							// //同步操作
+							// this.$store.commit('getAppointList',{
+							// 	appiontmentList:res.data.list,
+							// })
+							
+						}
+						else{
+							if(type==1)
+							{
+								self.meetingList = [];
+							}
+							else if(type==2){
+								self.currentPage--;
+							}
+							self.bottomTips = "nomore";
+							
+						}
 						
-					}
+					})
 					
-				})
+				//})
+				/* 这里300毫秒的延时，主要是为了优化视觉效果 */
+					let timer=setTimeout(()=>{
+						clearTimeout(timer);
+						self.$refs.hrPullLoad.reSet();
+						uni.hideLoading();
+					},300);
+				},500);
 			},
 			//取消预约弹框
 			showModal(e,item) {
-				console.log("item",item)
+				console.log("item",item.reserveId)
 				this.curData.reserveId = item.reserveId
 				console.log("取消",this.curData.reserveId)
 				this.modalName = e.currentTarget.dataset.target
@@ -349,6 +330,19 @@
 					
 				});
 				
+			},
+			//自定义上拉加载更多
+			loadMore(){
+				this.currentPage++;
+				this.bottomTips = "loading";
+				console.log("上拉加载",this.currentPage);
+				this.getList(2);
+			},
+			//自定义下拉刷新
+			refresh(){
+				this.currentPage = 1;
+				console.log("下拉刷新");
+				this.getList(1);
 			},
 			showModal2(e,item) {
 				//console.log("111",e,item)

@@ -8,38 +8,7 @@
 				</view>
 			</picker>
 		</view>
-		<!-- <view class="cu-form-group">
-			<view class="title">被访部门</view>
 
-			<picker @change="PickerChange2" :value="index2" :range="picker2">
-				<view class="picker">
-					{{picker2[index2]}}
-				</view>
-			</picker>
-		</view>
-
-		<view class="cu-form-group">
-			<view class="title">被访问人</view>
-			<picker @change="PickerChange" :value="index" :range="picker">
-				<view class="picker">
-					{{picker[index]}}
-				</view>
-			</picker>
-		</view> -->
-
-		<!-- <view v-if="this.index1 == 1">
-			<view class="cu-bar bg-white margin-top">
-				<view class="action">选择访问日期</view>
-			</view>
-
-			<view class="cu-form-group">
-				<view class="title">日期</view>
-				<picker mode="date" :value="date" start="2015-09-01" end="2020-09-01" @change="DateChange">
-					<view class="picker">
-						{{date}}
-					</view>
-				</picker>
-			</view> -->
 
 			<view class="cu-bar bg-white margin-top" style="margin-top: 10px;">
 				<view class="action">按预约时间查询</view>
@@ -96,13 +65,17 @@
 			PickerChange(e) {
 				this.index = e.detail.value
 				this.$emit('send', this.index)
-				// console.log(e.detail.value)
+				console.log("index",this.index)
 			},
 			TimeChange(e) {
 				this.time = e.detail.value
+				this.$emit('starttime', this.time)
+				//console.log("index",this.index)
 			},
 			TimeChange1(e) {
 				this.time1 = e.detail.value
+				this.$emit('endtime', this.time1)
+				
 			},
 			DateChange(e) {
 				this.date = e.detail.value
