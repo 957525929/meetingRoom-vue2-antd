@@ -225,7 +225,7 @@
 					period:"1",
 					blackboard:"0",
 					whiteboard:"0",
-					Pc:"0",
+					pc:"0",
 					projector:"0",
 				},
 				//会议室预约参数
@@ -273,7 +273,7 @@
 		mounted() {
 			this.getOptionList();
 			console.log("初次建树");
-			this.GetroomList();
+			this.getroomList();
 		},
 		methods: {	
 			//获取初始条件选项
@@ -304,7 +304,7 @@
 				this.meetingparams.period = e.detail.value
 				this.roomparams.period = e.detail.value
 				this.objectMultiArray  = []
-				this.objectMultiArray = this.object
+				this.objectMultiArray = JSON.parse(JSON.stringify(this.object))
 				console.log("午别选择监听树为空",this.objectMultiArray)
 			},
 			//校区选择
@@ -314,7 +314,7 @@
 				console.log("校区选择参数",this.meetingdata.campus)
 				//this.objectMultiArray.splice(0,this.objectMultiArray.length);
 				this.objectMultiArray  = []
-				this.objectMultiArray = this.object
+				this.objectMultiArray = JSON.parse(JSON.stringify(this.object))
 				console.log("校区选择监听树为空",this.objectMultiArray)
 			},
 			//时间选择
@@ -322,8 +322,7 @@
 				this.meetingdata.time = e.detail.value
 				//this.objectMultiArray.splice(0,this.objectMultiArray.length);
 				this.objectMultiArray  = []
-				this.objectMultiArray = this.object
-				//this.objectMultiArray = this.object
+				this.objectMultiArray = JSON.parse(JSON.stringify(this.object))
 				console.log("时间选择监听树为空",this.objectMultiArray)
 			},
 
@@ -340,7 +339,7 @@
 					}
 				}
 				this.objectMultiArray  = []
-				this.objectMultiArray = this.object
+				this.objectMultiArray = JSON.parse(JSON.stringify(this.object))
 				console.log("会议室条件选择监听树为空",this.objectMultiArray,this.areastring,this.totalrooms)
 			},
 			//会议室基本条件选择
@@ -362,11 +361,11 @@
 					this.roomparams.blackboard = 0;
 				if(this.checkbox[2].checked == true)
 				{
-					this.roomparams.Pc = 1;
+					this.roomparams.pc = 1;
 					this.meetingdata.condition.push(this.checkbox[2].name)
 				}
 				else 
-					this.roomparams.Pc = 0;
+					this.roomparams.pc = 0;
 				if(this.checkbox[3].checked == true)
 				{
 					this.roomparams.projector = 1;
@@ -378,15 +377,12 @@
 				
 			},
 			selectRoom() {
-				this.GetroomList()
+				this.getroomList()
 			},
 			//筛选出符合条件会议室列表
-			GetroomList() {
+			getroomList() {
 				this.areastring = ""
 				this.totalrooms = []
-				//this.objectMultiArray = this.object
-				// console.log("树为空",this.objectMultiArray)
-				//this.objectMultiArray[0] = {}
 				this.meetingApi.getMeetingRoom({
 					campus: this.meetingdata.campus,
 					date: this.meetingdata.time,
@@ -394,7 +390,7 @@
 					number:this.meetingdata.peoples,
 					blackboard:this.roomparams.blackboard,
 					whiteboard:this.roomparams.whiteboard,
-					Pc:this.roomparams.Pc,
+					pc:this.roomparams.pc,
 					projector:this.roomparams.projector,
 				}).then(res => {
 					console.log("res",res)
@@ -407,37 +403,22 @@
 							roomparam.area = [],
 							roomparam.area = res.data[i].placeName.split('.')
 							roomparam.meetingroomId = res.data[i].meetingroomId
+							
 							let roomsel = {}
 							roomsel.placeName = res.data[i].placeName
 							roomsel.meetingroomId = res.data[i].meetingroomId
-							this.totalrooms.push(roomsel)
+							this.totalrooms.push(roomsel)		
+							
 							this.objectMultiArray[0].name = roomparam.area[0]
 							if(this.objectMultiArray[0].tower[0].name == "")
-							{
-								// let build = {}
-								// build.name = ""
-								// build.room = [{}]
-								// build.room[0].name = ""
-								// build.room[0].id = ""
-								// build.name = roomparam.area[1]
-								// build.room[0].name = roomparam.area[2]
-								// build.room[0].id = roomparam.meetingroomId
-								// this.objectMultiArray[0].tower.push(build)	
+							{	
 								this.objectMultiArray[0].tower[0].name = roomparam.area[1]
 								this.objectMultiArray[0].tower[0].room[0].name = roomparam.area[2]
 								this.objectMultiArray[0].tower[0].room[0].id = roomparam.meetingroomId  
 								console.log("首次创建",this.objectMultiArray)
 							}
-						 //  if(this.objectMultiArray[0].tower[0].name == "")	//objectMultiArray为空
-						 //  {
-							  
-							// this.objectMultiArray[0].tower[0].name = roomparam.area[1]
-							// this.objectMultiArray[0].tower[0].room[0].name = roomparam.area[2]
-							// this.objectMultiArray[0].tower[0].room[0].id = roomparam.meetingroomId  
-							// console.log("首次创建",this.objectMultiArray)
-						 //  }
-						  else		//objectMultiArray不为空
-						  {
+						    else		//objectMultiArray不为空
+						    {
 							  //遍历是否有该楼房
 							  let arr =[]
 							  this.objectMultiArray[0].tower.forEach((element) => arr.push(element.name))	
@@ -460,54 +441,44 @@
 									}
 								else		//已经有该楼
 									{
-										console.log("已经有该楼,新建房间")
-										//添加新房间
-										let rooms = {}
-										rooms.name = ""
-										rooms.id = ""
-										rooms.name = roomparam.area[2]
-										rooms.id = roomparam.meetingroomId
-										this.objectMultiArray[0].tower[a].room.push(rooms)
+										let arrroom = []
+										this.objectMultiArray[0].tower[a].room.forEach((element) => arrroom.push(element.name))
+										let b = arrroom.indexOf(roomparam.area[2])
+										if(b == -1)
+										{
+											console.log("已经有该楼,无该房间,新建房间")
+											let rooms = {}
+											rooms.name = ""
+											rooms.id = ""
+											rooms.name = roomparam.area[2]
+											rooms.id = roomparam.meetingroomId
+											this.objectMultiArray[0].tower[a].room.push(rooms)
+										}
+										
 									}
 							}
 						}
-						
 						this.init()
-					}
-					
+					}	
 				})
 			},
 			init() {
 				this.multiArray[0] = [];
 				this.multiArray[1] = [];
-				console.log("当前树",this.objectMultiArray)
-				console.log("当前序号",this.multiIndex[0],this.multiIndex[1])
-				console.log("当前会议室",this.multiArray)
-	
 				//此树不分校区，所以永远取this.objectMultiArray[0]
 				for (var j = 0; j < this.objectMultiArray[0].tower.length; j++) {
 					this.$set(this.multiArray[0], j, this.objectMultiArray[0].tower[j].name);
-						//this.multiArray[0].push(this.objectMultiArray[0].tower[j].name);
 				}
 				for (var k = 0; k < this.objectMultiArray[0].tower[this.multiIndex[1]].room
 					.length; k++) {
 					this.$set(this.multiArray[1], k, this.objectMultiArray[0].tower[this.multiIndex[1]].room[k].name);
-					// this.multiArray[1].push(this.objectMultiArray[0].tower[this.multiIndex[1]].room[k]
-					// 	.name);
 				}
 				//建立树后默认选择首行首列
 				this.multiIndex[0] = 0
 				this.multiIndex[1] = 0
+				this.$set(this.multiIndex, 0, 0);
+				this.$set(this.multiIndex, 1, 0);
 				console.log("当前会议室",this.multiArray[0][this.multiIndex[0]],this.multiArray[1][this.multiIndex[1]])
-				//{{multiArray[0][multiIndex[0]]}}.{{multiArray[1][multiIndex[1]]}}
-				// for (var j = 0; j < this.objectMultiArray[this.curIndex].tower.length; j++) {
-				// 		this.multiArray[0].push(this.objectMultiArray[this.curIndex].tower[j].name);
-				// }
-				// for (var k = 0; k < this.objectMultiArray[this.curIndex].tower[this.multiIndex[1]].room
-				// 	.length; k++) {
-				// 	this.multiArray[1].push(this.objectMultiArray[this.curIndex].tower[this.multiIndex[1]].room[k]
-				// 		.name);
-				// }
 			},
 			//会议室选择
 			MultiChange(e) {
@@ -548,13 +519,6 @@
 						}
 					}
 				}
-				// for (var j = 0; j < this.objectMultiArray[this.curIndex].tower.length; j++) {
-				// 	if (j == this.multiIndex[0]) {
-				// 		for (var k = 0; k < this.objectMultiArray[this.curIndex].tower[j].room.length; k++) {
-				// 			arr.push(this.objectMultiArray[this.curIndex].tower[j].room[k].name);
-				// 		}
-				// 	}
-				// }
 				return arr;
 			},
 			//是否会务安排

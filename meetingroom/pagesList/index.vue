@@ -23,39 +23,23 @@
 				<view class="cu-item" :class="2==TabCur?'text-orange cur':''" @tap="tabSelect" data-id="2">
 					强制撤销
 				</view>
-				<!-- <view class="cu-item" :class="3==TabCur?'text-orange cur':''" @tap="tabSelect" data-id="3">
-					已取消
-				</view> -->
 			</scroll-view>
 
 			<block v-if="TabCur==0">
-				<!-- <navigator class="action" @tap="gotoDetail" > -->
-					<recordCard ref="mychild" :cardType="type[0].id" :start="starttime" :end="endtime"/>
-				<!-- </navigator> -->
+					<recordCard ref="mychild" :cardType="stype[0].id" :start="starttime" :end="endtime"/>
 			</block>
 			<block v-if="TabCur==1">
-				<!-- <navigator class="action" @tap="gotoAllow"> -->
-					<recordCard ref="mychild" :cardType="type[2].id" :start="starttime" :end="endtime"/>
-				<!-- </navigator> -->
+					<recordCard ref="mychild" :cardType="stype[2].id" :start="starttime" :end="endtime"/>
 			</block>
 			<block v-if="TabCur==2">
-				<!-- <navigator class="action" @tap="gotoDetail" > -->
-					<recordCard ref="mychild" :cardType="type[4].id" @send="recordDetailed" :start="starttime" :end="endtime"/>
-				<!-- </navigator> -->
-			</block>
-			<!-- <block v-if="TabCur==3">
-				<navigator class="action" @tap="gotoDetail" >
-					<recordCard :cardType="type[3]" />
-				</navigator>
-			</block> -->
-			
+					<recordCard ref="mychild" :cardType="stype[4].id" @send="recordDetailed" :start="starttime" :end="endtime"/>
+			</block>	
 		</scroll-view>
 
 		<view class="DrawerClose" :class="modalName=='viewModal'?'show':''" @tap="hideModal">
 			<text class="cuIcon-pullright"></text>
 		</view> 
 		 <scroll-view scroll-y class="DrawerWindow" :class="modalName=='viewModal'?'show':''">
-
 			<search @send="getIndex1" @getstarttime="getstarttime" @getendtime="getendtime"></search>
 			<view class="padding margin text-center">
 				<view class="cu-btn bg-yellow lg block shadow radius margin-xl" @tap="hideModal">
@@ -63,7 +47,6 @@
 				</view>
 			</view>
 		</scroll-view>
-
 	</view>
 </template>
 
@@ -80,7 +63,7 @@
 				endtime:'',
 				scrollLeft: 0,
 				meetingList:[],
-				type: [{
+				stype: [{
 					id: 1,
 					type: "待开会"
 				}, {
@@ -98,37 +81,14 @@
 				{
 					id: 5,
 					type: "强制撤销"
-				},
-				],
+				}],
 			};
 		},
-		// onLoad(option) {
-		// 	//this.getList();
-		// 	console.log("option",option)
-		// 	if(option.TabCur)
-		// 		{
-		// 			this.TabCur=option.TabCur;
-		// 		}
-		// },
 		components: {
 			recordCard,
 			search
 		},
 		methods: {
-			// getList() {
-			// 	this.meetingApi.getAppointmentList({
-			// 		pageNum: 1,
-			// 		pageSize: 20,
-			// 	}).then(res => {
-			// 		console.log("res",res)
-			// 		if(res.code == 200)
-			// 		{
-			// 			console.log("list",res.data.list)
-			// 			this.meetingList = res.data.list
-			// 		}
-					
-			// 	})
-			// },
 			tabSelect(e) {
 				console.log("tab",e)
 				this.TabCur = e.currentTarget.dataset.id;
@@ -139,7 +99,7 @@
 			},
 			hideModal(e) {
 				this.modalName = null
-				this.$refs.mychild.getList(this.TabCur);
+				this.$refs.mychild.getList(1);
 			},
 			getIndex1(data) {
 				this.TabCur = data

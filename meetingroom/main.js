@@ -50,6 +50,12 @@ Vue.component('plugin',plugin)
 import cuCustom from './colorui/components/cu-custom.vue'
 Vue.component('cu-custom',cuCustom)
 
+import hrPullLoad from './components/hr-pull-load/hr-pull-load.vue'
+Vue.component('hrPullLoad',hrPullLoad)
+
+import noResult from '@/components/noResult.vue'
+Vue.component('noResult',noResult)
+
 Vue.config.productionTip = false
 
 // IP地址	
