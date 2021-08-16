@@ -30,17 +30,17 @@
 
 			<block v-if="TabCur==0">
 				<!-- <navigator class="action" @tap="gotoDetail" > -->
-					<recordCard :cardType="type[0].id" :start="starttime" :end="endtime"/>
+					<recordCard ref="mychild" :cardType="type[0].id" :start="starttime" :end="endtime"/>
 				<!-- </navigator> -->
 			</block>
 			<block v-if="TabCur==1">
 				<!-- <navigator class="action" @tap="gotoAllow"> -->
-					<recordCard :cardType="type[2].id" :start="starttime" :end="endtime"/>
+					<recordCard ref="mychild" :cardType="type[2].id" :start="starttime" :end="endtime"/>
 				<!-- </navigator> -->
 			</block>
 			<block v-if="TabCur==2">
 				<!-- <navigator class="action" @tap="gotoDetail" > -->
-					<recordCard :cardType="type[4].id" @send="recordDetailed" :start="starttime" :end="endtime"/>
+					<recordCard ref="mychild" :cardType="type[4].id" @send="recordDetailed" :start="starttime" :end="endtime"/>
 				<!-- </navigator> -->
 			</block>
 			<!-- <block v-if="TabCur==3">
@@ -56,7 +56,7 @@
 		</view> 
 		 <scroll-view scroll-y class="DrawerWindow" :class="modalName=='viewModal'?'show':''">
 
-			<search @send="getIndex1" @starttime="getstarttime" @endtime="getendtime"></search>
+			<search @send="getIndex1" @getstarttime="getstarttime" @getendtime="getendtime"></search>
 			<view class="padding margin text-center">
 				<view class="cu-btn bg-yellow lg block shadow radius margin-xl" @tap="hideModal">
 					查询
@@ -139,7 +139,7 @@
 			},
 			hideModal(e) {
 				this.modalName = null
-				 this.$refs.recordCard.getList(this.TabCur);
+				this.$refs.mychild.getList(this.TabCur);
 			},
 			getIndex1(data) {
 				this.TabCur = data

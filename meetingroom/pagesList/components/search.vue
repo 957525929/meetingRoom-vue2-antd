@@ -50,7 +50,7 @@
 			// 	(aData.getDate())
 		},
 		mounted() {
-
+		
 		},
 		data() {
 			return {
@@ -65,16 +65,16 @@
 			PickerChange(e) {
 				this.index = e.detail.value
 				this.$emit('send', this.index)
-				console.log("index",this.index)
+				//console.log("index",this.index)
 			},
 			TimeChange(e) {
 				this.time = e.detail.value
-				this.$emit('starttime', this.time)
+				this.$emit('getstarttime', this.time)
 				//console.log("index",this.index)
 			},
 			TimeChange1(e) {
 				this.time1 = e.detail.value
-				this.$emit('endtime', this.time1)
+				this.$emit('getendtime', this.time1)
 				
 			},
 			DateChange(e) {
