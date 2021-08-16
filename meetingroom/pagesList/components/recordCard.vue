@@ -222,6 +222,7 @@
 				console.log("type22w",stype)
 				let self = this;
 				if (stype == 1) {
+					this.currentPage = 1
 					uni.showLoading({
 						title: '正在加载',
 					});
@@ -316,7 +317,7 @@
 					id: parseInt(this.curData.reserveId),
 				}).then(res => {
 					console.log("data", res.data)
-
+					this.getList(1);	
 				});
 
 			},

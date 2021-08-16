@@ -116,8 +116,9 @@
 				this.modalVisable=false
 			},
 			ToList() {
+				this.modalVisable=false
 				uni.navigateTo({
-					url:'/pagesList/index?TabCur='+'2'
+					url:'/pagesList/index?tabCur='+'2'
 		
 				});	
 			}

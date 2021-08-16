@@ -14,24 +14,24 @@
 			</cu-custom>
 
 			<scroll-view scroll-x class="bg-white nav flex text-center">
-				<view class="cu-item" :class="0==TabCur?'text-orange cur':''" @tap="tabSelect" data-id="0">
+				<view class="cu-item" :class="0==tabCur?'text-orange cur':''" @tap="tabSelect" data-id="0">
 					待开会
 				</view>
-				<view class="cu-item" :class="1==TabCur?'text-orange cur':''" @tap="tabSelect" data-id="1">
+				<view class="cu-item" :class="1==tabCur?'text-orange cur':''" @tap="tabSelect" data-id="1">
 					已完成
 				</view>
-				<view class="cu-item" :class="2==TabCur?'text-orange cur':''" @tap="tabSelect" data-id="2">
+				<view class="cu-item" :class="2==tabCur?'text-orange cur':''" @tap="tabSelect" data-id="2">
 					强制撤销
 				</view>
 			</scroll-view>
 
-			<block v-if="TabCur==0">
+			<block v-if="tabCur==0">
 					<recordCard ref="mychild" :cardType="stype[0].id" :start="starttime" :end="endtime"/>
 			</block>
-			<block v-if="TabCur==1">
+			<block v-if="tabCur==1">
 					<recordCard ref="mychild" :cardType="stype[2].id" :start="starttime" :end="endtime"/>
 			</block>
-			<block v-if="TabCur==2">
+			<block v-if="tabCur==2">
 					<recordCard ref="mychild" :cardType="stype[4].id" @send="recordDetailed" :start="starttime" :end="endtime"/>
 			</block>	
 		</scroll-view>
@@ -58,7 +58,7 @@
 			return {
 				recordData:'',
 				modalName: null,
-				TabCur: 0,
+				tabCur: 0,
 				starttime:'',
 				endtime:'',
 				scrollLeft: 0,
@@ -88,10 +88,15 @@
 			recordCard,
 			search
 		},
+		onLoad(option) {
+			if(option.tabCur) {
+				this.tabCur = option.tabCur
+			}
+		},
 		methods: {
 			tabSelect(e) {
 				console.log("tab",e)
-				this.TabCur = e.currentTarget.dataset.id;
+				this.tabCur = e.currentTarget.dataset.id;
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
 			},
 			showModal(e) {
@@ -102,8 +107,7 @@
 				this.$refs.mychild.getList(1);
 			},
 			getIndex1(data) {
-				this.TabCur = data
-				console.log(this.TabCur)
+				this.tabCur = data
 			},
 			getstarttime(data) {
 				this.starttime  = data

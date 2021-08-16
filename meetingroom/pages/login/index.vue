@@ -20,8 +20,9 @@
 				</view>
 				<view class="form-login cu-form-group margin-top">
 					<view class="title">密码</view>
-					<input placeholder="请输入密码" name="input" type="password" v-model="password"></input>
-					<text class='cuIcon-attention'></text>
+					<input v-show="show" placeholder="请输入密码" name="input" type="password" v-model="password"></input>
+					<input v-show="!show" placeholder="请输入密码" name="input" type="text" v-model="password"></input>
+					<text :class='show ? "cuIcon-attention" : "cuIcon-attentionforbid"' @tap="show = !show"></text>
 				</view>
 			</view>
 			<button class="cu-btn author-btn" @tap="loginUp()">登 录</button>
@@ -45,6 +46,7 @@
 	export default {
 		data() {
 			return {
+				show:true,
 				pwd:true,
 				username: '13023818127', //用户/电话
 				password: '123456', //密码
