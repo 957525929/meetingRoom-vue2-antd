@@ -47,5 +47,9 @@ const meetingApiList = {
 		})
 		
 	},
+	//获取会务安排
+	getArrangementList:()=>{
+		return http.request(`ArrangementController/getArrangementList`, {})
+	}
 }
 export default meetingApiList

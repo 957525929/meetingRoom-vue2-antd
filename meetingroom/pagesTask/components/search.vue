@@ -98,16 +98,16 @@
 			}
 		},
 		methods: {
-			PickerChange(e) {
-				this.index = e.detail.value
-				this.$emit('send', this.index)
+			// PickerChange(e) {
+			// 	this.index = e.detail.value
+			// 	this.$emit('send', this.index)
+			// 	// console.log(e.detail.value)
+			// },
+			// PickerChange1(e) {
+			// 	this.index1 = e.detail.value
+			// 	this.$emit('send', this.index1)
 				// console.log(e.detail.value)
-			},
-			PickerChange1(e) {
-				this.index1 = e.detail.value
-				this.$emit('send', this.index1)
-				// console.log(e.detail.value)
-			},
+			//},
 			// MultiChange(e) {
 			// 	this.multiIndex = e.detail.value
 			// },
@@ -169,9 +169,11 @@
 			// },
 			TimeChange(e) {
 				this.time = e.detail.value
+				this.$emit('getstarttime', this.time)
 			},
 			TimeChange1(e) {
 				this.time1 = e.detail.value
+				this.$emit('getendtime', this.time1)
 			},
 			// DateChange(e) {
 			// 	this.date = e.detail.value

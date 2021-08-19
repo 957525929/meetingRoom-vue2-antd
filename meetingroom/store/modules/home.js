@@ -20,7 +20,7 @@ const reclassify = {
 		// 保洁区域
 		chooseIndex: [12, 0, 0],
 		countyId: 350104,
-		chooseConIndex: [0, 0]
+		chooseConIndex: [0, 0],
 	},
 	getters: {
 		area(state) {

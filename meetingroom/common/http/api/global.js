@@ -15,9 +15,20 @@ const globalApiList = {
 			}
 		})
 	},
-	// 登录
+	// 教师登录
 	loginIn: (params) => {
 		return http.request(`UserAppController/login`, {
+			// admin{telephone:"18020991313",verifyCode:"123456"}
+			data: {
+				...params
+			},
+			method: "POST",
+			hideLoading: true
+		})
+	},
+	//学生登录
+	stuLoginIn: (params) => {
+		return http.request(`UserAppController/stulogin`, {
 			// admin{telephone:"18020991313",verifyCode:"123456"}
 			data: {
 				...params

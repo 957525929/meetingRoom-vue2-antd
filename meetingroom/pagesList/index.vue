@@ -63,25 +63,28 @@
 				endtime:'',
 				scrollLeft: 0,
 				meetingList:[],
-				stype: [{
-					id: 1,
-					type: "待开会"
-				}, {
-					id: 2,
-					type: "开会中"
-				}, 
-				{
-					id: 3,
-					type: "已完成"
-				},
-				{
-					id: 4,
-					type: "撤销"
-				}, 
-				{
-					id: 5,
-					type: "强制撤销"
-				}],
+				stype: 
+				[	
+					{
+						id: 1,
+						type: "待开会"
+					}, {
+						id: 2,
+						type: "开会中"
+					}, 
+					{
+						id: 3,
+						type: "已完成"
+					},
+					{
+						id: 4,
+						type: "撤销"
+					}, 
+					{
+						id: 5,
+						type: "强制撤销"
+					},
+				],
 			};
 		},
 		components: {

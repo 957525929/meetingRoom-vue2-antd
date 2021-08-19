@@ -34,27 +34,22 @@
 			</view>
 
 			<view class="nav-list margin-top margin-bottom">
-				<navigator hover-class="none" :url="navCard[0].url" :class="navCard[0].style" navigateTo>
+				<navigator v-if="role == '0'" hover-class="none" :url="navCard[0].url" :class="navCard[0].style" navigateTo>
 					<view class="nav-title">{{navCard[0].name}}</view>
 					<view class="nav-name">{{navCard[0].secname}}</view>
 					<text :class="navCard[0].icon"></text>
 				</navigator>
-				<navigator hover-class="none" :url="navCard[1].url" :class="navCard[1].style" navigateTo>
+				<navigator  v-if="role == '0'" hover-class="none" :url="navCard[1].url" :class="navCard[1].style" navigateTo>
 					<view class="nav-title">{{navCard[1].name}}</view>
 					<view class="nav-name">{{navCard[1].secname}}</view>
 					<text :class="navCard[1].icon"></text>
 				</navigator>
-				<!-- <view hover-class="none" @tap="click" data-target="Modal" :class="navCard[2].style" navigateTo>
+				<!-- <navigator  v-if="role == '0'" hover-class="none" :url="navCard[2].url" :class="navCard[2].style" navigateTo>
 					<view class="nav-title">{{navCard[2].name}}</view>
 					<view class="nav-name">{{navCard[2].secname}}</view>
 					<text :class="navCard[2].icon"></text>
-				</view> -->
-				<navigator hover-class="none" :url="navCard[2].url" :class="navCard[2].style" navigateTo>
-					<view class="nav-title">{{navCard[2].name}}</view>
-					<view class="nav-name">{{navCard[2].secname}}</view>
-					<text :class="navCard[2].icon"></text>
-				</navigator>
-				<navigator hover-class="none" :url="navCard[3].url" :class="navCard[3].style" navigateTo>
+				</navigator> -->
+				<navigator  v-if="role == '1'" hover-class="none" :url="navCard[3].url" :class="navCard[3].style" navigateTo>
 					<view class="nav-title">{{navCard[3].name}}</view>
 					<view class="nav-name">{{navCard[3].secname}}</view>
 					<text :class="navCard[3].icon"></text>
@@ -83,6 +78,10 @@
 </template>
 
 <script>
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex';
 	export default {
 		data() {
 			return {
@@ -138,6 +137,16 @@
 				],
 				modalName: null,
 			}
+		},
+		computed: {
+			...mapState({
+				role: (state) => state.role
+				
+			})
+			
+		},
+		mounted() {
+			console.log("当前角色",this.role)
 		},
 		methods: {
 			cardSwiper(e) {

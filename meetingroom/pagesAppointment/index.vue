@@ -176,7 +176,6 @@
 				//获取的条件选择列表（text）
 				period: [],
 				campus: [],
-				
 				//条件选择
 				checkbox: 
 					[{
@@ -221,7 +220,6 @@
 				},
 				//筛选会议室参数
 				roomparams:{
-					//campus:"0",
 					period:"1",
 					blackboard:"0",
 					whiteboard:"0",
@@ -238,7 +236,8 @@
 			};
 		},
 		onLoad(option) {
-			if (option.itemdata != null) {
+			if (option.itemdata != null) 
+			{
 				this.itemdata = JSON.parse(option.itemdata);
 				//参数
 				this.meetingdata.name = this.itemdata.meetingName;
@@ -294,8 +293,7 @@
 					console.log("午别列表",res.data)
 					let Periodlist = res.data;
 					Periodlist.forEach((element) => this.period.push(element.dictValue))	
-				});
-					
+				});	
 			},
 			//午别选择
 			PickerChange(e) {
@@ -304,26 +302,29 @@
 				this.meetingparams.period = e.detail.value
 				this.roomparams.period = e.detail.value
 				this.objectMultiArray  = []
+				// 深拷贝方法二： this.objectMultiArray = Object.assign({}, this.object);
 				this.objectMultiArray = JSON.parse(JSON.stringify(this.object))
-				console.log("午别选择监听树为空",this.objectMultiArray)
+				console.log("午别选择清空树",this.objectMultiArray)
 			},
 			//校区选择
 			PickerChangecampus(e) {
 				this.curIndex = e.detail.value;
 				this.meetingdata.campus = this.campus[this.curIndex]
 				console.log("校区选择参数",this.meetingdata.campus)
-				//this.objectMultiArray.splice(0,this.objectMultiArray.length);
+				//清空树
 				this.objectMultiArray  = []
+				// 深拷贝方法二：this.objectMultiArray = Object.assign({}, this.object);
 				this.objectMultiArray = JSON.parse(JSON.stringify(this.object))
-				console.log("校区选择监听树为空",this.objectMultiArray)
+				console.log("校区选择清空树",this.objectMultiArray)
 			},
 			//时间选择
 			DateChange(e) {
 				this.meetingdata.time = e.detail.value
-				//this.objectMultiArray.splice(0,this.objectMultiArray.length);
+				//清空树
 				this.objectMultiArray  = []
+				// 深拷贝方法二： this.objectMultiArray = Object.assign({}, this.object);
 				this.objectMultiArray = JSON.parse(JSON.stringify(this.object))
-				console.log("时间选择监听树为空",this.objectMultiArray)
+				console.log("时间选择清空树",this.objectMultiArray)
 			},
 
 			//会议室条件选择
@@ -339,8 +340,9 @@
 					}
 				}
 				this.objectMultiArray  = []
+				// 深拷贝方法二：this.objectMultiArray = Object.assign({}, this.object);
 				this.objectMultiArray = JSON.parse(JSON.stringify(this.object))
-				console.log("会议室条件选择监听树为空",this.objectMultiArray,this.areastring,this.totalrooms)
+				console.log("会议室条件选择清空树",this.objectMultiArray,this.areastring,this.totalrooms)
 			},
 			//会议室基本条件选择
 			hideChooseModal(e) {

@@ -52,6 +52,7 @@
 				</view>
 			</view>
 		</view>
+		<!-- @touchmove.stop.prevent防止遮罩层发生滚动 -->
 		<view class="list-content" @touchmove.stop.prevent>
 			<hr-pull-load @refresh='refresh' @loadMore='loadMore' :height='-1' :pullHeight='50' :maxHeight='100'
 				:lowerThreshold='20' :bottomTips='bottomTips' :isAllowPull="true" :isTab='false' ref='hrPullLoad'>
