@@ -6,19 +6,7 @@
 			<text class="user-name">福师大会议室预约平台</text>
 			<view class="login-notice"></view>
 			<view>
-				<!-- <scroll-view scroll-x class=" nav text-center" style="background-color:#fef2ced2">
-					<view class="cu-item " :class="index==TabCur?'text-blue cur':''" v-for="(item,index) in identityList" :key="index" @tap="tabSelect" :data-id="index">
-						{{item.title}}
-					</view>
-				</scroll-view> -->
 				<view class="login-boxs">
-					<!-- <u-form-item :rightIconStyle="{color: '#888', fontSize: '32rpx'}" right-icon="account" :label-position="labelPosition"
-					 label="账 号" prop="phone" >
-						<u-input :border="border" placeholder="请输入账号" v-model="username" type="text"> </u-input>
-					</u-form-item>
-					<u-form-item :label-position="labelPosition" label="密码" prop="password">
-						<u-input :password-icon="true" :border="border" type="password" v-model="password" placeholder="请输入密码"></u-input>
-					</u-form-item> -->
 					<view class="form-login cu-form-group margin-top">
 						<view class="title">角色</view>
 						<picker @change="PickerChange" :value="userindex" :range="picker" >
@@ -26,8 +14,6 @@
 								{{picker[userindex]}}
 							</view>
 						</picker>
-						<!-- <input placeholder="请选择角色" ></input>
-						<text class='cuIcon-people'></text> -->
 					</view>
 					<view class="form-login cu-form-group margin-top">
 						<view class="title">账号</view>
@@ -81,6 +67,7 @@
 				// 	},
 				// ],
 				//userindex 教师0，学生1
+				show:true,
 				userindex: 0,
 				picker: ['教师', '学生'],
 				pwd:true,
