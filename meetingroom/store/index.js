@@ -45,9 +45,15 @@ const store = new Vuex.Store({
 		},
 		// 个人中心信息
 		uerName:"",
-		perInfo:{}
+		perInfo:{},
+		role:0,
 	},
 	mutations: {
+		changeRole:(state, payload) =>{
+			//0为教师，1为学生
+			state[payload[0]] = payload[1]
+			console.log("改变role",payload)
+		},
 		// 修改state值
 		changeData: (state, payload) => {
 			for (let [key, val] of Object.entries(payload)) {

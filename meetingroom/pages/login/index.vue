@@ -5,28 +5,32 @@
 			<image class="user-avatar" src="../../static/login/logosd.png" mode="aspectFill"></image>
 			<text class="user-name">福师大会议室预约平台</text>
 			<view class="login-notice"></view>
-			<view class="login-boxs">
-				<!-- <u-form-item :rightIconStyle="{color: '#888', fontSize: '32rpx'}" right-icon="account" :label-position="labelPosition"
-				 label="账 号" prop="phone" >
-					<u-input :border="border" placeholder="请输入账号" v-model="username" type="text"> </u-input>
-				</u-form-item>
-				<u-form-item :label-position="labelPosition" label="密码" prop="password">
-					<u-input :password-icon="true" :border="border" type="password" v-model="password" placeholder="请输入密码"></u-input>
-				</u-form-item> -->
-				<view class="form-login cu-form-group margin-top">
-					<view class="title">账号</view>
-					<input placeholder="请输入账号" name="input" v-model="username"></input>
-					<text class='cuIcon-people'></text>
-				</view>
-				<view class="form-login cu-form-group margin-top">
+			<view>
+				<view class="login-boxs">
+					<view class="form-login cu-form-group margin-top">
+						<view class="title">角色</view>
+						<picker @change="PickerChange" :value="userindex" :range="picker" >
+							<view class="picker">
+								{{picker[userindex]}}
+							</view>
+						</picker>
+					</view>
+					<view class="form-login cu-form-group margin-top">
+						<view class="title">账号</view>
+						<input placeholder="请输入账号" name="input" v-model="username"></input>
+						<text class='cuIcon-people'></text>
+					</view>
+					<view class="form-login cu-form-group margin-top">
 					<view class="title">密码</view>
 					<input v-show="show" placeholder="请输入密码" name="input" type="password" v-model="password"></input>
 					<input v-show="!show" placeholder="请输入密码" name="input" type="text" v-model="password"></input>
 					<text :class='show ? "cuIcon-attention" : "cuIcon-attentionforbid"' @tap="show = !show"></text>
+					</view>
 				</view>
+				<button class="cu-btn author-btn" @tap="loginUp()">登 录</button>
+				<button class="cu-btn reg-btn" @tap="gourl('/pages/login/register')">注 册</button>
+				
 			</view>
-			<button class="cu-btn author-btn" @tap="loginUp()">登 录</button>
-			<button class="cu-btn reg-btn" @tap="gourl('/pages/login/register')">注 册</button>
 			<!-- <button class="cu-btn close-btn" @tap="closeAuth">暂不授权</button> -->
 			<view class="otherLoginWays">
 				<view class="otherWayTextWrapper">
@@ -43,10 +47,29 @@
 </template>
 
 <script>
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex';
 	export default {
 		data() {
 			return {
+				//TabCur: 0,
+				// scrollLeft: 0,
+				// identityList:[
+				// 	{
+				// 		title:"我是老师",
+				// 		index:1,
+				// 	},
+				// 	{
+				// 		title:"我是学生",
+				// 		index:2,
+				// 	},
+				// ],
+				//userindex 教师0，学生1
 				show:true,
+				userindex: 0,
+				picker: ['教师', '学生'],
 				pwd:true,
 				username: '13023818127', //用户/电话
 				password: '123456', //密码
@@ -54,6 +77,12 @@
 				border: false,
 				systeminfo: null,
 			}
+		},
+		computed: {
+			...mapState({
+				role: (state) => state.role
+				
+			})
 		},
 		onLoad() {
 			var _this = this;
@@ -70,6 +99,11 @@
 				uni.navigateTo({
 					url: url
 				});
+			},
+			PickerChange(e) {
+				this.userindex = e.detail.value
+				let role = this.userindex
+				this.$store.commit('changeRole', ['role', role])
 			},
 			// 点击登录
 			loginUp() {
@@ -91,22 +125,48 @@
 				}
 			},
 			loginSever(account, password) {
+				// uni.navigateTo({
+				// 	url: '../index/index'
+				// })
 				var _that = this
-				this.globalApi.loginIn({
-					telephone: account,
-					password: password,
-				}).then(res => {
-					var token = res.data;
-					var userinfo = [];
-					userinfo.account = account;
-					userinfo.password = password;
-					_that.setUserInfo(userinfo);
-					uni.setStorageSync('token', token)
-					uni.setStorageSync('user_id', 1)
-					uni.navigateTo({
-						url: '../index/index'
-					})
-				});
+				console.log("当前登录角色",_that.userindex)
+				if(_that.userindex == 0)
+				{
+					this.globalApi.loginIn({
+						telephone: account,
+						password: password,
+					}).then(res => {
+						console.log("res",res)
+						var token = res.data;
+						var userinfo = [];
+						userinfo.account = account;
+						userinfo.password = password;
+						_that.setUserInfo(userinfo);
+						uni.setStorageSync('token', token)
+						uni.setStorageSync('user_id', 1)
+						uni.navigateTo({
+							url: '../index/index'
+						})
+					});
+				}
+				else if(_that.userindex == 1)
+				{
+					this.globalApi.stuLoginIn({
+						telephone: account,
+						password: password,
+					}).then(res => {
+						var token = res.data;
+						var userinfo = [];
+						userinfo.account = account;
+						userinfo.password = password;
+						_that.setUserInfo(userinfo);
+						uni.setStorageSync('token', token)
+						uni.setStorageSync('user_id', 1)
+						uni.navigateTo({
+							url: '../index/index'
+						})
+					});
+				}
 			}
 		}
 	}
@@ -237,7 +297,7 @@
 
 	/*********************第三方登录******************/
 	.otherLoginWays {
-		margin-top: 95px;
+		margin-top:10%;
 		text-align: center;
 
 		.otherWayTextWrapper {

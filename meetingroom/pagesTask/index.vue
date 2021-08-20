@@ -3,7 +3,7 @@
 		<scroll-view scroll-y class="DrawerPage" :class="modalName=='viewModal'?'show':''">
 			<cu-custom  bgColor="bg-gradual-green"  :isBack="true">
 				<block slot="backText">返回</block>
-				<block slot="content">会务安排任务列表</block>
+				<block slot="content">任务列表</block>
 				<block slot="right">
 					<view class="action">
 						<view class='cuIcon-cu-image'>
@@ -12,7 +12,7 @@
 					</view>
 				</block>
 			</cu-custom>
-			<recordCard></recordCard>
+			<recordCard :start="starttime" :end="endtime"></recordCard>
 		</scroll-view>
 		
 		<view class="DrawerClose" :class="modalName=='viewModal'?'show':''" @tap="hideModal">
@@ -20,7 +20,7 @@
 		</view> 
 		 <scroll-view scroll-y class="DrawerWindow" :class="modalName=='viewModal'?'show':''">
 		
-			<search ></search>
+			<search @getstarttime="getstarttime" @getendtime="getendtime"></search>
 			<view class="padding margin text-center">
 				<view class="cu-btn bg-yellow lg block shadow radius margin-xl" @tap="hideModal">
 					查询
@@ -40,6 +40,8 @@ export default {
 			recordData:'',
 			modalName: null,
 			scrollLeft: 0,
+			starttime:'',
+			endtime:'',
 		}
 	},
 	components: {
@@ -56,7 +58,14 @@ export default {
 		recordDetailed(item){
 			this.recordData=item
 			console.log("recordData",item)
-		}
+		},
+		getstarttime(data) {
+			this.starttime  = data
+		},
+		getendtime(data) {
+			this.endtime  = data
+			console.log("endtime",this.endtime)
+		},
 	}	
 }
 </script>
