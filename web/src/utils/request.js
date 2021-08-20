@@ -11,7 +11,8 @@ import { ACCESS_TOKEN } from "@/store/mutation-types"
  * 则映射后端域名，通过 vue.config.js
  * @type {*|string}
  */
-let apiBaseUrl = window._CONFIG['domianURL'] || "/jeecg-boot";
+//let apiBaseUrl = window._CONFIG['domianURL'] || "/jeecg-boot";
+let apiBaseUrl = '';
 console.log("apiBaseUrl= ",apiBaseUrl)
 // 创建 axios 实例
 const service = axios.create({
@@ -84,7 +85,7 @@ const err = (error) => {
 service.interceptors.request.use(config => {
   const token = Vue.ls.get(ACCESS_TOKEN)
   if (token) {
-    config.headers[ 'X-Access-Token' ] = token // 让每个请求携带自定义 token 请根据实际情况自行修改
+    config.headers[ 'token' ] = token // 让每个请求携带自定义 token 请根据实际情况自行修改
   }
   if(config.method=='get'){
     if(config.url.indexOf("sys/dict/getDictItems")<0){

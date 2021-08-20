@@ -8,7 +8,7 @@
           <span>状态：</span>
         </a-col>
         <a-col>
-          <a-select placeholder="请选择会议室状态" style="width: 200px" allowClear v-model="queryParam.state" >
+          <a-select placeholder="请选择会议室状态" style="width: 200px" allowClear v-model="queryParam.state">
             <a-select-option value="0">空闲</a-select-option>
             <a-select-option value="1">开会中</a-select-option>
             <a-select-option value="2">禁用</a-select-option>
@@ -80,19 +80,19 @@
     </div>
 
     <div id="dataRoomTable">
-      <a-table :data-source="dataSource" :pagination="ipagination" rowKey="index">
+      <a-table :data-source="dataSource" :pagination="ipagination" rowKey="index" @change="handleTableChange">
         <a-table-column title="#" data-index="index" align="left" fixed="left" width="150px" scopedSlots:{ customRender:
           function(t, r, index) { return parseInt(index) + 1}}></a-table-column>
         <a-table-column title="位置" data-index="placeName" align="center"></a-table-column>
         <a-table-column title="房间号" data-index="room" align="center"></a-table-column>
-        <a-table-column title="状态" data-index="meetingRoomStateName" align="center">
-          <template slot-scope="meetingRoomStateName">
-            <span v-if="meetingRoomStateName=='空闲'">
+        <a-table-column title="状态" data-index="meetingRoomState" align="center">
+          <template slot-scope="meetingRoomState">
+            <span v-if="meetingRoomState=='空闲'">
               <a-tag color="green">
                 空闲
               </a-tag>
             </span>
-            <span v-else-if="meetingRoomStateName=='禁用'">
+            <span v-else-if="meetingRoomState=='禁用'">
               <a-tag color="blue">
                 禁用
               </a-tag>
@@ -107,7 +107,6 @@
         <a-table-column title="容纳人数" data-index="number" align="center"></a-table-column>
         <a-table-column title="基本条件" data-index="condition" align="center">
         </a-table-column>
-
         <a-table-column title="操作" align="center">
           <template slot-scope="record">
             <!-- <a href="javascript:;" @click="detail(record)" :style="{  color: 'orange' }">详情</a>
@@ -317,6 +316,7 @@
   import {
     JeecgListMixin
   } from '@/mixins/JeecgListMixin'
+  //import { deleteAction, getAction,downFile,getFileAccessHttpUrl,postAction } from '@/api/manage'
   const dataRoom = [{
       index: 1,
       placeName: '福建师范大学.旗山校区.1号楼',
@@ -505,6 +505,11 @@
       searchReset() {
         this.dataRoom = dataRoom
         this.queryParam.IDName = ''
+        // console.log('this.$store.state.token',this.$store.state.user.token)
+        // let params={id:1}
+        // getAction('/MeetingRoomController/getPlaceByPid', params).then((res) => {
+        // console.log('1',res)
+        // })
       },
       addRoom() {
         this.visibleAdd = true

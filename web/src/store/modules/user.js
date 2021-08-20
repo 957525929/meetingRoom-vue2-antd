@@ -13,7 +13,9 @@ const user = {
     welcome: '',
     avatar: '',
     permissionList: [],
-    info: {}
+    info: {},
+    //////////////
+ 
   },
 
   mutations: {
@@ -34,9 +36,13 @@ const user = {
     SET_INFO: (state, info) => {
       state.info = info
     },
-  },
+// ////////////
 
+    
+  },
   actions: {
+
+    ///////////////
     // CAS验证登录
     ValidateLogin({ commit }, userInfo) {
       return new Promise((resolve, reject) => {

@@ -13,7 +13,7 @@ export const JeecgListMixin = {
   data(){
     return {
       //token header
-      tokenHeader: {'X-Access-Token': Vue.ls.get(ACCESS_TOKEN)},
+      tokenHeader: {'token': Vue.ls.get(ACCESS_TOKEN)},
       /* 查询条件-请不要在queryParam中声明非字符串值的属性 */
       queryParam: {},
       /* 数据源 */
