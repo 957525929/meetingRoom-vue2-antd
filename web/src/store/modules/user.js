@@ -66,16 +66,19 @@ const user = {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
           if (response.code == '200') {
-            const result = response.result
-            const userInfo = result.userInfo
-            Vue.ls.set(ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000)
+            const result = response
+            const userInfo = {
+              username:'管理员',
+              realname:'chen',
+            }
+            Vue.ls.set(ACCESS_TOKEN, result.data, 7 * 24 * 60 * 60 * 1000)
             Vue.ls.set(USER_NAME, userInfo.username, 7 * 24 * 60 * 60 * 1000)
             Vue.ls.set(USER_INFO, userInfo, 7 * 24 * 60 * 60 * 1000)
             Vue.ls.set(UI_CACHE_DB_DICT_DATA, result.sysAllDictItems, 7 * 24 * 60 * 60 * 1000)
-            commit('SET_TOKEN', result.token)
+            commit('SET_TOKEN', result.data)
             commit('SET_INFO', userInfo)
             commit('SET_NAME', { username: userInfo.username, realname: userInfo.realname, welcome: welcome() })
-            commit('SET_AVATAR', userInfo.avatar)
+           // commit('SET_AVATAR', userInfo.avatar)
             resolve(response)
           } else {
             reject(response)
@@ -1340,7 +1343,7 @@ const user = {
                     "meta": {
                       "keepAlive": false,
                       "internalOrExternal": false,
-                      "title": "通知日志"
+                      "title": "短信通知日志"
                     },
                     "name": "meetingRoom-AppointmentNotice",
                     "id": "1245154914959151105"

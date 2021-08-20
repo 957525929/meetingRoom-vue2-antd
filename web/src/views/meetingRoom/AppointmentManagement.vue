@@ -8,13 +8,12 @@
           <span>会议状态：</span>
         </a-col>
         <a-col>
-          <a-select :style="{width:'200px'}" @change="handleChange" placeholder="请选择会议状态">
-            <a-select-option value="已完成">已完成</a-select-option>
-            <a-select-option value="待安排">待开始</a-select-option>
-            <a-select-option value="进行中">进行中</a-select-option>
-             <a-select-option value="全部">全部</a-select-option>
-            <!-- <a-select-option value="强制撤销">强制撤销</a-select-option>           -->
-            <!-- <a-select-option value="未通过">未通过</a-select-option> -->
+          <a-select :style="{width:'200px'}" @change="handleChange" placeholder="请选择会议状态" v-model="queryParam.state">
+            <a-select-option value="1">待开会</a-select-option>
+            <a-select-option value="2">开会中</a-select-option>
+            <a-select-option value="3">已完成</a-select-option>
+             <a-select-option value="4">撤销</a-select-option>
+             <a-select-option value="5">强制撤销</a-select-option>
           </a-select>
         </a-col>
         <a-col :span="1"></a-col>
@@ -52,9 +51,9 @@
         </a-col>
         <a-col>
           <a-select :style="{width:'200px'}"   v-model="queryParam.arrange" placeholder="请选择是否需要会务安排">
-            <a-select-option value="是">是</a-select-option>
-            <a-select-option value="否">否</a-select-option>
-            <a-select-option value="全部">全部</a-select-option>
+            <a-select-option value="0">是</a-select-option>
+            <a-select-option value="1">否</a-select-option>
+            <a-select-option value="2">全部</a-select-option>
           </a-select>
         </a-col>
         <a-col :span="5"></a-col>
@@ -118,75 +117,6 @@
       <br />
       <a-pagination size="small" :total="50" show-size-changer show-quick-jumper align="center" />
     </div>
-    <!-- 强制预约 -->
-    <!-- <a-drawer
-      :visible="visibleForced"
-      title="强制预约"
-      @close="closeForced"
-      width="600px"
-      placement="right"
-    >
- <a-form-model
-        ref="ruleForm"
-        :model="formForced"
-        :rules="rules"
-        :label-col="labelCol"
-        :wrapper-col="wrapperCol"
-      >
-      <a-form-model-item ref="theme" label="会议主题" prop="theme">
-          <a-select   show-search v-model="formForced.theme" @change="themeForced">
-            <a-select-option value="行政管理">行政管理</a-select-option>
-            <a-select-option value="安全管理">安全管理</a-select-option>
-          </a-select>
-        </a-form-model-item>
-         <a-form-model-item label="会议名称" prop="name">
-          <a-input v-model="formForced.name"  ></a-input>
-        </a-form-model-item>
-        <a-form-model-item label="会议时间">       
-          <a-date-picker
-            v-model="formForced.dateStart"
-            placeholder="选择开始日期"
-            style="width: 45%;"
-            :format="dateFormat"
-          ></a-date-picker>
-          <span>&nbsp;&nbsp;~&nbsp;&nbsp;</span>
-          <a-date-picker
-            v-model="formForced.dateEnd"
-            placeholder="选择结束日期"
-            style="width: 45%;"
-            :format="dateFormat"
-          ></a-date-picker>
-        </a-form-model-item>
-         <a-form-model-item label="午别" prop="range">
-          <a-select v-model="formForced.range" placeholder="请选择午别">
-            <a-select-option value="上午">上午</a-select-option>
-            <a-select-option value="下午">下午</a-select-option>
-            <a-select-option value="晚上">晚上</a-select-option>
-            <a-select-option value="全天">全天</a-select-option>
-          </a-select>
-        </a-form-model-item>    
-        <a-form-model-item label="会议地点" prop="address">
-          <a-input v-model="formForced.address" disabled></a-input>
-        </a-form-model-item>
-        <a-form-model-item label="参会人数" prop="number">
-          <a-input v-model="formForced.number" ></a-input>
-        </a-form-model-item>
-        <a-form-model-item label="会务安排" prop="arrange">
-        <a-radio-group v-model="formForced.arrange" >
-      <a-radio value="是">
-        是
-      </a-radio>
-      <a-radio value="否">
-        否
-      </a-radio>
-    </a-radio-group>
-        </a-form-model-item>
-        <a-form-model-item :wrapper-col="{ span: 14, offset: 6 }">
-          <a-button type="primary" @click="onSubmitForced()">强制预约</a-button>
-          <a-button style="margin-left: 10px;" @click="CancelForced()">取消</a-button>
-        </a-form-model-item>
-      </a-form-model>
-    </a-drawer>-->
     <!-- 详情页面 -->
     <a-drawer
       :visible="visibleAppoint"
@@ -388,13 +318,13 @@ export default {
       basicInfo: {},
       dataArrange,
       reason: '',
-      queryParam: {
-        name: undefined,
-        dateStart: undefined,
-        dateEnd: undefined,
-        state: undefined,
-        arrange:'是'
-      },
+      // queryParam: {
+      //   name: undefined,
+      //   dateStart: undefined,
+      //   dateEnd: undefined,
+      //   state: undefined,
+      //   arrange:'是'
+      // },
       dateFormat: 'YYYY年MM月DD日',
       url: {
         list: '/sys/user/list',
@@ -409,12 +339,13 @@ export default {
     this.queryParam.dateEnd = this.moment(end, 'YYYY-MM-DD')
     let dateNow = moment(new Date().toLocaleDateString(), 'YYYY年MM月DD日')
     this.data[0].dateTime = dateNow.format('YYYY年MM月DD日')
+    this.queryParam.arrange='0'
+    this.queryParam.state='1'
   },
   methods: {
     moment,
     onChange() {},
     handleChange() {},
-    searchQuery() {},
     searchReset() {
       this.data = data
       this.queryParam.IDName = ''

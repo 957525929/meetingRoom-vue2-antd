@@ -4,9 +4,10 @@
  * data中url定义 list为查询列表  delete为删除单条记录  deleteBatch为批量删除
  */
 import { filterObj } from '@/utils/util';
-import { deleteAction, getAction,downFile,getFileAccessHttpUrl } from '@/api/manage'
+import { deleteAction, getAction,downFile,getFileAccessHttpUrl,postAction } from '@/api/manage'
 import Vue from 'vue'
 import { ACCESS_TOKEN } from "@/store/mutation-types"
+
 
 export const JeecgListMixin = {
   data(){
@@ -72,10 +73,14 @@ export const JeecgListMixin = {
       }
       var params = this.getQueryParams();//查询条件
       this.loading = true;
-      getAction(this.url.list, params).then((res) => {
-        if (res.success) {
-          this.dataSource = res.result.records;
-          this.ipagination.total = res.result.total;
+      postAction(this.url.list, params).then((res) => {
+        // if (res.success) {
+        //   this.dataSource = res.result.records;          
+        //   this.ipagination.total = res.result.total;
+        // }
+        if (res.code==200) {
+          this.dataSource = res.data.list;          
+          this.ipagination.total = res.data.total;
         }
         if(res.code===510){
           this.$message.warning(res.message)
@@ -105,9 +110,11 @@ export const JeecgListMixin = {
         sqp['superQueryParams']=encodeURI(this.superQueryParams)
         sqp['superQueryMatchType'] = this.superQueryMatchType
       }
-      var param = Object.assign(sqp, this.queryParam, this.isorter ,this.filters);
-      param.field = this.getQueryField();
-      param.pageNo = this.ipagination.current;
+      //var param = Object.assign(sqp, this.queryParam, this.isorter ,this.filters);
+      
+      var param = Object.assign(sqp, this.queryParam);
+     // param.field = this.getQueryField();
+      param.pageNum = this.ipagination.current;
       param.pageSize = this.ipagination.pageSize;
       return filterObj(param);
     },

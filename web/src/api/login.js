@@ -12,17 +12,25 @@ import { axios } from '@/utils/request'
  * @param parameter
  * @returns {*}
  */
-export function login(parameter) {
+// export function login(parameter) {
+//   return axios({
+//     url: '/sys/login',
+//     method: 'post',
+//     data: parameter
+//   })
+// }
+
+export function phoneLogin(parameter) {
   return axios({
-    url: '/sys/login',
+    url: '/sys/phoneLogin',
     method: 'post',
     data: parameter
   })
 }
 
-export function phoneLogin(parameter) {
+export function login(parameter) {
   return axios({
-    url: '/sys/phoneLogin',
+    url: '/MeetingRoomWebLoginController/login',
     method: 'post',
     data: parameter
   })

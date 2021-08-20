@@ -20,11 +20,7 @@
         <a-col :span="1"></a-col>
 
         <a-col>
-          <a-button
-            :style="{ background: '#49a9ee', color: 'white'}"
-            icon="search"
-            @click="searchQuery"
-          >查询</a-button>
+          <a-button :style="{ background: '#49a9ee', color: 'white'}" icon="search" @click="searchQuery">查询</a-button>
           <a-button @click="searchReset()" icon="reload" style="margin-left: 8px">重置</a-button>
         </a-col>
       </a-row>
@@ -35,14 +31,8 @@
     <div class="table-operator" style="border-top: 5px;margin-top: 20px">
       <a-button @click="addArrange" type="primary" icon="plus">添加</a-button>
       <a-button type="primary" icon="download" @click="handleExportXls('会务安排员信息')">导出</a-button>
-      <a-upload
-        name="file"
-        :showUploadList="false"
-        :multiple="false"
-        :headers="tokenHeader"
-        :action="importExcelUrl"
-        @change="handleImportExcel"
-      >
+      <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl"
+        @change="handleImportExcel">
         <a-button type="primary" icon="import">导入</a-button>
       </a-upload>
       <!--      <a-button type="primary" icon="hdd" @click="recycleBinVisible=true">回收站</a-button>-->
@@ -63,11 +53,11 @@
     <div id="dataDutyTable">
       <a-table :data-source="dataArrange" :pagination="false" rowKey="index">
         <a-table-column title="#" data-index="index" align="left" fixed="left"></a-table-column>
-        <a-table-column title="学号" data-index="arrangeID" align="center"></a-table-column>
-        <a-table-column title="姓名" data-index="arrangeName" align="center"></a-table-column>
-        <a-table-column title="联系电话" data-index="arrangeTel" align="center"></a-table-column>
-        <a-table-column title="银行账号" data-index="arrangeBank" align="center"></a-table-column>
-        <a-table-column title="开户行" data-index="whereBank" align="center"></a-table-column>
+        <a-table-column title="学号" data-index="studentId" align="center"></a-table-column>
+        <a-table-column title="姓名" data-index="name" align="center"></a-table-column>
+        <a-table-column title="联系电话" data-index="telephone" align="center"></a-table-column>
+        <a-table-column title="银行账号" data-index="bankAccount" align="center"></a-table-column>
+        <a-table-column title="开户行" data-index="bankName" align="center"></a-table-column>
         <a-table-column title="操作" align="center" fixed="right">
           <template slot-scope="record">
             <a href="javascript:;" @click="Modify(record)" :style="{  color: 'blue' }">修改</a>
@@ -83,20 +73,8 @@
     </div>
 
     <!-- 新增 -->
-    <a-drawer
-      :visible="visibleAdd"
-      title="新增会务安排员"
-      @close="closeAdd"
-      width="600px"
-      placement="right"
-    >
-      <a-form-model
-        ref="ruleForm"
-        :model="formAdd"
-        :rules="rules"
-        :label-col="labelCol"
-        :wrapper-col="wrapperCol"
-      >
+    <a-drawer :visible="visibleAdd" title="新增会务安排员" @close="closeAdd" width="600px" placement="right">
+      <a-form-model ref="ruleForm" :model="formAdd" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-form-model-item ref="arrangeID" label="学号" prop="arrangeID">
           <a-input v-model="formAdd.arrangeID" placeholder="请输入学号"></a-input>
         </a-form-model-item>
@@ -119,19 +97,8 @@
       </a-form-model>
     </a-drawer>
     <!--修改信息 -->
-    <a-drawer
-      :visible="visibleModify"
-      title="修改安排员信息"
-      @close="closeModify"
-      width="600px"
-      placement="right"
-    >
-      <a-form-model
-        :label-col="labelCol"
-        :model="formModify"
-        :wrapper-col="wrapperCol"
-        :rules="rules"
-      >
+    <a-drawer :visible="visibleModify" title="修改安排员信息" @close="closeModify" width="600px" placement="right">
+      <a-form-model :label-col="labelCol" :model="formModify" :wrapper-col="wrapperCol" :rules="rules">
         <a-form-model-item ref="arrangeID" label="学号" prop="arrangeID">
           <a-input v-model="formModify.arrangeID" placeholder="请输入学号"></a-input>
         </a-form-model-item>
@@ -157,166 +124,165 @@
 </template>
 
 <script>
-import { JeecgListMixin } from '@/mixins/JeecgListMixin'
-const dataArrange = [
-  {
-    index: 1,
-    arrangeID: 'B001',
-    arrangeName: '李小娟',
-    arrangeTel: '15059655332',
-    arrangeBank: '6228480068882423498',
-    whereBank: '农行福州洪山支行'
-  },
-  {
-    index: 2,
-    arrangeID: 'B002',
-    arrangeName: '王菲菲',
-    arrangeTel: '13859655348',
-    arrangeBank: '6228480068885932881',
-    whereBank: '农行福州洪山支行'
-  }
-]
-export default {
-  mixins: [JeecgListMixin],
-  data() {
-    return {
-      tokenHeader: undefined,
-      dataArrange,
-      queryParam: {
-        arrangeName: '',
-        arrangeID: ''
-      },
-      visibleAdd: false,
-      visibleModify: false,
-      labelCol: { span: 5 },
-      wrapperCol: { span: 19 },
-      formAdd: {
-        arrangeID: undefined,
-        arrangeName: undefined,
-        arrangeTel: undefined
-      },
-      formModify: {
-        arrangeID: undefined,
-        arrangeName: undefined,
-        arrangeTel: undefined
-      },
-      rules: {
-        arrangeID: [
-          {
+  import {
+    JeecgListMixin
+  } from '@/mixins/JeecgListMixin'
+  const dataArrange = [{
+      index: 1,
+      studentId: 'B001',
+      name: '李小娟',
+      telephone: '15059655332',
+      bankAccount: '6228480068882423498',
+      bankName: '农行福州洪山支行'
+    },
+    {
+      index: 2,
+      studentId: 'B002',
+      name: '王菲菲',
+      telephone: '13859655348',
+      bankAccount: '6228480068885932881',
+      bankName: '农行福州洪山支行'
+    }
+  ]
+  export default {
+    mixins: [JeecgListMixin],
+    data() {
+      return {
+        tokenHeader: undefined,
+        dataArrange,
+        queryParam: {
+          arrangeName: '',
+          arrangeID: ''
+        },
+        visibleAdd: false,
+        visibleModify: false,
+        labelCol: {
+          span: 5
+        },
+        wrapperCol: {
+          span: 19
+        },
+        formAdd: {
+          arrangeID: undefined,
+          arrangeName: undefined,
+          arrangeTel: undefined
+        },
+        formModify: {
+          arrangeID: undefined,
+          arrangeName: undefined,
+          arrangeTel: undefined
+        },
+        rules: {
+          arrangeID: [{
             required: true,
             message: '请输入学号',
             trigger: 'blur'
-          }
-        ],
-        arrangeName: [
-          {
+          }],
+          arrangeName: [{
             required: true,
             message: '请输入姓名',
             trigger: 'blur'
-          }
-        ],
-        arrangeTel: [
-          {
+          }],
+          arrangeTel: [{
             required: true,
             message: '请输入联系电话',
             trigger: 'blur'
-          }
-        ],
-        arrangeBank: [
-          {
+          }],
+          arrangeBank: [{
             required: true,
             message: '请输入银行账号',
             trigger: 'blur'
-          }
-        ],
-        whereBank: [
-          {
+          }],
+          whereBank: [{
             required: true,
             message: '请输入开户行',
             trigger: 'blur'
-          }
-        ]
+          }]
+        },
+        url: {
+          // syncUser: "/process/extActProcess/doSyncUser",
+          // //list: "/sys/user/list",
+          // delete: "/sys/user/delete",
+          // deleteBatch: "/sys/user/deleteBatch",
+          exportXlsUrl: '/sys/user/exportXls',
+          importExcelUrl: 'sys/user/importExcel'
+        }
+      }
+    },
+    computed: {
+      importExcelUrl: function () {
+        return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`
+      }
+    },
+    created() {
+      this.loadData();
+    },
+    methods: {
+      loadData() {},
+      searchQuery() {},
+      handleImportExcel() {},
+      searchReset() {
+        this.queryParam.arrangeID = ''
+        this.queryParam.arrangeName = ''
+        this.dataArrange = dataArrange
       },
-      url: {
-        // syncUser: "/process/extActProcess/doSyncUser",
-        // //list: "/sys/user/list",
-        // delete: "/sys/user/delete",
-        // deleteBatch: "/sys/user/deleteBatch",
-        exportXlsUrl: '/sys/user/exportXls',
-        importExcelUrl: 'sys/user/importExcel'
+      addArrange() {
+        this.visibleAdd = true
+      },
+      onSubmitAdd() {
+        this.$refs.ruleForm.validate(valid => {
+          if (valid) {
+            // let length = this.dataHotel.length;
+            // this.dataHotel[length] = this.formAdd;
+            //this.dataHotel.push(this.formAdd)
+            this.$message.success('添加成功!')
+            this.formAdd = {}
+            this.visibleAdd = false
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
+      },
+      resetFormAdd() {
+        this.$refs.ruleForm.resetFields()
+      },
+      onDelete(index) {
+        const dataArrange = [...this.dataArrange]
+        this.dataArrange = dataArrange.filter(item => item.index !== index)
+      },
+      Download() {
+        console.log('下载')
+      },
+      Modify(record) {
+        this.visibleModify = true
+        console.log(record)
+        this.formModify.arrangeID = record.arrangeID
+        this.formModify.arrangeName = record.arrangeName
+        this.formModify.arrangeTel = record.arrangeTel
+        this.formModify.arrangeBank = record.arrangeBank
+        this.formModify.whereBank = record.whereBank
+      },
+      onSubmitModify() {
+        this.visibleModify = false
+        this.$message.success('修改成功')
+      },
+      CancelModify() {
+        this.visibleModify = false
+      },
+      closeAdd() {
+        this.$emit('close')
+        this.visibleAdd = false
+      },
+      closeModify() {
+        this.$emit('close')
+        this.visibleModify = false
       }
     }
-  },
-  computed: {
-    importExcelUrl: function() {
-      return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`
-    }
-  },
-  methods: {
-    searchQuery() {},
-    handleImportExcel() {},
-    searchReset() {
-      this.queryParam.arrangeID = ''
-      this.queryParam.arrangeName = ''
-      this.dataArrange = dataArrange
-    },
-    addArrange() {
-      this.visibleAdd = true
-    },
-    onSubmitAdd() {
-      this.$refs.ruleForm.validate(valid => {
-        if (valid) {
-          // let length = this.dataHotel.length;
-          // this.dataHotel[length] = this.formAdd;
-          //this.dataHotel.push(this.formAdd)
-          this.$message.success('添加成功!')
-          this.formAdd = {}
-          this.visibleAdd = false
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
-    },
-    resetFormAdd() {
-      this.$refs.ruleForm.resetFields()
-    },
-    onDelete(index) {
-      const dataArrange = [...this.dataArrange]
-      this.dataArrange = dataArrange.filter(item => item.index !== index)
-    },
-    Download() {
-      console.log('下载')
-    },
-    Modify(record) {
-      this.visibleModify = true
-      console.log(record)
-      this.formModify.arrangeID = record.arrangeID
-      this.formModify.arrangeName = record.arrangeName
-      this.formModify.arrangeTel = record.arrangeTel
-      this.formModify.arrangeBank = record.arrangeBank
-      this.formModify.whereBank = record.whereBank
-    },
-    onSubmitModify() {
-      this.visibleModify = false
-      this.$message.success('修改成功')
-    },
-    CancelModify() {
-      this.visibleModify = false
-    },
-    closeAdd() {
-      this.$emit('close')
-      this.visibleAdd = false
-    },
-    closeModify() {
-      this.$emit('close')
-      this.visibleModify = false
-    }
   }
-}
 </script>
-<style >
-#dataDutyTable {
-  margin-top: 20px;
-}
+<style>
+  #dataDutyTable {
+    margin-top: 20px;
+  }
 </style>

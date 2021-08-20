@@ -64,6 +64,14 @@ export function getUserList(parameter) {
   })
 }
 
+// export function getStudentArrangeList(parameter) {
+//   return axios({
+//     url: api.student,
+//     method: 'get',
+//     params: parameter
+//   })
+// }
+
 export function getRoleList(parameter) {
   return axios({
     url: api.role,

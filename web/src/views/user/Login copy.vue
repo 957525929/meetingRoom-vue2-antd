@@ -6,15 +6,15 @@
         <a-tab-pane key="tab1" tab="登陆" class="loginTitle">
           <a-form-item>
             <a-input size="large"
-              v-decorator="['username',{initialValue:'18859699351', rules: validatorRules.username.rules}]" type="text"
-              placeholder="请输入帐户名 / 18859699351">
+              v-decorator="['username',{initialValue:'admin', rules: validatorRules.username.rules}]" type="text"
+              placeholder="请输入帐户名 / admin">
               <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }" />
             </a-input>
           </a-form-item>
 
           <a-form-item>
-            <a-input v-decorator="['password',{initialValue:'123', rules: validatorRules.password.rules}]"
-              size="large" type="password" autocomplete="false" placeholder="密码 / 123">
+            <a-input v-decorator="['password',{initialValue:'123456', rules: validatorRules.password.rules}]"
+              size="large" type="password" autocomplete="false" placeholder="密码 / 123456">
               <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
             </a-input>
           </a-form-item>
@@ -219,11 +219,11 @@
         that.loginBtn = true;
           // 使用账户密码登陆
           if (that.customActiveKey === 'tab1') {
-            that.form.validateFields(['username', 'password', 'rememberMe'], {
+            that.form.validateFields(['username', 'password', 'inputCode', 'rememberMe'], {
               force: true
             }, (err, values) => {
               if (!err) {
-                loginParams.telephone = values.username
+                loginParams.username = values.username
                 // update-begin- --- author:scott ------ date:20190805 ---- for:密码加密逻辑暂时注释掉，有点问题
                 //loginParams.password = md5(values.password)
                 //loginParams.password = encryption(values.password,that.encryptedString.key,that.encryptedString.iv)
@@ -234,7 +234,7 @@
                 loginParams.checkKey = that.currdatetime
                 console.log("登录参数", loginParams)
                 that.Login(loginParams).then((res) => {
-                   this.departConfirm(res)
+                  this.departConfirm(res)
                 }).catch((err) => {
                   that.requestFailed(err);
                 });
@@ -378,26 +378,24 @@
         this.inputCodeContent = e.target.value
       },
       departConfirm(res) {
-        if (res.code=='200') {
-          this.loginSuccess()
-          // let multi_depart = res.result.multi_depart
-          // //0:无部门 1:一个部门 2:多个部门
-          // if (multi_depart == 0) {
-          //   this.loginSuccess()
-          //   this.$notification.warn({
-          //     message: '提示',
-          //     description: `您尚未归属部门,请确认账号信息`,
-          //     duration: 3
-          //   });
-          // } else if (multi_depart == 2) {
-          //   this.departVisible = true
-          //   this.currentUsername = this.form.getFieldValue("username")
-          //   this.departList = res.result.departs
-          // } else {
-          //   this.loginSuccess()
-          // }
-        }
-         else {
+        if (res.success) {
+          let multi_depart = res.result.multi_depart
+          //0:无部门 1:一个部门 2:多个部门
+          if (multi_depart == 0) {
+            this.loginSuccess()
+            this.$notification.warn({
+              message: '提示',
+              description: `您尚未归属部门,请确认账号信息`,
+              duration: 3
+            });
+          } else if (multi_depart == 2) {
+            this.departVisible = true
+            this.currentUsername = this.form.getFieldValue("username")
+            this.departList = res.result.departs
+          } else {
+            this.loginSuccess()
+          }
+        } else {
           this.requestFailed(res)
           this.Logout();
         }

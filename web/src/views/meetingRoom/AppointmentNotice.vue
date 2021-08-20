@@ -9,11 +9,11 @@
         </a-col>
         <a-col>
           <a-select placeholder="请选择发送类型" style="width: 200px" v-model="queryParam.noticeType">
-            <a-select-option value="预约成功">空闲</a-select-option>
-            <a-select-option value="预约失败">禁用</a-select-option>
-            <a-select-option value="被强制预约">已预约</a-select-option>
-            <a-select-option value="强制预约成功">强制预约成功</a-select-option>
-            <a-select-option value="全部">全部</a-select-option>
+            <a-select-option value="0">空闲</a-select-option>
+            <a-select-option value="1">禁用</a-select-option>
+            <a-select-option value="2">已预约</a-select-option>
+            <a-select-option value="3">强制预约成功</a-select-option>
+            <a-select-option value="4">全部</a-select-option>
           </a-select>
         </a-col>
         <a-col :span="1"></a-col>
@@ -37,10 +37,20 @@
       <a-table :data-source="dataTeacher" :pagination="false" rowKey="index">
         <a-table-column title="#" data-index="index" align="left" fixed="left" width="50px"></a-table-column>
         <a-table-column title="发送类型" data-index="noticeType" align="left" width="120px"></a-table-column>
-        <a-table-column title="发送时间" data-index="noticeTime" align="left" width="200px"></a-table-column>
-        <a-table-column title="收信人" data-index="recipientName" align="left" width="120px"></a-table-column>
-        <a-table-column title="收信人电话" data-index="recipientTel" align="left" width="120px"></a-table-column>
+        <a-table-column title="发送时间" data-index="noticeTime" align="left" width="200px" :sorter='true'></a-table-column>
+        <a-table-column title="接收人" data-index="recipientName" align="left" width="120px"></a-table-column>
+        <a-table-column title="接收人电话" data-index="recipientTel" align="left" width="120px"></a-table-column>
+        <a-table-column title="发送主题" data-index="noticeTheme" align="left" width="120px">
+          <template slot-scope="noticeTheme">
+            <a-tag color="green" v-if="noticeTheme=='预约成功'"> 预约成功</a-tag>
+            <a-tag color="green" v-if="noticeTheme=='强制预约成功'"> 强制预约成功</a-tag>
+            <a-tag color="red" v-if="noticeTheme=='预约失败'"> 预约失败</a-tag>
+            <a-tag color="red" v-if="noticeTheme=='被强制预约'"> 被强制预约</a-tag>
+            <a-tag color="red" v-if="noticeTheme=='强制预约失败'"> 强制预约失败</a-tag>
+          </template>
+        </a-table-column>
         <a-table-column title="通知内容" data-index="notice" align="left"></a-table-column>
+        <a-table-column title="发送状态" data-index="noticeState" align="left" width="120px"></a-table-column>
       </a-table>
       <br />
       <a-pagination size="small" :total="50" show-size-changer show-quick-jumper align="center" />
@@ -52,35 +62,53 @@
 <script>
   const dataTeacher = [{
       index: 1,
-      noticeType: '预约成功',
+      noticeType:'消息通知',
+      noticeTheme: '预约成功',
       noticeTime: '2021-08-18 23:01:31',
       recipientName: '李帅',
       recipientTel: '13759655332',
-      notice: '您已成功预约2021年8月25日全天福建师范大学.旗山校区.1号楼.会议室203，请知晓'
+      notice: '您已成功预约2021年8月25日全天福建师范大学.旗山校区.1号楼.会议室203，请知晓',
+      noticeState:'发送成功'
     },
     {
       index: 2,
-      noticeType: '预约失败',
+      noticeType:'消息通知',
+      noticeTheme: '预约失败',    
       noticeTime: '2021-08-18 17:46:26',
       recipientName: '张晓',
       recipientTel: '15879623045',
-      notice: '您申请的2021年8月25日全天福建师范大学.旗山校区.1号楼.会议室204未成功预约，请知晓'
+      notice: '您申请的2021年8月25日全天福建师范大学.旗山校区.1号楼.会议室204未成功预约，请知晓',
+      noticeState:'发送成功'
     },
     {
       index: 3,
-      noticeType: '被强制预约',
+      noticeType:'消息通知',
+      noticeTheme: '被强制预约',
       noticeTime: '2021-08-18 15:00:18',
       recipientName: '于光',
       recipientTel: '18963210456',
-      notice: '您申请的2021年8月25日全天福建师范大学.旗山校区.1号楼.会议室204被强制预约，请知晓'
+      notice: '您申请的2021年8月25日全天福建师范大学.旗山校区.1号楼.会议室204已被强制预约，请知晓',
+      noticeState:'发送失败'
     },
     {
       index: 4,
-      noticeType: '强制预约成功',
+      noticeType:'消息通知',
+      noticeTheme: '强制预约成功',
       noticeTime: '2021-08-18 15:00:18',
-      recipientName: '于光',
-      recipientTel: '18963210456',
-      notice: '您已成功强制预约2021年8月25日全天福建师范大学.旗山校区.2号楼.会议室203，请知晓'
+      recipientName: '游斌',
+      recipientTel: '13625894706',
+      notice: '您已成功强制预约2021年8月25日全天福建师范大学.旗山校区.2号楼.会议室203，请知晓',
+        noticeState:'发送失败'
+    },
+    {
+      index: 5,
+      noticeType:'消息通知',
+      noticeTheme: '强制预约失败',
+      noticeTime: '2021-08-18 13:00:18',
+      recipientName: '陈雨',
+      recipientTel: '15489632104',
+      notice: '您申请的2021年8月25日全天福建师范大学.旗山校区.2号楼.会议室203未成功强制预约，请知晓',
+      noticeState:'发送成功'
     },
   ]
   export default {
