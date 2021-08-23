@@ -11,6 +11,7 @@ import { ACCESS_TOKEN } from '@/store/mutation-types'
 export const JeecgListMixin = {
   data() {
     return {
+      methodType:'post',
       //token header
       tokenHeader: { token: Vue.ls.get(ACCESS_TOKEN) },
       /* 查询条件-请不要在queryParam中声明非字符串值的属性 */
@@ -70,20 +71,28 @@ export const JeecgListMixin = {
       if (arg === 1) {
         this.ipagination.current = 1
       }
-      var params = this.getQueryParams() //查询条件
-      this.loading = true
-      postAction(this.url.list, params).then(res => {
-        // if (res.success) {
-        //   this.dataSource = res.result.records;
-        //   this.ipagination.total = res.result.total;
-        // }
-        if (res.code == 200) {
-          this.dataSource = res.data.list
-    
-          this.ipagination.total = res.data.total
+      var params = this.getQueryParams();//查询条件
+      this.loading = true;
+     
+      // postAction(this.url.list, params).then((res) => {
+      //   if (res.code==200) {
+      //     this.dataSource = res.data.list;          
+      //     this.ipagination.total = res.data.total;
+      //   }
+      //   else {
+      //     that.$message.warning(res.message);
+      //   }
+      //   this.loading = false;
+      // })
+
+       var action  = this.methodType == 'post' ? postAction : getAction;
+       action(this.url.list, params).then((res) => {
+        if (res.code==200) {
+          this.dataSource = res.data.list;          
+          this.ipagination.total = res.data.total;
         }
-        if (res.code === 510) {
-          this.$message.warning(res.message)
+        else {
+          that.$message.warning(res.message);
         }
         this.loading = false
       })

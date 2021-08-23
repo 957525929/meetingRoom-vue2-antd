@@ -5,17 +5,17 @@
     <div class="table-page-search-wrapper">
       <a-row type="flex" align="middle">
         <a-col>
-          <span>学号：</span>
+          <span>编号：</span>
         </a-col>
         <a-col>
-          <a-input placeholder="请输入安排员学号" v-model="queryParam.arrangeID"></a-input>
+          <a-input placeholder="请输入安排员编号" v-model="queryParam.studentId"></a-input>
         </a-col>
         <a-col :span="1"></a-col>
         <a-col>
           <span>姓名：</span>
         </a-col>
         <a-col>
-          <a-input placeholder="请输入安排员姓名" v-model="queryParam.arrangeName"></a-input>
+          <a-input placeholder="请输入安排员姓名" v-model="queryParam.name"></a-input>
         </a-col>
         <a-col :span="1"></a-col>
 
@@ -29,7 +29,7 @@
 
     <!-- 操作按钮区域 -->
     <div class="table-operator" style="border-top: 5px;margin-top: 20px">
-      <a-button @click="addArrange" type="primary" icon="plus">添加</a-button>
+      <a-button @click="myHandleAdd" type="primary" icon="plus">添加</a-button>
       <a-button type="primary" icon="download" @click="handleExportXls('会务安排员信息')">导出</a-button>
       <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl"
         @change="handleImportExcel">
@@ -51,9 +51,8 @@
     </div>
     <!-- table区域-begin -->
     <div id="dataDutyTable">
-      <a-table :data-source="dataArrange" :pagination="false" rowKey="index">
-        <a-table-column title="#" data-index="index" align="left" fixed="left"></a-table-column>
-        <a-table-column title="学号" data-index="studentId" align="center"></a-table-column>
+      <a-table :dataSource="dataSource" :pagination="ipagination" rowKey="studentId" :loading="loading">
+        <a-table-column title="编号" data-index="studentId" align="center"></a-table-column>
         <a-table-column title="姓名" data-index="name" align="center"></a-table-column>
         <a-table-column title="联系电话" data-index="telephone" align="center"></a-table-column>
         <a-table-column title="银行账号" data-index="bankAccount" align="center"></a-table-column>
@@ -62,138 +61,103 @@
           <template slot-scope="record">
             <a href="javascript:;" @click="Modify(record)" :style="{  color: 'blue' }">修改</a>
             <a-divider type="vertical" />
-            <a-popconfirm title="确定删除吗?" @confirm="() => onDelete(record.index)">
+            <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.studentId)">
               <a href="javascript:;" :style="{  color: 'red' }">删除</a>
             </a-popconfirm>
           </template>
         </a-table-column>
       </a-table>
-      <br />
-      <a-pagination size="small" :total="50" show-size-changer show-quick-jumper align="center" />
+      <!-- <br />
+      <a-pagination size="small" :total="50" show-size-changer show-quick-jumper align="center" /> -->
     </div>
 
     <!-- 新增 -->
-    <a-drawer :visible="visibleAdd" title="新增会务安排员" @close="closeAdd" width="600px" placement="right">
-      <a-form-model ref="ruleForm" :model="formAdd" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-        <a-form-model-item ref="arrangeID" label="学号" prop="arrangeID">
-          <a-input v-model="formAdd.arrangeID" placeholder="请输入学号"></a-input>
+    <a-drawer :visible="visible" :title="title" @close="close" width="600px" placement="right">
+      <a-form-model ref="ruleForm" :model="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+        <a-form-model-item ref="studentId" label="编号">
+          <a-input v-model="form.studentId" placeholder="编号" disabled="disabled"></a-input>
         </a-form-model-item>
-        <a-form-model-item label="姓名" prop="arrangeName" ref="arrangeName">
-          <a-input v-model="formAdd.arrangeName" placeholder="请输入姓名"></a-input>
+        <a-form-model-item label="姓名" prop="name" ref="name">
+          <a-input v-model="form.name" placeholder="请输入姓名"></a-input>
         </a-form-model-item>
-        <a-form-model-item label="联系电话" prop="arrangeTel" ref="arrangeTel">
-          <a-input v-model="formAdd.arrangeTel" placeholder="请输入联系电话"></a-input>
+        <a-form-model-item label="登陆密码" prop="password" ref="password">
+          <a-input v-model="form.password" placeholder="请输入联系电话"></a-input>
         </a-form-model-item>
-        <a-form-model-item label="银行账号" prop="arrangeBank" ref="arrangeBank">
-          <a-input v-model="formAdd.arrangeBank" placeholder="请输入银行账号"></a-input>
+        <a-form-model-item label="微信号" prop="openId" ref="openId">
+          <a-input v-model="form.openId" placeholder="请输入联系电话"></a-input>
         </a-form-model-item>
-        <a-form-model-item label="开户行" prop="whereBank" ref="whereBank">
-          <a-input v-model="formAdd.whereBank" placeholder="请输入开户行"></a-input>
+        <a-form-model-item label="联系电话" prop="telephone" ref="telephone">
+          <a-input v-model="form.telephone" placeholder="请输入联系电话"></a-input>
         </a-form-model-item>
-        <a-form-model-item :wrapper-col="{ span: 14, offset: 6 }">
-          <a-button type="primary" @click="onSubmitAdd()">创建</a-button>
-          <a-button style="margin-left: 10px;" @click="resetFormAdd()">重置</a-button>
+        <a-form-model-item label="银行账号" prop="bankAccount" ref="bankAccount">
+          <a-input v-model="form.bankAccount" placeholder="请输入银行账号"></a-input>
         </a-form-model-item>
-      </a-form-model>
-    </a-drawer>
-    <!--修改信息 -->
-    <a-drawer :visible="visibleModify" title="修改安排员信息" @close="closeModify" width="600px" placement="right">
-      <a-form-model :label-col="labelCol" :model="formModify" :wrapper-col="wrapperCol" :rules="rules">
-        <a-form-model-item ref="arrangeID" label="学号" prop="arrangeID">
-          <a-input v-model="formModify.arrangeID" placeholder="请输入学号"></a-input>
-        </a-form-model-item>
-        <a-form-model-item label="姓名" prop="arrangeName" ref="arrangeName">
-          <a-input v-model="formModify.arrangeName" placeholder="请输入姓名"></a-input>
-        </a-form-model-item>
-        <a-form-model-item label="联系电话" prop="arrangeTel" ref="arrangeTel">
-          <a-input v-model="formModify.arrangeTel" placeholder="请输入联系电话"></a-input>
-        </a-form-model-item>
-        <a-form-model-item label="银行账号" prop="arrangeBank" ref="arrangeBank">
-          <a-input v-model="formModify.arrangeBank" placeholder="请输入联系电话"></a-input>
-        </a-form-model-item>
-        <a-form-model-item label="开户行" prop="whereBank" ref="whereBank">
-          <a-input v-model="formModify.whereBank" placeholder="请输入开户行"></a-input>
-        </a-form-model-item>
-        <a-form-model-item :wrapper-col="{ span: 14, offset: 6 }">
-          <a-button type="primary" @click="onSubmitModify()">修改</a-button>
-          <a-button style="margin-left: 10px;" @click="CancelModify()">取消</a-button>
+        <a-form-model-item label="开户行" prop="bankName" ref="bankName">
+          <a-input v-model="form.bankName" placeholder="请输入开户行"></a-input>
         </a-form-model-item>
       </a-form-model>
+      <a-button type="primary" @click="onSubmit()" style="margin-left:30%">确定</a-button>
+      <a-button style="margin-left: 10px;" @click="resetForm()">重置</a-button>
     </a-drawer>
   </a-card>
 </template>
 
 <script>
   import {
+    postAction
+  } from '@/api/manage'
+  import {
+    deletePostAction
+  } from '@/api/msg'
+  import {
     JeecgListMixin
   } from '@/mixins/JeecgListMixin'
-  const dataArrange = [{
-      index: 1,
-      studentId: 'B001',
-      name: '李小娟',
-      telephone: '15059655332',
-      bankAccount: '6228480068882423498',
-      bankName: '农行福州洪山支行'
-    },
-    {
-      index: 2,
-      studentId: 'B002',
-      name: '王菲菲',
-      telephone: '13859655348',
-      bankAccount: '6228480068885932881',
-      bankName: '农行福州洪山支行'
-    }
-  ]
   export default {
     mixins: [JeecgListMixin],
     data() {
       return {
-        tokenHeader: undefined,
-        dataArrange,
-        queryParam: {
-          arrangeName: '',
-          arrangeID: ''
-        },
-        visibleAdd: false,
-        visibleModify: false,
+        methodType:'',
         labelCol: {
           span: 5
         },
         wrapperCol: {
           span: 19
         },
-        formAdd: {
-          arrangeID: undefined,
-          arrangeName: undefined,
-          arrangeTel: undefined
-        },
-        formModify: {
-          arrangeID: undefined,
-          arrangeName: undefined,
-          arrangeTel: undefined
-        },
+        visible: false,
+        title: '',
+        form: {},
         rules: {
-          arrangeID: [{
-            required: true,
-            message: '请输入学号',
-            trigger: 'blur'
-          }],
-          arrangeName: [{
+          // studentId: [{
+          //   required: true,
+          //   message: '请输入学号',
+          //   trigger: 'blur'
+          // }],
+          name: [{
             required: true,
             message: '请输入姓名',
             trigger: 'blur'
           }],
-          arrangeTel: [{
+          password: [{
+            required: true,
+            message: '请输入登陆密码',
+            trigger: 'blur'
+          }],
+          openId: [{
+            required: true,
+            message: '请输入微信号',
+            trigger: 'blur'
+          }],
+          telephone: [{
             required: true,
             message: '请输入联系电话',
             trigger: 'blur'
           }],
-          arrangeBank: [{
+          bankAccount: [{
             required: true,
             message: '请输入银行账号',
             trigger: 'blur'
           }],
-          whereBank: [{
+          bankName: [{
             required: true,
             message: '请输入开户行',
             trigger: 'blur'
@@ -201,8 +165,8 @@
         },
         url: {
           // syncUser: "/process/extActProcess/doSyncUser",
-          // //list: "/sys/user/list",
-          // delete: "/sys/user/delete",
+          list: "/StudentController/getStudentList",
+          delete: "/StudentController/deleteStudent",
           // deleteBatch: "/sys/user/deleteBatch",
           exportXlsUrl: '/sys/user/exportXls',
           importExcelUrl: 'sys/user/importExcel'
@@ -214,11 +178,10 @@
         return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`
       }
     },
-    created() {
-      this.loadData();
+    created(){
+       this.methodType = 'get'; 
     },
     methods: {
-      loadData() {},
       searchQuery() {},
       handleImportExcel() {},
       searchReset() {
@@ -226,58 +189,83 @@
         this.queryParam.arrangeName = ''
         this.dataArrange = dataArrange
       },
-      addArrange() {
-        this.visibleAdd = true
+      myHandleAdd() {
+        this.visible = true
+        this.title = "新增会务安排员"
+        this.form = {
+          bankAccount: '',
+          bankName: '',
+          name: '',
+          openId: '',
+          password: '',
+          studentId: '',
+          telephone: ''
+        };
       },
-      onSubmitAdd() {
+      onSubmit() {
         this.$refs.ruleForm.validate(valid => {
           if (valid) {
-            // let length = this.dataHotel.length;
-            // this.dataHotel[length] = this.formAdd;
-            //this.dataHotel.push(this.formAdd)
-            this.$message.success('添加成功!')
-            this.formAdd = {}
-            this.visibleAdd = false
+            if (this.title == '新增会务安排员') {
+              let parameter = this.form
+              postAction('/StudentController/addStudent', parameter).then((res) => {
+                if (res.code == 200) {
+                  this.$message.success('添加成功!')
+                  console.log(parameter)
+                  this.loadData(1);
+                }
+              })
+            }
+            if (this.title == '修改会务安排员') {
+              let parameter = this.form
+              console.log(parameter)
+              postAction('/StudentController/updateStudentInfo', parameter).then((res) => {
+                if (res.code == 200) {
+                  this.$message.success('修改成功!')
+                  console.log(parameter)
+                  this.loadData(1);
+                }
+              })
+
+            }
+            this.visible = false
           } else {
             console.log('error submit!!')
             return false
           }
         })
       },
-      resetFormAdd() {
+      resetForm() {
         this.$refs.ruleForm.resetFields()
       },
-      onDelete(index) {
-        const dataArrange = [...this.dataArrange]
-        this.dataArrange = dataArrange.filter(item => item.index !== index)
-      },
+
       Download() {
         console.log('下载')
       },
       Modify(record) {
-        this.visibleModify = true
+        this.visible = true
+        this.title = "修改会务安排员"
         console.log(record)
-        this.formModify.arrangeID = record.arrangeID
-        this.formModify.arrangeName = record.arrangeName
-        this.formModify.arrangeTel = record.arrangeTel
-        this.formModify.arrangeBank = record.arrangeBank
-        this.formModify.whereBank = record.whereBank
+        this.form = record
       },
-      onSubmitModify() {
-        this.visibleModify = false
-        this.$message.success('修改成功')
+      close() {
+        this.visible = false
       },
-      CancelModify() {
-        this.visibleModify = false
+      handleDelete(id) {
+        if (!this.url.delete) {
+          this.$message.error("请设置url.delete属性!")
+          return
+        }
+        deletePostAction(this.url.delete, {
+          studentId: id
+        }).then((res) => {
+          if (res.code == 200) {
+            this.$message.success('删除成功');
+            this.loadData();
+          } else {
+            this.$message.warning(res.message);
+          }
+        });
       },
-      closeAdd() {
-        this.$emit('close')
-        this.visibleAdd = false
-      },
-      closeModify() {
-        this.$emit('close')
-        this.visibleModify = false
-      }
     }
   }
 </script>
