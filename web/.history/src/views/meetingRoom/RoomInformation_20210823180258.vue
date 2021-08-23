@@ -575,13 +575,17 @@ export default {
     addRoom() {
       this.visibleAdd = true
       console.log(this.dataSource)
-      for (let i = 0; i < this.dataSource.length; i++) {
-        // this.dataSource[0].push({
-        //   value: i
-        // })
-        console.log(this.dataSource[0].pc)
-        break
-      }
+      // for (let i = 0; i < this.dataSource.length; i++) {
+      //   // this.dataSource[0].push({
+      //   //   value: i
+      //   // })
+      //   console.log(this.dataSource[0].pc)
+      //   break
+      // }
+      console.log(this.dataSource[0])
+      this.dataSource[0].push({
+        value: 1
+      })
     },
     addDutyName(value) {
       if (value == '李霞') {

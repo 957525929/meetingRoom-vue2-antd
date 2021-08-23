@@ -30,7 +30,6 @@
             :default-value="defaultT"
             placeholder="请选择位置"
             :display-render="displayRender"
-            @click="handlePlaceTree"
           />
         </a-col>
         <a-col :span="1"></a-col>
@@ -216,73 +215,75 @@ export default {
       // console.log(d)
       //, return d.toDateString();
     },
-    handlePlaceTree() {
-      if (areaData[0].children.length == 0) {
-        for (let i = 0; i < this.firstTree.length; i++) {
-          areaData[0].children.push({
-            label: this.firstTree[i].placeName,
-            value: this.firstTree[i].placeName,
-            children: []
-          })
-        }
-      }
+     handlePlaceTree() {
+            if (areaData[0].children.length == 0) {
+                for (let i = 0; i < this.firstTree.length; i++) {
+                    areaData[0].children.push({
+                        label: this.firstTree[i].placeName,
+                        value: this.firstTree[i].placeName,
+                        children: [],
+                    })
+                }
+            }
 
-      if (areaData[0].children[0].children.length == 0) {
-        for (let i = 0; i < this.placeTreeTwo.length; i++) {
-          areaData[0].children[0].children.push({
-            label: this.placeTreeTwo[i].placeName,
-            value: this.placeTreeTwo[i].placeName
-          })
-        }
-      }
+            if (areaData[0].children[0].children.length == 0) {
+                for (let i = 0; i < this.placeTreeTwo.length; i++) {
+                   areaData[0].children[0].children.push({
+                        label: this.placeTreeTwo[i].placeName,
+                        value: this.placeTreeTwo[i].placeName,
+                    })
+                }
+            }
 
-      if (areaData[0].children[1].children.length == 0) {
-        for (let i = 0; i < this.placeTreeTwo2.length; i++) {
-          areaData[0].children[1].children.push({
-            label: this.placeTreeTwo2[i].placeName,
-            value: this.placeTreeTwo2[i].placeName
-          })
-        }
-      }
+             if (areaData[0].children[1].children.length == 0) {
+                for (let i = 0; i < this.placeTreeTwo2.length; i++) {
+                   areaData[0].children[1].children.push({
+                        label: this.placeTreeTwo2[i].placeName,
+                        value: this.placeTreeTwo2[i].placeName,
+                    })
+                }
+            }
 
-      if (areaData[0].children[2].children.length == 0) {
-        for (let i = 0; i < this.placeTreeTwo3.length; i++) {
-          areaData[0].children[2].children.push({
-            label: this.placeTreeTwo3[i].placeName,
-            value: this.placeTreeTwo3[i].placeName
-          })
-        }
-      }
+             if (areaData[0].children[2].children.length == 0) {
+                for (let i = 0; i < this.placeTreeTwo3.length; i++) {
+                   areaData[0].children[2].children.push({
+                        label: this.placeTreeTwo3[i].placeName,
+                        value: this.placeTreeTwo3[i].placeName,
+                    })
+                }
+            }
 
-      if (areaData[0].children[3].children.length == 0) {
-        for (let i = 0; i < this.placeTreeTwo4.length; i++) {
-          areaData[0].children[3].children.push({
-            label: this.placeTreeTwo4[i].placeName,
-            value: this.placeTreeTwo4[i].placeName
-          })
-        }
-      }
+             if (areaData[0].children[3].children.length == 0) {
+                for (let i = 0; i < this.placeTreeTwo4.length; i++) {
+                   areaData[0].children[3].children.push({
+                        label: this.placeTreeTwo4[i].placeName,
+                        value: this.placeTreeTwo4[i].placeName,
+                    })
+                }
+            }
 
-      if (areaData[1].children.length == 0) {
-        for (let i = 0; i < this.firstTree1.length; i++) {
-          areaData[1].children.push({
-            label: this.firstTree1[i].placeName,
-            value: this.firstTree1[i].placeName,
-            children: []
-          })
-        }
-      }
 
-      if (areaData[1].children[0].children.length == 0) {
-        for (let i = 0; i < this.placeTreeTwo1.length; i++) {
-          areaData[1].children[0].children.push({
-            label: this.placeTreeTwo1[i].placeName,
-            value: this.placeTreeTwo1[i].placeName
-          })
-        }
-      }
-      console.log(areaData)
-    }
+            if (areaData[1].children.length == 0) {
+                for (let i = 0; i < this.firstTree1.length; i++) {
+                   areaData[1].children.push({
+                        label: this.firstTree1[i].placeName,
+                        value: this.firstTree1[i].placeName,
+                        children: [],
+                    })
+                }
+            }
+
+            if (areaData[1].children[0].children.length == 0) {
+                for (let i = 0; i < this.placeTreeTwo1.length; i++) {
+                    areaData[1].children[0].children.push({
+                        label: this.placeTreeTwo1[i].placeName,
+                        value: this.placeTreeTwo1[i].placeName,
+                    })
+                }
+            }
+            console.log(areaData)
+        },
+    },
   }
 }
 </script>

@@ -17,7 +17,7 @@
           ></a-date-picker>
           <!-- <j-date v-model="queryParam.time_begin" :showTime="true" date-format="YYYY-MM-DD" style="width:45%" placeholder="请选择开始时间" ></j-date> -->
         </a-col>
-        <a-col :span="1"></a-col>
+          <a-col :span="1"></a-col>
         <a-col>
           <span>按位置筛选：</span>
         </a-col>
@@ -29,8 +29,7 @@
             @change="areaChange"
             :default-value="defaultT"
             placeholder="请选择位置"
-            :display-render="displayRender"
-            @click="handlePlaceTree"
+             :display-render="displayRender"
           />
         </a-col>
         <a-col :span="1"></a-col>
@@ -42,9 +41,11 @@
         </a-col>
         <a-col :span="1"></a-col>
         <a-col>
-          <a-button :style="{ background: '#49a9ee', color: 'white' }" icon="search" @click="searchQuery"
-            >查询</a-button
-          >
+          <a-button
+            :style="{ background: '#49a9ee', color: 'white'}"
+            icon="search"
+            @click="searchQuery"
+          >查询</a-button>
           <a-button @click="searchReset()" icon="reload" style="margin-left: 8px">重置</a-button>
         </a-col>
       </a-row>
@@ -146,44 +147,44 @@ export default {
       .format('YYYY-MM-DD')
     this.dateStart = this.moment(start, 'YYYY-MM-DD')
   },
-  mounted() {
-    // console.log(this.$store)
-    this.$store.dispatch('placeTree')
-    this.$store.dispatch('placeTree1')
-    this.$store.dispatch('placeTreeTwo')
-    this.$store.dispatch('placeTreeTwo1')
-    this.$store.dispatch('placeTreeTwo2')
-    this.$store.dispatch('placeTreeTwo3')
-    this.$store.dispatch('placeTreeTwo4')
-    // this.handlePlaceTree()
-  },
-  computed: {
-    firstTree() {
-      return this.$store.state.meeting.placeData
+    mounted() {
+        // console.log(this.$store)
+        this.$store.dispatch('placeTree')
+        this.$store.dispatch('placeTree1')
+        this.$store.dispatch('placeTreeTwo')
+        this.$store.dispatch('placeTreeTwo1')
+        this.$store.dispatch('placeTreeTwo2')
+        this.$store.dispatch('placeTreeTwo3')
+        this.$store.dispatch('placeTreeTwo4')
+        // this.handlePlaceTree()
     },
-    firstTree1() {
-      return this.$store.state.meeting.placeData1
+    computed: {
+        firstTree() {
+            return this.$store.state.meeting.placeData
+        },
+        firstTree1() {
+            return this.$store.state.meeting.placeData1
+        },
+        placeTreeTwo() {
+            return this.$store.state.meeting.placeDataTwo
+        },
+        placeTreeTwo1() {
+            return this.$store.state.meeting.placeDataTwo1
+        },
+        placeTreeTwo2() {
+            return this.$store.state.meeting.placeDataTwo2
+        },
+        placeTreeTwo3() {
+            return this.$store.state.meeting.placeDataTwo3
+        },
+        placeTreeTwo4() {
+            return this.$store.state.meeting.placeDataTwo4
+        },
     },
-    placeTreeTwo() {
-      return this.$store.state.meeting.placeDataTwo
-    },
-    placeTreeTwo1() {
-      return this.$store.state.meeting.placeDataTwo1
-    },
-    placeTreeTwo2() {
-      return this.$store.state.meeting.placeDataTwo2
-    },
-    placeTreeTwo3() {
-      return this.$store.state.meeting.placeDataTwo3
-    },
-    placeTreeTwo4() {
-      return this.$store.state.meeting.placeDataTwo4
-    }
-  },
   methods: {
     moment,
-    displayRender({ labels }) {
-      return labels.join('.')
+         displayRender({ labels }){
+      return  labels.join('.')
     },
     areaChange(value) {
       console.log(value)
@@ -214,74 +215,7 @@ export default {
     getStartData() {
       // const d=new Date().getTime()-30*24*3600*1000
       // console.log(d)
-      //, return d.toDateString();
-    },
-    handlePlaceTree() {
-      if (areaData[0].children.length == 0) {
-        for (let i = 0; i < this.firstTree.length; i++) {
-          areaData[0].children.push({
-            label: this.firstTree[i].placeName,
-            value: this.firstTree[i].placeName,
-            children: []
-          })
-        }
-      }
-
-      if (areaData[0].children[0].children.length == 0) {
-        for (let i = 0; i < this.placeTreeTwo.length; i++) {
-          areaData[0].children[0].children.push({
-            label: this.placeTreeTwo[i].placeName,
-            value: this.placeTreeTwo[i].placeName
-          })
-        }
-      }
-
-      if (areaData[0].children[1].children.length == 0) {
-        for (let i = 0; i < this.placeTreeTwo2.length; i++) {
-          areaData[0].children[1].children.push({
-            label: this.placeTreeTwo2[i].placeName,
-            value: this.placeTreeTwo2[i].placeName
-          })
-        }
-      }
-
-      if (areaData[0].children[2].children.length == 0) {
-        for (let i = 0; i < this.placeTreeTwo3.length; i++) {
-          areaData[0].children[2].children.push({
-            label: this.placeTreeTwo3[i].placeName,
-            value: this.placeTreeTwo3[i].placeName
-          })
-        }
-      }
-
-      if (areaData[0].children[3].children.length == 0) {
-        for (let i = 0; i < this.placeTreeTwo4.length; i++) {
-          areaData[0].children[3].children.push({
-            label: this.placeTreeTwo4[i].placeName,
-            value: this.placeTreeTwo4[i].placeName
-          })
-        }
-      }
-
-      if (areaData[1].children.length == 0) {
-        for (let i = 0; i < this.firstTree1.length; i++) {
-          areaData[1].children.push({
-            label: this.firstTree1[i].placeName,
-            value: this.firstTree1[i].placeName,
-            children: []
-          })
-        }
-      }
-
-      if (areaData[1].children[0].children.length == 0) {
-        for (let i = 0; i < this.placeTreeTwo1.length; i++) {
-          areaData[1].children[0].children.push({
-            label: this.placeTreeTwo1[i].placeName,
-            value: this.placeTreeTwo1[i].placeName
-          })
-        }
-      }
-      console.log(areaData)
+      // return d.toDateString();
     }
   }
 }

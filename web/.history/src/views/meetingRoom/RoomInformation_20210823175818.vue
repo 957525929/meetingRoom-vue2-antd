@@ -579,7 +579,7 @@ export default {
         // this.dataSource[0].push({
         //   value: i
         // })
-        console.log(this.dataSource[0].pc)
+        console.log(this.dataSource[0].p)
         break
       }
     },

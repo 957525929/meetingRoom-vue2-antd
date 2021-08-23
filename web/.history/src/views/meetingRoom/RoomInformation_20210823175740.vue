@@ -576,10 +576,10 @@ export default {
       this.visibleAdd = true
       console.log(this.dataSource)
       for (let i = 0; i < this.dataSource.length; i++) {
-        // this.dataSource[0].push({
-        //   value: i
-        // })
-        console.log(this.dataSource[0].pc)
+        this.dataSource[0].push({
+          value: i
+        })
+        console.log(this.dataSource[0])
         break
       }
     },

@@ -30,7 +30,7 @@
             :default-value="defaultT"
             placeholder="请选择位置"
             :display-render="displayRender"
-            @click="handlePlaceTree"
+            @
           />
         </a-col>
         <a-col :span="1"></a-col>

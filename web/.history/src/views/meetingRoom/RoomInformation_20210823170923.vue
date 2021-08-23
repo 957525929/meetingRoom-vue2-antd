@@ -93,7 +93,7 @@
 
     <div id="dataRoomTable">
       <a-table :data-source="dataSource" :pagination="ipagination" rowKey="index" @change="handleTableChange">
-        <a-table-column title="#" data-index="meetingroomId" align="left" fixed="left" width="150px"></a-table-column>
+        <a-table-column title="#" data-index="" align="left" fixed="left" width="150px"></a-table-column>
         <a-table-column title="位置" data-index="placeName" align="center"></a-table-column>
         <a-table-column title="房间号" data-index="room" align="center"></a-table-column>
         <a-table-column title="状态" data-index="meetingRoomState" align="center">
@@ -524,6 +524,7 @@ export default {
     this.$store.dispatch('placeTreeTwo2')
     this.$store.dispatch('placeTreeTwo3')
     this.$store.dispatch('placeTreeTwo4')
+    this.handlerTableData()
   },
   computed: {
     firstTree() {
@@ -575,13 +576,6 @@ export default {
     addRoom() {
       this.visibleAdd = true
       console.log(this.dataSource)
-      for (let i = 0; i < this.dataSource.length; i++) {
-        // this.dataSource[0].push({
-        //   value: i
-        // })
-        console.log(this.dataSource[0].pc)
-        break
-      }
     },
     addDutyName(value) {
       if (value == '李霞') {
@@ -750,11 +744,14 @@ export default {
     },
     handlerTableData() {
       console.log('00000000000000000000000')
-      console.log(this.dataSource)
+      console.log(this.getTableData)
     }
   },
   watch: {
-    dataSource: 'handlerTableData'
+    dataSource(newValue, oldValue) {
+      console.log('11111')
+      console.log(newValue, oldValue)
+    }
   }
 }
 </script>

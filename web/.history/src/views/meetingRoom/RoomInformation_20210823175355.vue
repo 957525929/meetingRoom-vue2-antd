@@ -575,13 +575,6 @@ export default {
     addRoom() {
       this.visibleAdd = true
       console.log(this.dataSource)
-      for (let i = 0; i < this.dataSource.length; i++) {
-        // this.dataSource[0].push({
-        //   value: i
-        // })
-        console.log(this.dataSource[0].pc)
-        break
-      }
     },
     addDutyName(value) {
       if (value == '李霞') {
@@ -751,6 +744,9 @@ export default {
     handlerTableData() {
       console.log('00000000000000000000000')
       console.log(this.dataSource)
+      for (let i = 0; i < this.dataSource.length; i++) {
+        console.log(this.dataSource[0].push({ key: '1' }))
+      }
     }
   },
   watch: {
