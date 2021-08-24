@@ -92,8 +92,6 @@ export const JeecgListMixin = {
           console.log(res.data)
           console.log('loadAction运行了！！')
           this.ipagination.total = res.data.total
-        } else {
-          that.$message.warning(res.message)
         }
         else {
           this.$message.warning(res.message);

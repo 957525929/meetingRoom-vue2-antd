@@ -48,11 +48,11 @@
         console.log('res', res)
         if (res.code == 200) {
           res.data.list.forEach(element => {
-            console.log(element)
+            // console.log(element)
             this.optionsArrangeName.push(element)
           })
         }
-        console.log('this.optionsArrangeName', this.optionsArrangeName)
+        // console.log('this.optionsArrangeName', this.optionsArrangeName)
       })
     },
     mounted() {},
@@ -125,6 +125,7 @@
               if (!err && values.length) {
                 this.detailsInfoForm = values
                 console.log('详细信息：', this.detailsInfoForm)
+                this.$emit('arrangementList', this.detailsInfoForm) 
                 this.$emit('handleCancel', false) //关闭窗口
                 this.handleReset() //重置表单
               }

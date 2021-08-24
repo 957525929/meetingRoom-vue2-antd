@@ -240,6 +240,7 @@
       //  this.queryParam.reservationEndTime= this.queryParam.reservationEndTime._i
       this.queryParam.needArrrangement = 1
       this.queryParam.status = 1
+      // this.searchQuery()
     },
     methods: {
       moment,
