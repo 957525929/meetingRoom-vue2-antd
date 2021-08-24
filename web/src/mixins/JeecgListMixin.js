@@ -95,6 +95,9 @@ export const JeecgListMixin = {
         } else {
           that.$message.warning(res.message)
         }
+        else {
+          this.$message.warning(res.message);
+        }
         this.loading = false
       })
     },

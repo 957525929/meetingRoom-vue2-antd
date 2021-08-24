@@ -4,13 +4,13 @@
     <!-- 搜索操作区域 -->
     <div class="table-page-search-wrapper">
       <a-row type="flex" align="middle">
-        <a-col>
+        <!-- <a-col>
           <span>编号：</span>
         </a-col>
         <a-col>
           <a-input placeholder="请输入安排员编号" v-model="queryParam.studentId"></a-input>
         </a-col>
-        <a-col :span="1"></a-col>
+        <a-col :span="1"></a-col> -->
         <a-col>
           <span>姓名：</span>
         </a-col>
@@ -52,7 +52,7 @@
     <!-- table区域-begin -->
     <div id="dataDutyTable">
       <a-table :dataSource="dataSource" :pagination="ipagination" rowKey="studentId" :loading="loading">
-        <a-table-column title="编号" data-index="studentId" align="center"></a-table-column>
+        <a-table-column title="#" data-index="studentId" align="center"></a-table-column>
         <a-table-column title="姓名" data-index="name" align="center"></a-table-column>
         <a-table-column title="联系电话" data-index="telephone" align="center"></a-table-column>
         <a-table-column title="银行账号" data-index="bankAccount" align="center"></a-table-column>
@@ -198,7 +198,7 @@
           name: '',
           openId: '',
           password: '',
-          studentId: '',
+          studentId: 0,
           telephone: ''
         };
       },

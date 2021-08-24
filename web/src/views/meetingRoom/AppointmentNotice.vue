@@ -36,8 +36,8 @@
     <!-- table区域-begin -->
     <div id="dataDutyTable">
       <a-table :data-source="dataTeacher" :pagination="false" rowKey="index" >
-         <a-table-column title="#" data-index="" align="left" fixed="left" width="50px" key="rowIndex" scopedSlots:{ customRender:
-          function(t, r, index) { return parseInt(index) + 1}}></a-table-column>
+         <!-- <a-table-column title="#" data-index="" align="left" fixed="left" width="50px" key="rowIndex" scopedSlots:{ customRender:
+          function(t, r, index) { return parseInt(index) + 1}}></a-table-column> -->
         <a-table-column title="#" data-index="index" align="left" fixed="left" width="50px"></a-table-column>
         <a-table-column title="发送类型" data-index="noticeType" align="left" width="120px"></a-table-column>
         <a-table-column title="发送时间" data-index="noticeTime" align="left" width="200px" :sorter='true'></a-table-column>

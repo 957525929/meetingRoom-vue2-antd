@@ -1,5 +1,5 @@
 <template>
-  <a-cascader style="width: 300px" :options="selectOptions" change-on-select @change="handlePlaceTree"
+  <a-cascader style="width: 300px" :options="selectOptions"  @change="handlePlaceTree"
     @click="handlePlaceTree" placeholder="请选择位置" :display-render="displayRender" />
 </template>
 
@@ -51,6 +51,7 @@ import { areaData } from './data/area.js'
       displayRender({
         labels
       }) {
+         this.$emit('displayRender', labels.join('.'))
         return labels.join('.')
       },
       handlePlaceTree() {
