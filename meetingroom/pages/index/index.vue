@@ -109,7 +109,7 @@
 			 */
 			onShareAppMessage: function() {
 				return {
-					title: '我发现了一个超好用的进销存管理系统',
+					title: '会议室预约管理系统',
 					path: "/pages/login/index"
 				};
 			},
