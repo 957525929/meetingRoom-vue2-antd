@@ -22,17 +22,15 @@
             <td colspan="2">
               <label :style="{ marginLeft: '100px' }">会议时间</label>
               <div class="bgc">
-                <j-date v-model="apply.date" :showTime="true" date-format="YYYY-MM-DD" style="width:30%"
-                  placeholder="请选择开始时间" :style="{ width: '340px' }"></j-date>
-                <!-- <a-date-picker placeholder="请选择会议时间" :style="{ width: '340px' }"
+                <a-date-picker placeholder="请选择会议时间" :style="{ width: '340px' }"
                   :defaultValue="moment(getCurrentData(),'YYYY-MM-DD')" @change="onChangeTime">
-                </a-date-picker> -->
+                </a-date-picker>
               </div>
             </td>
             <td colspan="2">
               <label :style="{ marginLeft: '100px' }">会议午别</label>
               <div class="bgc">
-                <a-select placeholder="请选择午别" :style="{ width: '60%' }" :default-value="4" v-model="apply.period">
+                <a-select placeholder="请选择午别" :style="{ width: '60%' }" @change="handleChangePeriod" :default-value="4">
                   <a-select-option :value="1">上午</a-select-option>
                   <a-select-option :value="2">下午</a-select-option>
                   <a-select-option :value="3">晚上</a-select-option>
@@ -47,15 +45,15 @@
               <div class="bgc">
                 <!-- <a-cascader :options="selectOptions" placeholder="请选择会议室" v-model="meetingRoom" @change="handlePlaceTree"
                   style="width: 340px" :display-render="displayRender"  @click="handlePlaceTree"/> -->
-                <PurInTree :style="{ width: '340px' }" @displayRender="displayRender" v-model="apply.location">
+                <PurInTree :style="{ width: '340px' }" @displayRender="displayRender">
                 </PurInTree>
               </div>
             </td>
             <td colspan="2">
               <label :style="{ marginLeft: '100px' }">会议室状态</label>
               <div class="bgc">
-                <span style="color: red" v-if="roomState">{{roomState}}</span>
-                <a-button @click="applyDetail()" type="primary" style="margin-left: 20px" v-if="roomState=='已预约'">
+                <span style="color: red" v-if="this.roomState">{{roomState}}</span>
+                <a-button @click="applyDetail()" type="primary" style="margin-left: 20px" v-if="this.roomState=='已预约'">
                   预约详情
                 </a-button>
                 <!-- <span v-if="roomState==0" style="color: green">空闲</span> -->
@@ -66,7 +64,7 @@
             <td colspan="2">
               <label :style="{ marginLeft: '100px' }">是否会务安排</label>
               <div class="bgc">
-                <a-switch @change="onChangeArrange" v-model="checkedNeedArrangement" />
+                <a-switch @change="onChangeArrange" :default-checked="false" />
               </div>
             </td>
           </tr>
@@ -89,7 +87,7 @@
           <tr>
             <td colspan="3">
               <a-button @click="submitApply" shape="round" size="large" type="primary"
-                :style="{ width: '150px', marginLeft: '40%' }">提交申请</a-button>
+                :style="{ width: '150px', marginLeft: '40%' }" >提交申请</a-button>
             </td>
           </tr>
         </tbody>
@@ -133,7 +131,6 @@
   </a-card>
 </template>
 <script>
-  import JDate from '@/components/jeecg/JDate'
   import moment from 'moment'
   import PurInTree from './PurInTree'
   import PurInTable from './PurInTable'
@@ -144,12 +141,11 @@
     components: {
       PurInTable,
       PurInTree,
-      JDate
     },
     data() {
       return {
         apply: {
-          arrangementList: [],
+          arrangementList:[],
           meetingName: '安全管理会议',
           number: '6',
           period: 4,
@@ -159,7 +155,6 @@
           remark: '',
           cancelReason: ''
         },
-        checkedNeedArrangement: false,
         roomState: '',
         selectMeeting: {},
         dateFormat: 'YYYY-MM-DD',
@@ -168,17 +163,11 @@
         visibleApplyDetail: false,
       }
     },
-    created() {
-      let now = moment(new Date()).format('YYYY-MM-DD')
-      let dat = moment(now, 'YYYY-MM-DD')
-      this.$set(this.apply, "date", dat._i)
-      this.$set(this.apply, "period", 4)
-    },
+    created() {},
     watch: {
       'apply.location': {
         handler(value) {
-          console.log('location', value)
-          // this.apply.location = value
+          // console.log('location', value)
           this.querypostAction()
         }
       },
@@ -188,18 +177,36 @@
           this.querypostAction()
         }
       },
-      'apply.date': {
-        handler(value) {
-          // console.log('date1', value)
-          //  this.apply.date=value
-          this.querypostAction()
-        }
-      }
+      // 'apply.date': {
+      //   handler(value) {
+      //     console.log('date1', value)
+      //     //  this.apply.date=value
+      //      this.querypostAction()
+      //   }
+      // }
     },
     methods: {
+      moment,
+      getCurrentData() {
+        let now = moment(new Date()).format('YYYY-MM-DD')
+        let dat = this.moment(now, 'YYYY-MM-DD')
+        this.apply.date = dat._i
+        return dat._i
+        //  this.apply.date = new Date().toLocaleDateString().split('/').join('-');
+        //  let dat=new Date().toLocaleDateString()
+        //  console.log(dat)
+        // return new Date().toLocaleDateString()
+      },
+      onChangeTime(date, dateString) {
+        //console.log(dateString);
+        this.apply.date = dateString
+        this.querypostAction()
+      },
+      handleChangePeriod(value) {
+        this.apply.period = value
+      },
       displayRender(data) {
         this.apply.location = data
-        console.log(11111111111)
       },
       querypostAction() {
         let parameter = {
@@ -207,36 +214,31 @@
           meetingRoomName: this.apply.location,
           period: this.apply.period
         }
-        if (this.apply.date && this.apply.location && this.apply.period) {
-          postAction('/ReservationController/isReserved', parameter).then(res => {
-            console.log(res)
-            if (res.code == 200) {
-              if (res.data.statusName == '待开会' || res.data.statusName == '开会中') {
-                this.selectMeeting = res.data
-                this.roomState = '已预约'
-              } else {
-                this.roomState = '空闲'
-              }
+        console.log('parameter', parameter)
+        postAction('/ReservationController/isReserved', parameter).then(res => {
+          console.log(res)
+          if (res.code == 200) {
+            if (res.data.statusName == '待开会') {
+              this.selectMeeting=res.data
+              this.roomState = '已预约'
             } else {
               this.roomState = '空闲'
-              //  this.$message.warning(res.message);
             }
-          })
-        } else {
-          this.roomState = ''
-        }
-      },
-      arrangementList(data) {
-        for (let i = 0; i < data.length; i++) {
-          let a = {
-            studentId: data[i].studentId,
-            arrangeContent: data[i].arrangeContent
+          } else {
+            this.roomState = '空闲'
+            //  this.$message.warning(res.message);
           }
-          this.apply.arrangementList.push(a)
-        }
-        console.log('this.apply.arrangementList', this.apply.arrangementList)
+        })
+      },
+      arrangementList(data){
+        // data.forEach(element => {
+        //   this.apply.arrangementList.studentId=element.studentId
+        //    this.apply.arrangementList.arrangeContent=element.arrangeContent
+        // });
+         this.apply.arrangementList=data
       },
       submitApply() {
+        console.log('this.apply', this.apply)
         const _this = this
         this.$confirm({
           title: '是否确定强制预约会议室',
@@ -251,27 +253,6 @@
       },
       handleOkReason() {
         this.visibleReason = false
-        console.log('this.apply', this.apply)
-        let parameter = this.apply
-        postAction('/ReservationController/addCompulsoryReservation', parameter).then(res => {
-          if (res.code == 200) {
-            this.$message.success('强制预约成功')
-            this.resetApplyData()
-          } else {
-            this.$message.warning(res.message)
-          }
-        })
-      },
-      resetApplyData() {
-        this.apply.arrangementList = []
-        // this.apply.location = ''
-         //this.$set(this.apply, "location", 'hgdd')
-        
-        this.apply.needArrangement = 0
-        this.apply.remark = ''
-        this.apply.cancelReason = ''
-        this.checkedNeedArrangement = false
-        this.modalVisible = false
       },
       handleCancelReason() {
         this.visibleReason = false
@@ -280,11 +261,9 @@
         console.log(checked)
         if (checked) {
           this.modalVisible = true
-          this.checkedNeedArrangement = true
           this.apply.needArrangement = 1
         } else {
           this.modalVisible = false
-          this.checkedNeedArrangement = false
           this.apply.needArrangement = 0
         }
       },

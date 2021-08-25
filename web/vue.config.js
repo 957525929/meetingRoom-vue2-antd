@@ -80,7 +80,7 @@ module.exports = {
         }
       },*/
       '/': {
-        target: 'http://172.16.3.111:14055/api/meetingroomweb', //请求本地 需要jeecg-boot后台项目
+        target: 'http://172.16.3.131:14055/api/meetingroomweb', //请求本地 需要jeecg-boot后台项目
         ws: false,
         changeOrigin: true
       }

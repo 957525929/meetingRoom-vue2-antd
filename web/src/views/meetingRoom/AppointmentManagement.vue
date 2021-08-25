@@ -8,7 +8,7 @@
           <span>会议状态：</span>
         </a-col>
         <a-col>
-          <a-select :style="{width:'200px'}" @change="handleChangeStatus" placeholder="请选择会议状态" :default-value="1"
+          <a-select :style="{width:'200px'}" v-model="queryParam.status" placeholder="请选择会议状态" :default-value="1"
             allowClear>
             <a-select-option :value="1">待开会</a-select-option>
             <a-select-option :value="2">开会中</a-select-option>
@@ -21,11 +21,16 @@
         <a-col :span="1"></a-col>
         <a-col>会议时间：</a-col>
         <a-col>
-          <a-date-picker @change="onChangeStartTime" placeholder="请选择开始" :format="dateFormat"
-            :defaultValue="moment(getCurrentData(), 'YYYY-MM-DD')" :style="{width:'200px'}"></a-date-picker>
+          <!-- <a-date-picker placeholder="请选择开始" :format="dateFormat"
+            :defaultValue="moment(getCurrentData(), 'YYYY-MM-DD')" :style="{width:'200px'}" v-model="queryParam.reservationStartTime"></a-date-picker>
           <span>&nbsp;~&nbsp;</span>
-          <a-date-picker @change="onChangeEndTime" placeholder="请选择结束" :format="dateFormat" :style="{width:'200px'}"
-            :defaultValue="defaultValueEndTime"></a-date-picker>
+          <a-date-picker  placeholder="请选择结束" :format="dateFormat" :style="{width:'200px'}"
+            :defaultValue="defaultValueEndTime"  v-model="queryParam.reservationEndTime"></a-date-picker> -->
+          <j-date v-model="queryParam.reservationStartTime" :showTime="true" date-format="YYYY-MM-DD" style="width:30%"
+            placeholder="请选择开始时间"></j-date>
+          <span style="width: 10px;">~</span>
+          <j-date v-model="queryParam.reservationEndTime" :showTime="true" date-format="YYYY-MM-DD" style="width:30%"
+            placeholder="请选择结束时间"></j-date>
         </a-col>
       </a-row>
       <br />
@@ -41,8 +46,8 @@
           <span>是否需要会务安排：</span>
         </a-col>
         <a-col>
-          <a-select :style="{width:'200px'}" @change="handleChangeNeedArrrangement" placeholder="请选择是否需要会务安排"
-            :default-value="1" allowClear>
+          <a-select :style="{width:'200px'}" placeholder="请选择是否需要会务安排" :default-value="1" allowClear
+            v-model="queryParam.needArrrangement">
             <a-select-option :value="1">是</a-select-option>
             <a-select-option :value="0">否</a-select-option>
             <a-select-option value="">全部</a-select-option>
@@ -142,10 +147,10 @@
       </a-tabs>
       <a-tabs default-active-key="1">
         <a-tab-pane key="1" tab="会务安排">
-          <a-table :data-source="dataArrange" :pagination="false" rowKey="index">
-            <a-table-column title="序号" data-index="index" align="center"></a-table-column>
-            <a-table-column title="姓名" data-index="name" align="center"></a-table-column>
-            <a-table-column title="联系电话" data-index="phone" align="center"></a-table-column>
+          <a-table :data-source="dataArrange" :pagination="false" rowKey="studentId">
+            <a-table-column title="编号" data-index="studentId" align="center"></a-table-column>
+            <a-table-column title="姓名" data-index="studentName" align="center"></a-table-column>
+            <a-table-column title="联系电话" data-index="telephone" align="center"></a-table-column>
             <a-table-column title="安排事项" data-index="arrangeContent" align="center"></a-table-column>
           </a-table>
         </a-tab-pane>
@@ -158,50 +163,25 @@
 </template>
 
 <script>
+  import JDate from '@/components/jeecg/JDate'
   import moment from 'moment'
   import PurInModal from './PurInModal'
-  import { getAction } from '@/api/manage'
+  import {
+    getAction
+  } from '@/api/manage'
   import {
     JeecgListMixin
   } from '@/mixins/JeecgListMixin'
-  const data = [{
-    id: 'B1207',
-    budget: '5000',
-    name: '安全管理会议',
-    theme: '安全管理',
-    dateTime: '2021年08月13日',
-    range: '下午',
-    address: '福建师范大学.仓山校区.1号楼.会议室203',
-    members: '陈宏涛；李小玲；林诺汐；陈熙雨',
-    number: '4',
-    dutyName: '李小玲',
-    dutyTel: '152690314587',
-    state: '待开始',
-    detail: '0',
-    arrange: '是'
-  }]
-  // const dataArrange = [{
-  //     index: 1,
-  //     name: '李霞',
-  //     phone: '13759655332',
-  //     matters: '记录会议内容'
-  //   },
-  //   {
-  //     index: 2,
-  //     name: '尤晓梅',
-  //     phone: '13053955537',
-  //     matters: '摄影录像'
-  //   }
-  // ]
+
+
   export default {
     mixins: [JeecgListMixin],
     components: {
-      PurInModal
+      PurInModal,
+      JDate
     },
     data() {
       return {
-        data,
-        defaultValueEndTime: '',
         visibleAppoint: false,
         visibleForced: false,
         modalVisible: false,
@@ -212,18 +192,12 @@
           span: 18
         },
         basicInfo: {},
-        dataArrange:[],
+        dataArrange: [],
+        arrangementList: [],
         reason: '',
         selectMeeting: {
           meetingName: '',
         },
-        // queryParam: {
-        //   name: undefined,
-        //   dateStart: undefined,
-        //   dateEnd: undefined,
-        //   state: undefined,
-        //   arrange:'是'
-        // },
         dateFormat: 'YYYY-MM-DD',
         url: {
           list: '/ReservationController/getReservationList',
@@ -231,56 +205,45 @@
       }
     },
     created() {
-      let end = moment(new Date())
-        .subtract(-1, 'months')
-        .format('YYYY-MM-DD')
-      this.defaultValueEndTime = this.moment(end, 'YYYY-MM-DD')
-      this.queryParam.reservationEndTime = this.defaultValueEndTime
-      // console.log('this.queryParam.reservationEndTime', this.queryParam.reservationEndTime)
-      //  this.queryParam.reservationEndTime= this.queryParam.reservationEndTime._i
-      this.queryParam.needArrrangement = 1
-      this.queryParam.status = 1
-      // this.searchQuery()
+      this.init()
     },
     methods: {
-      moment,
-      onChangeStartTime(date, dateString) {
-        this.queryParam.reservationStartTime = dateString
-      },
-      onChangeEndTime(date, dateString) {
-        this.queryParam.reservationEndTime = dateString
-      },
-      handleChangeStatus(value) {
-        this.queryParam.status = value
-      },
-      handleChangeNeedArrrangement(value) {
-        this.queryParam.needArrrangement = value
-      },
-      // searchReset() {},
-      getCurrentData() {
+      init() {
+        let end = moment(new Date())
+          .subtract(-1, 'months')
+          .format('YYYY-MM-DD')
+        let defaultValueEndTime = moment(end, 'YYYY-MM-DD')
+        this.$set(this.queryParam, "reservationEndTime", defaultValueEndTime._i)
+        this.$set(this.queryParam, "needArrrangement", 1)
+        this.$set(this.queryParam, "status", 1)
         let now = moment(new Date()).format('YYYY-MM-DD')
-        let dat = this.moment(now, 'YYYY-MM-DD')
-        this.queryParam.reservationStartTime = dat._i
-        return dat._i
+        let dat = moment(now, 'YYYY-MM-DD')
+        this.$set(this.queryParam, "reservationStartTime", dat._i)
+        this.$nextTick(() => {
+          this.loadData(1)
+        });
       },
+
       meetingDetail(record) {
-        this.visibleAppoint = true      
-        this.selectMeeting=record
-        let id=record.reserveId
-        // getAction('/ArrangementController/getArranmentById',{reservetionId:id}).then(res=>{
-        //   if(res.code==200){
-        //     this.dataArrange=res.data
-        //   }else{
-        //     this.$message.warning(res.message);
-        //   }
-        // })
+        this.visibleAppoint = true
+        this.selectMeeting = record
+        let id = record.reserveId
+        getAction('/ArrangementController/getArranmentById',{reservetionId:id}).then(res=>{
+          if(res.code==200){
+            this.dataArrange=res.data
+          }else{
+            this.$message.warning(res.message);
+          }
+        })
       },
       handleCancel() {
         this.modalVisible = false
       },
       arrangeInfor(record) {
+        console.log('this.arrangementList', this.arrangementList)
         this.modalVisible = true
-        console.log(record)
+        console.log(record.reserveId)
+        this.basicInfo['reservationId'] = record.reserveId
       },
       appointClose() {
         this.$emit('close')

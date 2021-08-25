@@ -3,7 +3,7 @@
     <j-editable-table ref="detailInfoForm" :columns="columns" :dataSource="dataSource" :maxHeight="300"
       :rowNumber="true" :rowSelection="true" :actionButton="true">
       <template v-slot:studentId="props">
-        <a-select show-search @change="changeName($event, props, value)" :style="{ width: '300px' }"
+        <a-select show-search @change="changeName($event, props)" :style="{ width: '300px' }"
           placeholder="请选择姓名">
           <a-select-option v-for="item in optionsArrangeName" :key="item.value" :value="item.studentId">{{ item.name }}
           </a-select-option>
