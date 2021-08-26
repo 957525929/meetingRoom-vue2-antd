@@ -505,7 +505,7 @@ export default {
       this.formModify.placeName = [record.placeName.split('.')[0], record.placeName.split('.')[1]]
       this.formModify.meetingRoomState = record.meetingRoomState
       console.log('处理数据')
-      // console.log(this.formModify.condition.indexOf('白板'))
+      console.log(this.formModify)
     },
     onSubmitModify() {
       let parameter = {}

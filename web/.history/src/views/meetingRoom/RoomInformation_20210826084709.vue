@@ -25,7 +25,7 @@
             :options="selectOptions"
             @click="handlePlaceTree"
             placeholder="请选择位置"
-            v-model="queryParam.place"
+            v-model="queryParam"
             :display-render="displayRender"
           />
         </a-col>
@@ -387,7 +387,7 @@ export default {
     },
     firstTree1() {
       return this.$store.state.meeting.placeData1
-    }
+    },
     // placeTreeTwo() {
     //   return this.$store.state.meeting.placeDataTwo
     // },
@@ -403,9 +403,9 @@ export default {
     // placeTreeTwo4() {
     //   return this.$store.state.meeting.placeDataTwo4
     // },
-    // getTableData() {
-    //   return this.dataSource
-    // }
+    getTableData() {
+      return this.dataSource
+    }
   },
   watch: {},
   methods: {
@@ -504,8 +504,7 @@ export default {
       this.formModify.number = record.number
       this.formModify.placeName = [record.placeName.split('.')[0], record.placeName.split('.')[1]]
       this.formModify.meetingRoomState = record.meetingRoomState
-      console.log('处理数据')
-      // console.log(this.formModify.condition.indexOf('白板'))
+      console.log(this.formModify)
     },
     onSubmitModify() {
       let parameter = {}
@@ -517,7 +516,6 @@ export default {
       parameter.number = this.formModify.number
       parameter.meetingRoomState = this.formModify.meetingRoomState
       console.log(' parameterformModify', parameter)
-      return false
       postAction('/MeetingRoomController/updateMeetingRoom', parameter).then(res => {
         if (res.code == 200) {
           this.$message.success('修改成功')
