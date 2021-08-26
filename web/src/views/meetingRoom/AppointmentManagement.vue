@@ -39,7 +39,7 @@
           <span>会议名称：</span>
         </a-col>
         <a-col>
-          <a-input placeholder="请输入会议名称" :style="{width:'200px'}" v-model="queryParam.meetingName"></a-input>
+          <a-input placeholder="请输入会议名称" :style="{width:'200px'}" v-model="queryParam.meetingName" allowClear></a-input>
         </a-col>
         <a-col :span="1"></a-col>
         <a-col>
@@ -66,8 +66,16 @@
     <div style="margin-top:20px">
       <a-table :dataSource="dataSource" :pagination="ipagination" :loading="loading" rowKey="reserveId"
         @change="handleTableChange">
-        <a-table-column title="会议编号" data-index="reserveId" align="left" width="150px" fixed="left"></a-table-column>
+        <!-- <a-table-column title="会议编号" data-index="reserveId" align="left" width="150px" fixed="left"></a-table-column> -->
         <a-table-column title="会议名称" data-index="meetingName" align="center"></a-table-column>
+        <a-table-column title="预约时间" data-index="createTime" align="center">
+          <template slot-scope="createTime">
+            <span>{{createTime.split('T')[0]}}&nbsp;</span>
+            <span>{{createTime.split('T')[1].split('.')[0]}}</span>
+            <!-- <span >下午</span> -->
+
+          </template>
+        </a-table-column>
         <a-table-column title="负责人姓名" data-index="userName" align="center"></a-table-column>
         <!-- <a-table-column title="负责人电话" data-index="dutyTel" align="center"></a-table-column> -->
         <a-table-column title="会议时间" data-index="dateDay" align="center"></a-table-column>
@@ -147,8 +155,8 @@
       </a-tabs>
       <a-tabs default-active-key="1">
         <a-tab-pane key="1" tab="会务安排">
-          <a-table :data-source="dataArrange" :pagination="false" rowKey="studentId">
-            <a-table-column title="编号" data-index="studentId" align="center"></a-table-column>
+          <a-table :data-source="dataArrange" :pagination="false">
+            <!-- <a-table-column title="编号" data-index="studentId" align="center" ></a-table-column> -->
             <a-table-column title="姓名" data-index="studentName" align="center"></a-table-column>
             <a-table-column title="联系电话" data-index="telephone" align="center"></a-table-column>
             <a-table-column title="安排事项" data-index="arrangeContent" align="center"></a-table-column>
@@ -228,10 +236,12 @@
         this.visibleAppoint = true
         this.selectMeeting = record
         let id = record.reserveId
-        getAction('/ArrangementController/getArranmentById',{reservetionId:id}).then(res=>{
-          if(res.code==200){
-            this.dataArrange=res.data
-          }else{
+        getAction('/ArrangementController/getArranmentById', {
+          reservetionId: id
+        }).then(res => {
+          if (res.code == 200) {
+            this.dataArrange = res.data
+          } else {
             this.$message.warning(res.message);
           }
         })

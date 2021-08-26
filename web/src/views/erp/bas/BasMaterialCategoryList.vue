@@ -7,7 +7,7 @@
           <a-row type="flex" align="middle">
             <a-col :span="4">名称：</a-col>
             <a-col :span="10">
-              <a-input style="width: 100%" placeholder="请输入名称" v-model="name" allowClear></a-input>
+              <a-input style="width: 100%" placeholder="请输入名称" v-model="placeName" allowClear></a-input>
             </a-col>
           </a-row>
         </a-modal>
@@ -51,90 +51,129 @@
             </a-row>
           </a-modal>
 
-          <a-divider type="vertical" />
+          <!-- <a-divider type="vertical" /> -->
 
-          <a-popconfirm title="确定删除吗？" ok-text="确定" cancel-text="取消" @confirm="confirm" @cancel="cancel">
+          <!-- <a-popconfirm title="确定删除吗？" ok-text="确定" cancel-text="取消" @confirm="confirm" @cancel="cancel">
             <a href="#" v-if="record.value != 1">删除</a>
-          </a-popconfirm>
+          </a-popconfirm> -->
         </span>
       </a-table>
     </a-card>
   </div>
 </template>
 <script>
-import { data } from './data/areaData.js'
-
-const columns = [
-  { title: '名称', dataIndex: 'name', key: 'name', width: '40%' },
-  { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } },
-]
-
-export default {
-  data() {
-    return {
-      columns: columns,
-      expandedRowKeys: [],
-      dataSource: data,
-      addVisible: false,
-      name: '',
-      editVisible: false,
-      rowRecord: '',
-      nextAddVisible: false,
-      count: 2,
-      nextName: '',
-      upName: '',
-    }
-  },
-  methods: {
-    handleAdd() {
-      this.addVisible = true
+  import {
+    data
+  } from './data/areaData.js'
+  import {
+    postAction
+  } from '@/api/manage'
+  const columns = [{
+      title: '名称',
+      dataIndex: 'placeName',
+      key: 'placeName',
+      width: '40%'
     },
-    addOk() {
-      this.addVisible = false
-      if (this.name != '') {
-        const newData = {
-          key: this.count,
-          name: this.name,
-          value: 1,
-          children: [],
-        }
-        this.dataSource = [...this.dataSource, newData]
-        this.count = this.count + 1
+    {
+      title: '操作',
+      dataIndex: 'action',
+      scopedSlots: {
+        customRender: 'action'
       }
     },
-    addChange(e) {
-      // console.log('radio checked', e.target.value)
-    },
-    edit(value) {
-      this.editVisible = true
-      this.rowRecord = value
-    },
-    editOk() {
-      this.editVisible = false
-    },
-    nextAdd(value) {
-      this.nextAddVisible = true
-      this.rowRecord = value
-    },
-    nextAddOk() {
-      this.nextAddVisible = false
+  ]
 
-      if (this.nextName != '') {
-        const newData = {
-          key: this.count * 10,
-          name: this.nextName,
-          value: 2,
-          upName: this.upName,
-          children: [],
-        }
-        this.rowRecord.children = [...this.rowRecord.children, newData]
-        this.count = this.count * 10 + 1
+  export default {
+    data() {
+      return {
+        columns: columns,
+        expandedRowKeys: [],
+        dataSource: [],
+        addVisible: false,
+        placeName: '',
+        editVisible: false,
+        rowRecord: '',
+        nextAddVisible: false,
+        count: 2,
+        nextName: '',
+        upName: '',
       }
     },
-    confirm() {},
-    cancel() {},
-  },
-}
+    created() {
+      this.loadData()
+    },
+    methods: {
+      loadData() {
+        let parameters = {
+          "children": [
+            null
+          ],
+          "placeId": 0,
+          "placeName": "福建师范大学",
+          "typeId": 0
+        }
+        postAction('/PlaceController/getPlaceTree', parameters).then(res => {
+          if (res.code == 200) {
+            this.dataSource = [res.data]
+          }
+        })
+      },
+      handleAdd() {
+        this.addVisible = true
+      },
+      addOk() {
+        if (this.placeName) {
+          let Parameters = {
+            placePid: 0,
+            placeName: this.placeName,
+            placeType: 2
+          }
+          postAction('/PlaceController/addPlace', Parameters).then(res => {
+            if (res.code == 200) {
+              this.$message.success('新增成功')
+              this.loadData()
+            } else {
+              this.$message.warning(res.message)
+            }
+          })
+          this.addVisible = false
+        } else {
+          this.$message.warning('请输入名称')
+        }
+      },
+      addChange(e) {
+        // console.log('radio checked', e.target.value)
+      },
+      edit(value) {
+        this.editVisible = true
+        this.rowRecord = value
+      },
+      editOk() {
+        this.editVisible = false
+      },
+      nextAdd(value) {
+        this.nextAddVisible = true
+        this.rowRecord = value
+      },
+      nextAddOk() {
+        this.nextAddVisible = false
+
+        if (this.nextName != '') {
+          const newData = {
+            key: this.count * 10,
+            name: this.nextName,
+            value: 2,
+            upName: this.upName,
+            children: [],
+          }
+          this.rowRecord.children = [...this.rowRecord.children, newData]
+          this.count = this.count * 10 + 1
+        }
+      },
+      confirm() {},
+      cancel() {},
+    },
+  }
 </script>
 <style>
 </style>

@@ -34,7 +34,7 @@
           <span>按房间号筛选：</span>
         </a-col>
         <a-col>
-          <a-input placeholder="请输入房间号" v-model="roomNum"></a-input>
+          <a-input placeholder="请输入房间号" v-model="roomNum" allowClear></a-input>
         </a-col>
         <a-col :span="1"></a-col>
         <a-col>

@@ -32,7 +32,7 @@
             <td colspan="2">
               <label :style="{ marginLeft: '100px' }">会议午别</label>
               <div class="bgc">
-                <a-select placeholder="请选择午别" :style="{ width: '60%' }" :default-value="4" v-model="apply.period">
+                <a-select placeholder="请选择午别" :style="{ width: '60%' }" :default-value="1" v-model="apply.period">
                   <a-select-option :value="1">上午</a-select-option>
                   <a-select-option :value="2">下午</a-select-option>
                   <a-select-option :value="3">晚上</a-select-option>
@@ -152,7 +152,7 @@
           arrangementList: [],
           meetingName: '安全管理会议',
           number: '6',
-          period: 4,
+          period: 1,
           date: '',
           location: '',
           needArrangement: 0,
@@ -173,7 +173,7 @@
       let now = moment(new Date()).format('YYYY-MM-DD')
       let dat = moment(now, 'YYYY-MM-DD')
       this.$set(this.apply, "date", dat._i)
-      this.$set(this.apply, "period", 4)
+      // this.$set(this.apply, "period", 1)
     },
     watch: {
       'apply.location': {
@@ -241,29 +241,37 @@
       },
       submitApply() {
         const _this = this
-        this.$confirm({
-          title: '是否确定强制预约会议室',
-          content: '',
-          okText: '是',
-          cancelText: '否',
-          onOk() {
-            console.log('ok')
-            _this.visibleReason = true
-          },
-        })
+        if (this.roomState == '空闲') {
+          this.$message.success('申请成功')
+        } else {
+          this.$confirm({
+            title: '是否确定强制预约会议室',
+            content: '',
+            okText: '是',
+            cancelText: '否',
+            onOk() {
+              console.log('ok')
+              _this.visibleReason = true
+            },
+          })
+        }
       },
       handleOkReason() {
-        this.visibleReason = false
-        console.log('this.apply', this.apply)
-        let parameter = this.apply
-        postAction('/ReservationController/addCompulsoryReservation', parameter).then(res => {
-          if (res.code == 200) {
-            this.$message.success('强制预约成功')
-            this.resetApplyData()
-          } else {
-            this.$message.warning(res.message + '，强制预约失败')
-          }
-        })
+        if (this.apply.cancelReason) {
+          this.visibleReason = false
+          console.log('this.apply', this.apply)
+          let parameter = this.apply
+          postAction('/ReservationController/addCompulsoryReservation', parameter).then(res => {
+            if (res.code == 200) {
+              this.$message.success('强制预约成功')
+              this.resetApplyData()
+            } else {
+              this.$message.warning(res.message + '，强制预约失败')
+            }
+          })
+        }else{
+          this.$message.warning('请输入强制预约原因')
+        }
       },
       resetApplyData() {
         this.apply.arrangementList = []
