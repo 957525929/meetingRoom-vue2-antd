@@ -159,7 +159,7 @@
           remark: '',
           cancelReason: ''
         },
-       
+
         checkedNeedArrangement: false,
         roomState: '',
         selectMeeting: {},
@@ -228,14 +228,16 @@
         }
       },
       arrangementList(data) {
-        for (let i = 0; i < data.length; i++) {
-          let a = {
-            studentId: data[i].studentId,
-            arrangeContent: data[i].arrangeContent
+        if (data) {
+          for (let i = 0; i < data.length; i++) {
+            let a = {
+              studentId: data[i].studentId,
+              arrangeContent: data[i].arrangeContent
+            }
+            this.apply.arrangementList.push(a)
           }
-          this.apply.arrangementList.push(a)
+          console.log('this.apply.arrangementList', this.apply.arrangementList)
         }
-        console.log('this.apply.arrangementList', this.apply.arrangementList)
       },
       submitApply() {
         const _this = this
@@ -259,15 +261,15 @@
             this.$message.success('强制预约成功')
             this.resetApplyData()
           } else {
-            this.$message.warning(res.message+'，强制预约失败')
+            this.$message.warning(res.message + '，强制预约失败')
           }
         })
       },
       resetApplyData() {
         this.apply.arrangementList = []
-         //this.apply.location = ''
-         //this.$set(this.apply, "location", 'hgdd')
-       
+        //this.apply.location = ''
+        //this.$set(this.apply, "location", 'hgdd')
+
         this.apply.needArrangement = 0
         this.apply.remark = ''
         this.apply.cancelReason = ''
