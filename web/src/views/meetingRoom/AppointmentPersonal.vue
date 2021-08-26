@@ -159,6 +159,7 @@
           remark: '',
           cancelReason: ''
         },
+       
         checkedNeedArrangement: false,
         roomState: '',
         selectMeeting: {},
@@ -258,15 +259,15 @@
             this.$message.success('强制预约成功')
             this.resetApplyData()
           } else {
-            this.$message.warning(res.message)
+            this.$message.warning(res.message+'，强制预约失败')
           }
         })
       },
       resetApplyData() {
         this.apply.arrangementList = []
-        // this.apply.location = ''
+         //this.apply.location = ''
          //this.$set(this.apply, "location", 'hgdd')
-        
+       
         this.apply.needArrangement = 0
         this.apply.remark = ''
         this.apply.cancelReason = ''
