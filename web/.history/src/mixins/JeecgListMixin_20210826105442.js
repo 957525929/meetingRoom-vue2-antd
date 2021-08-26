@@ -32,7 +32,7 @@ export const JeecgListMixin = {
       },
       /* 排序参数 */
       isorter: {
-        column: 'createTime',
+        column: 'meetingroomId',
         order: 'desc'
       },
       /* 筛选参数 */
@@ -89,7 +89,8 @@ export const JeecgListMixin = {
       action(this.url.list, params).then(res => {
         if (res.code == 200) {
           this.dataSource = res.data.list
-          console.log(res.data)
+          // this.handleData = this.dataSource.filter(item => meetingroomId in item)
+          console.log(this.dataSource)
           console.log('loadAction运行了！！')
           this.ipagination.total = res.data.total
         } else {
@@ -223,6 +224,9 @@ export const JeecgListMixin = {
         this.isorter.column = sorter.field
         this.isorter.order = 'ascend' == sorter.order ? 'asc' : 'desc'
       }
+      // console.log('筛选')
+      // console.log(sorter)
+
       this.ipagination = pagination
       this.loadData()
     },

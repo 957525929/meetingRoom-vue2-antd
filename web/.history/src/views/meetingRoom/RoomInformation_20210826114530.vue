@@ -98,7 +98,14 @@
         @change="handleTableChange"
         :loading="loading"
       >
-        <a-table-column title="#" data-index="meetingroomId" align="center" fixed="left" width="150px"></a-table-column>
+        <a-table-column
+          title="#"
+          data-index="meetingroomId"
+          align="center"
+          fixed="left"
+          width="150px"
+          sorter="true"
+        ></a-table-column>
         <a-table-column title="位置" data-index="placeName" align="center">
           <template slot-scope="placeName">
             <span>{{ placeName.split('.')[0] }}.{{ placeName.split('.')[1] }}</span>
@@ -405,12 +412,13 @@ export default {
     // placeTreeTwo4() {
     //   return this.$store.state.meeting.placeDataTwo4
     // },
-    // getTableData() {
-    //  return
-    // }
+    getTableData() {
+      return this.dataSource
+    }
   },
   watch: {},
   methods: {
+
     displayRender({ labels }) {
       this.queryParam.placeName = labels.join('.')
       // this.$set(this.queryParam, "placeName", labels.join('.'))

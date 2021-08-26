@@ -31,10 +31,10 @@ export const JeecgListMixin = {
         total: 0
       },
       /* 排序参数 */
-      isorter: {
-        column: 'createTime',
-        order: 'desc'
-      },
+      // isorter: {
+      //   column: 'createTime',
+      //   order: 'desc'
+      // },
       /* 筛选参数 */
       filters: {},
       /* table加载状态 */
@@ -219,10 +219,13 @@ export const JeecgListMixin = {
     handleTableChange(pagination, filters, sorter) {
       //分页、排序、筛选变化时触发
       //TODO 筛选
-      if (Object.keys(sorter).length > 0) {
-        this.isorter.column = sorter.field
-        this.isorter.order = 'ascend' == sorter.order ? 'asc' : 'desc'
-      }
+      // if (Object.keys(sorter).length > 0) {
+      //   this.isorter.column = sorter.field
+      //   this.isorter.order = 'ascend' == sorter.order ? 'asc' : 'desc'
+      //   console.log('121212121555555555')
+      //   console.log(this.isorter.order)
+      // }
+
       this.ipagination = pagination
       this.loadData()
     },

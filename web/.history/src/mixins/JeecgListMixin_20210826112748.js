@@ -222,7 +222,17 @@ export const JeecgListMixin = {
       if (Object.keys(sorter).length > 0) {
         this.isorter.column = sorter.field
         this.isorter.order = 'ascend' == sorter.order ? 'asc' : 'desc'
+        th.sort(function(a, b) {
+          let aTimeString = a.paper_date
+          let bTimeString = b.paper_date
+          let aTime = new Date(aTimeString).getTime()
+          let bTime = new Date(bTimeString).getTime()
+          return aTime - bTime
+        })
+        console.log('121212121555555555')
+        console.log(sorter)
       }
+
       this.ipagination = pagination
       this.loadData()
     },

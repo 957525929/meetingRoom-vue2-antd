@@ -219,10 +219,11 @@ export const JeecgListMixin = {
     handleTableChange(pagination, filters, sorter) {
       //分页、排序、筛选变化时触发
       //TODO 筛选
-      if (Object.keys(sorter).length > 0) {
-        this.isorter.column = sorter.field
-        this.isorter.order = 'ascend' == sorter.order ? 'asc' : 'desc'
-      }
+      // if (Object.keys(sorter).length > 0) {
+      //   this.isorter.column = sorter.field
+      //   this.isorter.order = 'ascend' == sorter.order ? 'asc' : 'desc'
+      // }
+      console.log(sorter)
       this.ipagination = pagination
       this.loadData()
     },

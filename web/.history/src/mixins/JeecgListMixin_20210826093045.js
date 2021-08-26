@@ -92,8 +92,9 @@ export const JeecgListMixin = {
           console.log(res.data)
           console.log('loadAction运行了！！')
           this.ipagination.total = res.data.total
-        } else {
-          this.$message.warning(res.message)
+        }
+        else {
+          this.$message.warning(res.message);
         }
         this.loading = false
       })
@@ -219,10 +220,10 @@ export const JeecgListMixin = {
     handleTableChange(pagination, filters, sorter) {
       //分页、排序、筛选变化时触发
       //TODO 筛选
-      if (Object.keys(sorter).length > 0) {
-        this.isorter.column = sorter.field
-        this.isorter.order = 'ascend' == sorter.order ? 'asc' : 'desc'
-      }
+      // if (Object.keys(sorter).length > 0) {
+      //   this.isorter.column = sorter.field
+      //   this.isorter.order = 'ascend' == sorter.order ? 'asc' : 'desc'
+      // }
       this.ipagination = pagination
       this.loadData()
     },

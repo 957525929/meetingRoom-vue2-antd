@@ -223,6 +223,7 @@ export const JeecgListMixin = {
         this.isorter.column = sorter.field
         this.isorter.order = 'ascend' == sorter.order ? 'asc' : 'desc'
       }
+  
       this.ipagination = pagination
       this.loadData()
     },

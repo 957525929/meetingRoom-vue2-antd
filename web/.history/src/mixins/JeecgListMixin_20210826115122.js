@@ -97,6 +97,10 @@ export const JeecgListMixin = {
         }
         this.loading = false
       })
+      // this.dataSource.sort(function(a, b) {
+      //   // console.log(a.meetingroomId, b.meetingroomId)
+      //   return a.meetingroomId - b.meetingroomId
+      // })
     },
     initDictConfig() {
       console.log('--这是一个假的方法!')
@@ -217,15 +221,23 @@ export const JeecgListMixin = {
       this.$refs.modalForm.disableSubmit = false
     },
     handleTableChange(pagination, filters, sorter) {
-      //分页、排序、筛选变化时触发
-      //TODO 筛选
-      if (Object.keys(sorter).length > 0) {
-        this.isorter.column = sorter.field
-        this.isorter.order = 'ascend' == sorter.order ? 'asc' : 'desc'
-      }
-      this.ipagination = pagination
-      this.loadData()
-    },
+                                                     //分页、排序、筛选变化时触发
+                                                     //TODO 筛选
+                                                     // if (Object.keys(sorter).length > 0) {
+                                                     //   this.isorter.column = sorter.field
+                                                     //   this.isorter.order = 'ascend' == sorter.order ? 'asc' : 'desc'
+
+                                                     //   console.log('121212121555555555')
+                                                     //   console.log(sorter)
+                                                     // }
+                                                     // this.dataSource.sort(function(a, b) {
+                                                     //   // console.log(a.meetingroomId, b.meetingroomId)
+                                                     //   return a.meetingroomId - b.meetingroomId
+                                                     // })
+
+                                                     this.ipagination = pagination
+                                                     this.loadData()
+                                                   },
     handleToggleSearch() {
       this.toggleSearchStatus = !this.toggleSearchStatus
     },

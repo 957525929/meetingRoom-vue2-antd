@@ -220,9 +220,12 @@ export const JeecgListMixin = {
       //分页、排序、筛选变化时触发
       //TODO 筛选
       if (Object.keys(sorter).length > 0) {
-        this.isorter.column = sorter.field
-        this.isorter.order = 'ascend' == sorter.order ? 'asc' : 'desc'
+        this.dataSource.sort(function(a, b) {
+          // console.log(a.meetingroomId, b.meetingroomId)
+          return a.meetingroomId - b.meetingroomId
+        })
       }
+
       this.ipagination = pagination
       this.loadData()
     },

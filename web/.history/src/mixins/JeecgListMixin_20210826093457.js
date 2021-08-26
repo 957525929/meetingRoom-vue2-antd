@@ -89,7 +89,7 @@ export const JeecgListMixin = {
       action(this.url.list, params).then(res => {
         if (res.code == 200) {
           this.dataSource = res.data.list
-          console.log(res.data)
+          console.log(this.dataSource.filter(item))
           console.log('loadAction运行了！！')
           this.ipagination.total = res.data.total
         } else {
@@ -219,10 +219,13 @@ export const JeecgListMixin = {
     handleTableChange(pagination, filters, sorter) {
       //分页、排序、筛选变化时触发
       //TODO 筛选
-      if (Object.keys(sorter).length > 0) {
-        this.isorter.column = sorter.field
-        this.isorter.order = 'ascend' == sorter.order ? 'asc' : 'desc'
-      }
+      // if (Object.keys(sorter).length > 0) {
+      //   this.isorter.column = sorter.field
+      //   this.isorter.order = 'ascend' == sorter.order ? 'asc' : 'desc'
+      // }
+      console.log('筛选')
+      console.log(sorter)
+
       this.ipagination = pagination
       this.loadData()
     },

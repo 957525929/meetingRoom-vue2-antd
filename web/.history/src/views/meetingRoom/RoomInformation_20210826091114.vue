@@ -166,7 +166,7 @@
         <a-form-model-item label="房间号" ref="room" prop="room">
           <a-input v-model="formAdd.room" placeholder="请输入房间号"></a-input>
         </a-form-model-item>
-        <!-- <a-form-model-item label="状态">
+        <a-form-model-item label="状态">
           <a-radio-group v-model="formAdd.meetingRoomState">
             <a-radio :value="0">
               空闲
@@ -178,7 +178,7 @@
               开会中
             </a-radio>
           </a-radio-group>
-        </a-form-model-item> -->
+        </a-form-model-item>
         <a-form-model-item ref="number" label="容纳人数" prop="number">
           <a-input v-model="formAdd.number" placeholder="请输入房间容纳人数"></a-input>
         </a-form-model-item>
@@ -375,7 +375,6 @@ export default {
     // console.log(this.$store)
     this.$store.dispatch('placeTree')
     this.$store.dispatch('placeTree1')
-    this.sort()
     // this.$store.dispatch('placeTreeTwo')
     // this.$store.dispatch('placeTreeTwo1')
     // this.$store.dispatch('placeTreeTwo2')
@@ -389,7 +388,6 @@ export default {
     firstTree1() {
       return this.$store.state.meeting.placeData1
     }
-
     // placeTreeTwo() {
     //   return this.$store.state.meeting.placeDataTwo
     // },
@@ -406,7 +404,7 @@ export default {
     //   return this.$store.state.meeting.placeDataTwo4
     // },
     // getTableData() {
-    //  return
+    //   return this.dataSource
     // }
   },
   watch: {},
@@ -519,8 +517,8 @@ export default {
       parameter.placeName = this.formModify.placeName.join('.') + '.' + this.formModify.room
       parameter.number = this.formModify.number
       parameter.meetingRoomState = this.formModify.meetingRoomState
-      parameter.meetingroomId = this.formModify.meetingroomId
-
+      parameter.meetingRoomState = this.formModify.meetingRoomState
+      
       console.log(' parameterformModify', parameter)
       // return false
       postAction('/MeetingRoomController/updateMeetingRoom', parameter).then(res => {

@@ -98,7 +98,14 @@
         @change="handleTableChange"
         :loading="loading"
       >
-        <a-table-column title="#" data-index="meetingroomId" align="center" fixed="left" width="150px"></a-table-column>
+        <a-table-column
+          title="#"
+          data-index="meetingroomId"
+          align="center"
+          fixed="left"
+          width="150px"
+          :sorter="sorter"
+        ></a-table-column>
         <a-table-column title="位置" data-index="placeName" align="center">
           <template slot-scope="placeName">
             <span>{{ placeName.split('.')[0] }}.{{ placeName.split('.')[1] }}</span>
@@ -375,7 +382,6 @@ export default {
     // console.log(this.$store)
     this.$store.dispatch('placeTree')
     this.$store.dispatch('placeTree1')
-    this.sort()
     // this.$store.dispatch('placeTreeTwo')
     // this.$store.dispatch('placeTreeTwo1')
     // this.$store.dispatch('placeTreeTwo2')
@@ -411,6 +417,13 @@ export default {
   },
   watch: {},
   methods: {
+    sorter() {
+      this.dataSource.sort(function(a, b) {
+        // console.log(a.meetingroomId, b.meetingroomId)
+        return a.meetingroomId - b.meetingroomId
+      })
+      this.loadData(1)
+    },
     displayRender({ labels }) {
       this.queryParam.placeName = labels.join('.')
       // this.$set(this.queryParam, "placeName", labels.join('.'))

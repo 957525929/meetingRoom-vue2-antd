@@ -375,7 +375,6 @@ export default {
     // console.log(this.$store)
     this.$store.dispatch('placeTree')
     this.$store.dispatch('placeTree1')
-    this.sort()
     // this.$store.dispatch('placeTreeTwo')
     // this.$store.dispatch('placeTreeTwo1')
     // this.$store.dispatch('placeTreeTwo2')
@@ -389,7 +388,6 @@ export default {
     firstTree1() {
       return this.$store.state.meeting.placeData1
     }
-
     // placeTreeTwo() {
     //   return this.$store.state.meeting.placeDataTwo
     // },
@@ -406,7 +404,7 @@ export default {
     //   return this.$store.state.meeting.placeDataTwo4
     // },
     // getTableData() {
-    //  return
+    //   return this.dataSource
     // }
   },
   watch: {},

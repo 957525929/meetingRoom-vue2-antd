@@ -222,7 +222,13 @@ export const JeecgListMixin = {
       if (Object.keys(sorter).length > 0) {
         this.isorter.column = sorter.field
         this.isorter.order = 'ascend' == sorter.order ? 'asc' : 'desc'
+        this.dataSource.me.sort(function(a, b) {
+          console.log(a, b)
+        })
+        console.log('121212121555555555')
+        console.log(sorter)
       }
+
       this.ipagination = pagination
       this.loadData()
     },

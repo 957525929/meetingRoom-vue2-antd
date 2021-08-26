@@ -221,8 +221,10 @@ export const JeecgListMixin = {
       //TODO 筛选
       if (Object.keys(sorter).length > 0) {
         this.isorter.column = sorter.field
-        this.isorter.order = 'ascend' == sorter.order ? 'asc' : 'desc'
+         = 'ascend' == sorter.order ? 'asc' : 'desc'
       }
+      console.log('121212121555555555')
+      console.log(sorter)
       this.ipagination = pagination
       this.loadData()
     },
