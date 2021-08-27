@@ -52,7 +52,12 @@
     <!-- table区域-begin -->
     <div id="dataDutyTable">
       <a-table :dataSource="dataSource" :pagination="ipagination" rowKey="studentId" :loading="loading">
-        <a-table-column title="编号" data-index="studentId" align="center"></a-table-column>
+        <!-- <a-table-column title="编号" data-index="studentId" align="center"></a-table-column> -->
+        <a-table-column title="#" data-index="rowIndex" align="center">
+          <template slot-scope="text,record,index">
+            <span>{{parseInt(index)+1}}</span>
+          </template>
+        </a-table-column>
         <a-table-column title="姓名" data-index="name" align="center"></a-table-column>
         <a-table-column title="联系电话" data-index="telephone" align="center"></a-table-column>
         <a-table-column title="银行账号" data-index="bankAccount" align="center"></a-table-column>
@@ -74,9 +79,6 @@
     <!-- 新增 -->
     <a-drawer :visible="visible" :title="title" @close="close" width="600px" placement="right">
       <a-form-model ref="ruleForm" :model="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-        <a-form-model-item ref="studentId" label="编号">
-          <a-input v-model="form.studentId" placeholder="编号" disabled="disabled"></a-input>
-        </a-form-model-item>
         <a-form-model-item label="姓名" prop="name" ref="name">
           <a-input v-model="form.name" placeholder="请输入姓名"></a-input>
         </a-form-model-item>
@@ -116,7 +118,7 @@
     mixins: [JeecgListMixin],
     data() {
       return {
-        methodType:'',
+        methodType: '',
         labelCol: {
           span: 5
         },
@@ -178,8 +180,8 @@
         return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`
       }
     },
-    created(){
-       this.methodType = 'get'; 
+    created() {
+      this.methodType = 'get';
     },
     methods: {
       searchQuery() {},
@@ -198,7 +200,6 @@
           name: '',
           openId: '',
           password: '',
-          studentId: 0,
           telephone: ''
         };
       },

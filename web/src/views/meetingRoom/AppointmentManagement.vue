@@ -66,11 +66,11 @@
     <div style="margin-top:20px">
       <a-table :dataSource="dataSource" :pagination="ipagination" :loading="loading" rowKey="reserveId"
         @change="handleTableChange">
-        <!-- <a-table-column title="#" data-index="rowIndex" align="left" fixed="left">
+           <a-table-column title="#" data-index="rowIndex" align="left" fixed="left">
           <template slot-scope="text,record,index">
-            <span>{{index+1}}</span>
+            <span>{{ (ipagination.current-1)*ipagination.pageSize+(index+1) }}</span>
           </template>
-        </a-table-column> -->
+        </a-table-column>
         <!-- <a-table-column title="会议编号" data-index="reserveId" align="left" width="150px" fixed="left"></a-table-column> -->
         <a-table-column title="会议名称" data-index="meetingName" align="center"></a-table-column>
         <a-table-column title="预约时间" data-index="createTime" align="center">

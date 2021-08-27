@@ -170,7 +170,7 @@
       }
     },
     created() {
-      let now = moment(new Date()).format('YYYY-MM-DD')
+      let now = moment(new Date()).subtract(-1, 'days').format('YYYY-MM-DD')
       let dat = moment(now, 'YYYY-MM-DD')
       this.$set(this.apply, "date", dat._i)
       // this.$set(this.apply, "period", 1)
