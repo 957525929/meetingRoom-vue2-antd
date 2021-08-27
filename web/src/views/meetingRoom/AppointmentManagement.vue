@@ -214,7 +214,7 @@
         selectMeeting: {},
         dateFormat: 'YYYY-MM-DD',
         url: {
-          list: '/ReservationController/getReservationList',
+          list: '',
         }
       }
     },
@@ -232,8 +232,9 @@
         this.$set(this.queryParam, "status", 1)
         let now = moment(new Date()).format('YYYY-MM-DD')
         let dat = moment(now, 'YYYY-MM-DD')
-        this.$set(this.queryParam, "reservationStartTime", dat._i)
+        this.$set(this.queryParam, "reservationStartTime", dat._i)       
         this.$nextTick(() => {
+          this.url.list='/ReservationController/getReservationList'
           this.loadData(1)
         });
       },
