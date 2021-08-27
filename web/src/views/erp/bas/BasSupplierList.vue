@@ -1,5 +1,5 @@
 <template>
-  <!--会议室管理人员 -->
+  <!--教师管理 -->
   <a-card :bordered="false">
     <!-- 搜索操作区域 -->
     <div class="table-page-search-wrapper">
@@ -62,7 +62,12 @@
     <!-- table区域-begin -->
     <div id="dataDutyTable">
       <a-table :data-source="dataTeacher" :pagination="false" rowKey="index">
-        <a-table-column title="#" data-index="index" align="left" fixed="left"></a-table-column>
+          <a-table-column title="#" data-index="rowIndex" align="left" fixed="left">
+              <template slot-scope="text,record,index">
+                <span>{{parseInt(index)+1}}</span>
+               </template>
+          </a-table-column>
+        <!-- <a-table-column title="#" data-index="index" align="left" fixed="left"></a-table-column> -->
         <a-table-column title="工号" data-index="teacherID" align="center"></a-table-column>
         <a-table-column title="姓名" data-index="teacherName" align="center"></a-table-column>
         <a-table-column title="联系电话" data-index="teacherTel" align="center"></a-table-column>
