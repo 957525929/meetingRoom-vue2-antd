@@ -130,7 +130,7 @@
       </a-table>
     </div>
     <!-- 详情页面 -->
-    <a-drawer :visible="visibleAppoint" title="会议详情" @close="appointClose" width="1200px" placement="right">
+    <a-drawer :visible="visibleAppoint" title="会议详情" @close="appointClose" width="800px" placement="right">
       <a-tabs default-active-key="1">
         <a-tab-pane key="1" tab="会议申请">
           <a-descriptions>
@@ -211,9 +211,7 @@
         dataArrange: [],
         arrangementList: [],
         reason: '',
-        selectMeeting: {
-          meetingName: '',
-        },
+        selectMeeting: {},
         dateFormat: 'YYYY-MM-DD',
         url: {
           list: '/ReservationController/getReservationList',

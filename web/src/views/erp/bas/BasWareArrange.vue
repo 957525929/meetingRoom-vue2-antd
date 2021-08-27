@@ -55,7 +55,7 @@
         <!-- <a-table-column title="编号" data-index="studentId" align="center"></a-table-column> -->
         <a-table-column title="#" data-index="rowIndex" align="center">
           <template slot-scope="text,record,index">
-            <span>{{parseInt(index)+1}}</span>
+            <span>{{ (ipagination.current-1)*ipagination.pageSize+(index+1) }}</span>
           </template>
         </a-table-column>
         <a-table-column title="姓名" data-index="name" align="center"></a-table-column>

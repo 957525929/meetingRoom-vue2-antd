@@ -12,7 +12,7 @@
           </a-row>
         </a-modal>
       </div> -->
-      <a-table :columns="columns" :data-source="dataSource" :expandedRowsChange="expandedRowKeys" rowKey="placeId">
+      <a-table :columns="columns" :data-source="dataSource" :expandedRowsChange="expandedRowKeys" rowKey="placeId" :defaultExpandedRowKeys="defaultExpandedRowKeys" :pagination="false">
         <span slot="action" slot-scope="text, record">
           <a @click="nextAdd(record)" v-if="record.typeId==0||record.typeId==1">添加下级</a>
           <a-modal v-model="nextAddVisible" title="添加下级" @ok="nextAddOk" :mask="false">
@@ -95,6 +95,7 @@
       return {
         columns: columns,
         expandedRowKeys: [],
+        defaultExpandedRowKeys:[0],
         dataSource: [],
         addVisible: false,
         placeName: '',

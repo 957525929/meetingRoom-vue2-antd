@@ -98,21 +98,15 @@
         </a-table-column>
         <a-table-column title="状态" data-index="meetingRoomState" align="center">
           <template slot-scope="meetingRoomState">
-            <span v-if="meetingRoomState == 0">
-              <a-tag color="green">
-                空闲
-              </a-tag>
-            </span>
-            <span v-else-if="meetingRoomState == 2">
-              <a-tag color="blue">
-                禁用
-              </a-tag>
-            </span>
-            <span v-else>
-              <a-tag color="red">
-                开会中
-              </a-tag>
-            </span>
+            <a-tag color="green" v-if="meetingRoomState == 0">
+              空闲
+            </a-tag>
+            <a-tag color="blue" v-else-if="meetingRoomState == 2">
+              禁用
+            </a-tag>
+            <a-tag color="red" v-else>
+              开会中
+            </a-tag>
           </template>
         </a-table-column>
         <a-table-column title="容纳人数" data-index="number" align="center"></a-table-column>

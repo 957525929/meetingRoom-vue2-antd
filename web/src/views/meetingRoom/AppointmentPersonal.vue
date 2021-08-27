@@ -54,11 +54,11 @@
             <td colspan="2">
               <label :style="{ marginLeft: '100px' }">会议室状态</label>
               <div class="bgc">
-                <span style="color: red" v-if="roomState">{{roomState}}</span>
+                <span style="color: red" v-if="roomState=='已预约'">已预约</span>
                 <a-button @click="applyDetail()" type="primary" style="margin-left: 20px" v-if="roomState=='已预约'">
                   预约详情
                 </a-button>
-                <!-- <span v-if="roomState==0" style="color: green">空闲</span> -->
+                <span v-if="roomState=='空闲'" style="color: green">空闲</span>
               </div>
             </td>
           </tr>
