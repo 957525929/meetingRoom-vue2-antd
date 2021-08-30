@@ -81,7 +81,7 @@
       <a-table :dataSource="dataSource" :pagination="ipagination" rowKey="meetingroomId" @change="handleTableChange"
         :loading="loading">
         <!-- <a-table-column title="#" data-index="meetingroomId" align="center" fixed="left" width="150px"></a-table-column> -->
-        <a-table-column title="#" data-index="rowIndex" align="left" fixed="left">
+        <a-table-column title="序号" data-index="rowIndex" align="left" fixed="left">
           <template slot-scope="text,record,index">
             <span>{{ (ipagination.current-1)*ipagination.pageSize+(index+1) }}</span>
           </template>
@@ -253,9 +253,6 @@
 
 <script>
   import {
-    areaData
-  } from './data/area.js'
-  import {
     JeecgListMixin
   } from '@/mixins/JeecgListMixin'
   import {
@@ -268,7 +265,17 @@
   } from '@/api/manage'
   // import { deleteMeetingRoom } from '@/api/api'
   // import { deletePostAction } from '@/api/msg'
-
+  const areaData = [{
+      value: '旗山校区',
+      label: '旗山校区',
+      children: []
+    },
+    {
+      value: '仓山校区',
+      label: '仓山校区',
+      children: []
+    }
+  ]
   export default {
     mixins: [JeecgListMixin],
     data() {

@@ -111,21 +111,21 @@
     <!--已预约详情 -->
     <a-modal v-model="visibleApplyDetail" @ok="visibleApplyDetail=false" @cancel="visibleApplyDetail=false"
       width="500px">
-      <a-descriptions title="预约详情" :column='2'>
+      <a-descriptions title="预约详情" :column='2' v-for="item in selectMeeting" :key="item.reserveId">
         <a-descriptions-item label="预约人姓名">
-          {{selectMeeting.userName}}
+          {{item.userName}}
         </a-descriptions-item>
         <a-descriptions-item label="预约人电话">
-          {{selectMeeting.userPhone}}
+          {{item.userPhone}}
         </a-descriptions-item>
         <a-descriptions-item label="会议时间">
-          {{selectMeeting.dateDay}}
+          {{item.dateDay}}
         </a-descriptions-item>
         <a-descriptions-item label="会议午别">
-          <span v-if="selectMeeting.period==1">上午</span>
-          <span v-if="selectMeeting.period==2">下午</span>
-          <span v-if="selectMeeting.period==3">晚上</span>
-          <span v-if="selectMeeting.period==4">全天</span>
+          <span v-if="item.period==1">上午</span>
+          <span v-if="item.period==2">下午</span>
+          <span v-if="item.period==3">晚上</span>
+          <span v-if="item.period==4">全天</span>
         </a-descriptions-item>
       </a-descriptions>
     </a-modal>
@@ -162,7 +162,7 @@
 
         checkedNeedArrangement: false,
         roomState: '',
-        selectMeeting: {},
+        selectMeeting: [],
         dateFormat: 'YYYY-MM-DD',
         visibleReason: false,
         modalVisible: false,
@@ -200,27 +200,27 @@
     methods: {
       displayRender(data) {
         this.apply.location = data
-        console.log(11111111111)
       },
       querypostAction() {
-        let parameter = {
-          dateDay: this.apply.date,
-          meetingRoomName: this.apply.location,
-          period: this.apply.period
-        }
         if (this.apply.date && this.apply.location && this.apply.period) {
+          let parameter = {
+            dateDay: this.apply.date,
+            meetingRoomName: this.apply.location,
+            period: this.apply.period
+          }
+          this.selectMeeting = []
           postAction('/ReservationController/isReserved', parameter).then(res => {
-            console.log(res)
             if (res.code == 200) {
-              if (res.data.statusName == '待开会' || res.data.statusName == '开会中') {
-                this.selectMeeting = res.data
-                this.roomState = '已预约'
+              if (res.data.length > 0) {
+                res.data.forEach(element => {
+                  if (element.statusName == '待开会' || element.statusName == '开会中') {
+                    this.selectMeeting.push(element)
+                    this.roomState = '已预约'
+                  }
+                })
               } else {
                 this.roomState = '空闲'
               }
-            } else {
-              this.roomState = '空闲'
-              //  this.$message.warning(res.message);
             }
           })
         } else {
@@ -269,7 +269,7 @@
               this.$message.warning(res.message + '，强制预约失败')
             }
           })
-        }else{
+        } else {
           this.$message.warning('请输入强制预约原因')
         }
       },

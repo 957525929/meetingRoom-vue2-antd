@@ -5,21 +5,18 @@
     <div class="table-page-search-wrapper">
       <a-row type="flex" align="middle">
         <a-col>
-          <span>发送主题：</span>
+          <span>发送时间：</span>
         </a-col>
         <a-col>
-          <a-select placeholder="请选择发送主题" style="width: 200px" v-model="queryParam.noticeType">
-            <a-select-option value="0">预约成功</a-select-option>
-            <a-select-option value="1">强制预约成功</a-select-option>
-            <a-select-option value="2">预约失败</a-select-option>
-            <a-select-option value="3">被强制预约</a-select-option>
-            <a-select-option value="4">强制预约失败</a-select-option>
-            <a-select-option value="">全部</a-select-option>
-          </a-select>
+          <j-date v-model="queryParam.reservationStartTime" :showTime="true" date-format="YYYY-MM-DD" style="width:30%"
+            placeholder="请选择开始时间"></j-date>
+          <span style="width: 10px;">~</span>
+          <j-date v-model="queryParam.reservationEndTime" :showTime="true" date-format="YYYY-MM-DD" style="width:30%"
+            placeholder="请选择结束时间"></j-date>
         </a-col>
         <a-col :span="1"></a-col>
         <a-col>
-          <span>接受人：</span>
+          <span>接收人：</span>
         </a-col>
         <a-col>
           <a-input placeholder="请输入接受人姓名" v-model="queryParam.recipientName"></a-input>
@@ -35,34 +32,32 @@
 
     <!-- table区域-begin -->
     <div style="margin-top:20px">
-      <a-table :data-source="dataSource" :pagination="false" rowKey="noticeTime">
-        <a-table-column title="#" data-index="rowIndex" align="left" width="50px">
+      <a-table :data-source="dataSource" :pagination="ipagination" rowKey="noticeTime">
+        <a-table-column title="序号" data-index="rowIndex" align="left" width="50px">
           <template slot-scope="text,record,index">
-            <span>{{(index+1) }}</span>
+            <span>{{(ipagination.current-1)*ipagination.pageSize+(index+1)}}</span>
           </template>
         </a-table-column>
-        <a-table-column title="发送类型" data-index="noticeType" align="left" width="120px"></a-table-column>
+        <!-- <a-table-column title="发送类型" data-index="noticeType" align="left" width="120px"></a-table-column> -->
         <a-table-column title="发送时间" data-index="noticeTime" align="left" width="200px"></a-table-column>
         <a-table-column title="接收人" data-index="recipientName" align="left" width="120px"></a-table-column>
         <a-table-column title="接收人电话" data-index="recipientTel" align="left" width="120px"></a-table-column>
-        <a-table-column title="发送主题" data-index="noticeTheme" align="left" width="120px">
-          <template slot-scope="noticeTheme">
-            <a-tag color="green" v-if="noticeTheme=='0'"> 预约成功</a-tag>
-            <a-tag color="green" v-if="noticeTheme=='1'"> 强制预约成功</a-tag>
-            <a-tag color="red" v-if="noticeTheme=='2'"> 预约失败</a-tag>
-            <a-tag color="red" v-if="noticeTheme=='3'"> 被强制预约</a-tag>
-            <a-tag color="red" v-if="noticeTheme=='4'"> 强制预约失败</a-tag>
-          </template>
+        <a-table-column title="标题" data-index="noticeTheme" align="left" width="120px">
         </a-table-column>
-        <a-table-column title="通知内容" data-index="notice" align="left" width="300px">
+        <a-table-column title="内容" data-index="notice" align="left" width="300px">
           <template slot-scope="text">
             <j-ellipsis :value="text" :length="20"> </j-ellipsis>
           </template>
         </a-table-column>
-        <a-table-column title="发送状态" data-index="noticeState" align="left" width="120px"></a-table-column>
+        <a-table-column title="发送状态" data-index="noticeState" align="left" width="120px">
+          <template slot-scope="noticeState">
+            <a-tag color="red" v-if="noticeState==0"> 失败</a-tag>
+            <a-tag color="green" v-if="noticeState==1"> 成功</a-tag>
+          </template>
+        </a-table-column>
       </a-table>
       <br />
-      <a-pagination size="small" :total="50" show-size-changer show-quick-jumper align="center" />
+      <!-- <a-pagination size="small" :total="50" show-size-changer show-quick-jumper align="center" /> -->
     </div>
 
   </a-card>
@@ -70,69 +65,71 @@
 
 <script>
   import JEllipsis from "@/components/jeecg/JEllipsis"
+  import JDate from '@/components/jeecg/JDate'
+  import {
+    JeecgListMixin
+  } from '@/mixins/JeecgListMixin'
   const dataSource = [{
       index: 1,
       noticeType: '消息通知',
-      noticeTheme: '0',
+      noticeTheme: '预约成功',
       noticeTime: '2021-08-18 23:01:31',
       recipientName: '李帅',
       recipientTel: '13759655332',
       notice: '您已成功预约2021年8月25日全天福建师范大学.旗山校区.1号楼.会议室203，请知晓',
-      noticeState: '发送成功'
+      noticeState: 1
     },
     {
       index: 2,
       noticeType: '消息通知',
-      noticeTheme: '2',
+      noticeTheme: '预约失败',
       noticeTime: '2021-08-18 17:46:26',
       recipientName: '张晓',
       recipientTel: '15879623045',
       notice: '您申请的2021年8月25日全天福建师范大学.旗山校区.1号楼.会议室204未成功预约，请知晓',
-      noticeState: '发送成功'
+      noticeState: 1
     },
     {
       index: 3,
       noticeType: '消息通知',
-      noticeTheme: '3',
+      noticeTheme: '被强制预约',
       noticeTime: '2021-08-18 15:00:18',
       recipientName: '于光',
       recipientTel: '18963210456',
       notice: '您申请的2021年8月25日全天福建师范大学.旗山校区.1号楼.会议室204已被强制预约，请知晓',
-      noticeState: '发送失败'
+      noticeState: 0
     },
     {
       index: 4,
       noticeType: '消息通知',
-      noticeTheme: '1',
+      noticeTheme: '强制预约成功',
       noticeTime: '2021-08-18 15:09:18',
       recipientName: '游斌',
       recipientTel: '13625894706',
       notice: '您已成功强制预约2021年8月25日全天福建师范大学.旗山校区.2号楼.会议室203，请知晓',
-      noticeState: '发送失败'
+      noticeState: 0
     },
     {
       index: 5,
       noticeType: '消息通知',
-      noticeTheme: '4',
+      noticeTheme: '强制预约失败',
       noticeTime: '2021-08-18 13:00:18',
       recipientName: '陈雨',
       recipientTel: '15489632104',
       notice: '您申请的2021年8月25日全天福建师范大学.旗山校区.2号楼.会议室203未成功强制预约，请知晓',
-      noticeState: '发送成功'
+      noticeState: 1
     },
   ]
   export default {
+    mixins: [JeecgListMixin],
     components: {
-      JEllipsis
+      JEllipsis,
+      JDate
     },
     data() {
       return {
-        tokenHeader: undefined,
         dataSource,
-        queryParam: {
-          recipientName: '',
-          noticeType: '全部'
-        },
+
       }
     },
     computed: {},

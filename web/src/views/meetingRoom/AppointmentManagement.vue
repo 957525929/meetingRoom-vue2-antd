@@ -66,7 +66,7 @@
     <div style="margin-top:20px">
       <a-table :dataSource="dataSource" :pagination="ipagination" :loading="loading" rowKey="reserveId"
         @change="handleTableChange">
-           <a-table-column title="#" data-index="rowIndex" align="left" fixed="left">
+           <a-table-column title="序号" data-index="rowIndex" align="left" fixed="left">
           <template slot-scope="text,record,index">
             <span>{{ (ipagination.current-1)*ipagination.pageSize+(index+1) }}</span>
           </template>
@@ -160,7 +160,7 @@
         <a-tab-pane key="1" tab="会务安排">
           <a-table :data-source="dataArrange" :pagination="false" rowKey="rowIndex">
             <!-- <a-table-column title="编号" data-index="studentId" align="center" ></a-table-column> -->
-            <a-table-column title="#" data-index="rowIndex" align="left" fixed="left">
+            <a-table-column title="序号" data-index="rowIndex" align="left" fixed="left">
               <template slot-scope="text,record,index">
                 <span>{{parseInt(index)+1}}</span>
               </template>

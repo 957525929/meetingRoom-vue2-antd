@@ -53,7 +53,7 @@
     <div id="dataDutyTable">
       <a-table :dataSource="dataSource" :pagination="ipagination" rowKey="studentId" :loading="loading">
         <!-- <a-table-column title="编号" data-index="studentId" align="center"></a-table-column> -->
-        <a-table-column title="#" data-index="rowIndex" align="center">
+        <a-table-column title="序号" data-index="rowIndex" align="center">
           <template slot-scope="text,record,index">
             <span>{{ (ipagination.current-1)*ipagination.pageSize+(index+1) }}</span>
           </template>
