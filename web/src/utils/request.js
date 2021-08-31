@@ -11,8 +11,8 @@ import { ACCESS_TOKEN } from "@/store/mutation-types"
  * 则映射后端域名，通过 vue.config.js
  * @type {*|string}
  */
-//let apiBaseUrl = window._CONFIG['domianURL'] || "/jeecg-boot";
-let apiBaseUrl = '';
+let apiBaseUrl = window._CONFIG['domianURL'] || "/jeecg-boot";
+//let apiBaseUrl = '';
 console.log("apiBaseUrl= ",apiBaseUrl)
 // 创建 axios 实例
 const service = axios.create({
@@ -54,7 +54,7 @@ const err = (error) => {
         }
         break
       case 404:
-          notification.error({ message: '系统提示', description:'很抱歉，资源未找到!',duration: 4})
+          // notification.error({ message: '系统提示', description:'很抱歉，资源未找到!',duration: 4})
         break
       case 504:
         notification.error({ message: '系统提示', description: '网络超时'})
