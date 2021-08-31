@@ -130,7 +130,9 @@
       },
       handleChange() {},
       searchQuery() {
-        console.log(this.roomNum)
+        if(this.queryParam.reservationStartTime==''||this.queryParam.reservationEndTime==''){
+          this.$message.warning('请选择时间')
+        }
         if (this.roomNum) {
           this.queryParam.placeName = this.place.join('.')+ '.' + this.roomNum
         }
@@ -138,6 +140,7 @@
         console.log('this.queryParam.placeName', this.queryParam.placeName)
         postAction('/MeetingRoomController/reservationStatis', query).then(res => {
           if (res.data.length > 0) {
+            this.$message.success('查询成功')
             let array = []
             console.log(res.data)
             for (let i = 0; i < res.data.length; i++) {
