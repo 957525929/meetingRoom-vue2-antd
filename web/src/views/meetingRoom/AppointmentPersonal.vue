@@ -211,7 +211,7 @@
           this.selectMeeting = []
           postAction('/ReservationController/isReserved', parameter).then(res => {
             if (res.code == 200) {
-              if (res.data.length > 0) {
+              if (res.data.length) {
                 res.data.forEach(element => {
                   if (element.statusName == '待开会' || element.statusName == '开会中') {
                     this.selectMeeting.push(element)
@@ -240,21 +240,27 @@
         }
       },
       submitApply() {
-        const _this = this
-        if (this.roomState == '空闲') {
-          this.$message.success('申请成功')
+        if (this.apply.meetingName == '' || this.apply.number == '' || this.apply.date == '' || this.apply.location ==
+          '') {
+          this.$message.warning('会议名称、参会人数、会议时间、会议时段、会议地点均需填写')
         } else {
-          this.$confirm({
-            title: '是否确定强制预约会议室',
-            content: '',
-            okText: '是',
-            cancelText: '否',
-            onOk() {
-              console.log('ok')
-              _this.visibleReason = true
-            },
-          })
+          const _this = this
+          if (this.roomState == '空闲') {
+            this.$message.success('申请成功')
+          } else {
+            this.$confirm({
+              title: '是否确定强制预约会议室',
+              content: '',
+              okText: '是',
+              cancelText: '否',
+              onOk() {
+                console.log('ok')
+                _this.visibleReason = true
+              },
+            })
+          }
         }
+
       },
       handleOkReason() {
         if (this.apply.cancelReason) {

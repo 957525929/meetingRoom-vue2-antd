@@ -18,11 +18,11 @@
               <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
             </a-input>
           </a-form-item>
-
-          <a-row :gutter="0">
+          <!--20200510 cfm: 为方便测试，不输入验证码可： default-value="xxxx"-->
+          <!-- <a-row :gutter="0">
             <a-col :span="16">
               <a-form-item>
-                <!--20200510 cfm: 为方便测试，不输入验证码可： default-value="xxxx"-->
+                
                 <a-input v-decorator="['inputCode']" size="large" type="text" default-value="" @change="inputCodeChange"
                   placeholder="请输入验证码">
                   <a-icon slot="prefix" type="smile" :style="{ color: 'rgba(0,0,0,.25)' }" />
@@ -34,7 +34,7 @@
                 @click="handleChangeCheckCode" />
               <img v-else style="margin-top: 2px;" src="../../assets/checkcode.png" @click="handleChangeCheckCode" />
             </a-col>
-          </a-row>
+          </a-row> -->
         </a-tab-pane>
       </a-tabs>
 

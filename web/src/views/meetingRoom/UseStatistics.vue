@@ -130,10 +130,10 @@
       },
       handleChange() {},
       searchQuery() {
+        console.log(this.roomNum)
         if (this.roomNum) {
-          this.queryParam.placeName = this.queryParam.placeName + '.' + this.roomNum
+          this.queryParam.placeName = this.place.join('.')+ '.' + this.roomNum
         }
-
         let query = this.queryParam
         console.log('this.queryParam.placeName', this.queryParam.placeName)
         postAction('/MeetingRoomController/reservationStatis', query).then(res => {
@@ -147,11 +147,13 @@
               }
               array.push(a)
             }
+             this.queryParam.placeName = this.place.join('.')
             this.dataSource = array
             console.log('this.dataSource', this.dataSource)
           } else {
             this.$message.warning('未查询到')
             console.log('未查询到')
+            this.queryParam.placeName = this.place.join('.')
             this.dataSource = []
           }
         })

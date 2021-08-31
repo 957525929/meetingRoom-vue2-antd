@@ -32,6 +32,7 @@ const err = (error) => {
         notification.error({ message: '系统提示', description: '拒绝访问',duration: 4})
         break
       case 500:
+        // notification.error({ message: '系统提示', description:'手机号或密码不能为空',duration: 4})
         //notification.error({ message: '系统提示', description:'Token失效，请重新登录!',duration: 4})
         if(token && data.message=="Token失效，请重新登录"){
           // update-begin- --- author:scott ------ date:20190225 ---- for:Token失效采用弹框模式，不直接跳转----
