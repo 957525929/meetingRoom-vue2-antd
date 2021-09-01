@@ -140,7 +140,7 @@
         console.log('this.queryParam.placeName', this.queryParam.placeName)
         postAction('/MeetingRoomController/reservationStatis', query).then(res => {
           if (res.data.length > 0) {
-            this.$message.success('查询成功')
+            // this.$message.success('查询成功')
             let array = []
             console.log(res.data)
             for (let i = 0; i < res.data.length; i++) {

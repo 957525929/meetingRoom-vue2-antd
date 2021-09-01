@@ -26,18 +26,18 @@
     <!-- update-end author:sunjianlei date:20200219 for: 菜单搜索改为动态组件，在手机端呈现出弹出框 -->
     <!-- update-end author:sunjianlei date:20191220 for: 解决全局样式冲突的问题 -->
     <!-- update_end  author:zhaoxin date:20191129 for: 做头部菜单栏导航 -->
-    <span class="action">
+    <!-- <span class="action">
       <a class="logout_title" target="_blank" href="http://doc.jeecg.com">
         <a-icon type="question-circle-o"></a-icon>
       </a>
-    </span>
+    </span> -->
     <header-notice class="action"/>
     <a-dropdown>
       <span class="action action-full ant-dropdown-link user-dropdown-menu">
         <a-avatar class="avatar" size="small" :src="getAvatar()"/>
         <span v-if="isDesktop()">欢迎您，{{ nickname() }}</span>
       </span>
-      <a-menu slot="overlay" class="user-dropdown-menu-wrapper">
+      <!-- <a-menu slot="overlay" class="user-dropdown-menu-wrapper">
         <a-menu-item key="0">
           <router-link :to="{ name: 'account-center' }">
             <a-icon type="user"/>
@@ -62,18 +62,7 @@
           <a-icon type="cluster"/>
           <span>切换部门</span>
         </a-menu-item>
-       <!-- <a-menu-item key="2" disabled>
-          <a-icon type="setting"/>
-          <span>测试</span>
-        </a-menu-item>
-        <a-menu-divider/>
-        <a-menu-item key="3">
-          <a href="javascript:;" @click="handleLogout">
-            <a-icon type="logout"/>
-            <span>退出登录</span>
-          </a>
-        </a-menu-item>-->
-      </a-menu>
+      </a-menu> -->
     </a-dropdown>
     <span class="action">
       <a class="logout_title" href="javascript:;" @click="handleLogout">

@@ -75,7 +75,7 @@ const user = {
             const result = response
             const userInfo = {
               username:'管理员',
-              realname:'chen',
+              realname:'管理员',
             }
             Vue.ls.set(ACCESS_TOKEN, result.data, 7 * 24 * 60 * 60 * 1000)
             Vue.ls.set(USER_NAME, userInfo.username, 7 * 24 * 60 * 60 * 1000)
