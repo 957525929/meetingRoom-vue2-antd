@@ -8,7 +8,7 @@ export const asyncRouterMap = [
 
   {
     path: '/',
-    name: 'dashboard',
+    name: 'entryAsset',
     component: TabLayout,
     meta: { title: '首页' },
     redirect: '/assetMgr/asset/entryAsset',

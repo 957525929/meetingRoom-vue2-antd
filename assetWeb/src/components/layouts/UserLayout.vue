@@ -5,7 +5,7 @@
         <div class="header">
           <a href="/">
             <img src="~@/assets/logo.png" class="logo" alt="logo">
-            <span class="title">会议室预约平台</span>
+            <span class="title">资产管理平台</span>
           </a>
         </div>
         <div class="desc">
