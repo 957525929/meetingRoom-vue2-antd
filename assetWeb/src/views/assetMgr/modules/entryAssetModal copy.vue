@@ -113,7 +113,7 @@
             </div>
           </a-upload>
           <a-modal :visible="previewVisible" :footer="null" @cancel="handleImgCancel">
-            <img alt="example" style="width: 100%" :src="previewImage" :style="{marginTop:'20px'}"/>
+            <img alt="example" style="width: 100%" :src="previewImage" />
           </a-modal>
         </a-form-item>
 
@@ -636,6 +636,7 @@
         }
       },
       async handlePreview(file) {
+        console.log(file)
         if (!file.url && !file.preview) {
           file.preview = await getBase64(file.originFileObj);
         }
