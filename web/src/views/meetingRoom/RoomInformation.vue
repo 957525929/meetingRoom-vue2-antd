@@ -31,27 +31,10 @@
           <a-input placeholder="请输入房间号" v-model="queryParam.roomNum"></a-input>
         </a-col>
         <a-col :span="1"></a-col>
-        <!-- <a-col>
-          <span>管理员：</span>
-        </a-col>
-        <a-col>
-          <a-input placeholder="请输入管理员姓名" v-model="queryParam.dutyName"></a-input>
-        </a-col>
-        <a-col :span="1"></a-col> -->
         <a-col>
           <a-button :style="{ background: '#49a9ee', color: 'white' }" icon="search" @click="searchQuery">查询</a-button>
           <a-button @click="searchReset()" icon="reload" style="margin-left: 8px">重置</a-button>
         </a-col>
-        <!--        <a-col>-->
-        <!--          <a-button-->
-        <!--            @click="addRoom()"-->
-        <!--            icon="plus"-->
-        <!--            :style="{ color: 'white', background:'orange'}"-->
-        <!--          >新增会议室</a-button>&nbsp;&nbsp;-->
-        <!--          <a-button>-->
-        <!--            <a-icon type="download" />导出-->
-        <!--          </a-button>-->
-        <!--        </a-col>-->
       </a-row>
     </div>
     <!-- 操作按钮区域 -->
@@ -62,25 +45,11 @@
         @change="handleImportExcel">
         <a-button type="primary" icon="import">导入</a-button>
       </a-upload>
-      <!--      <a-button type="primary" icon="hdd" @click="recycleBinVisible=true">回收站</a-button>-->
-      <!-- <a-dropdown v-if="selectedRowKeys.length > 0">
-        <a-menu slot="overlay" @click="handleMenuClick">
-          <a-menu-item key="1">
-            <a-icon type="delete" @click="batchDel" />
-            删除
-          </a-menu-item>
-        </a-menu>
-        <a-button style="margin-left: 8px">
-          批量操作
-          <a-icon type="down" />
-        </a-button>
-      </a-dropdown> -->
     </div>
 
     <div id="dataRoomTable">
       <a-table :dataSource="dataSource" :pagination="ipagination" rowKey="meetingroomId" @change="handleTableChange"
         :loading="loading">
-        <!-- <a-table-column title="#" data-index="meetingroomId" align="center" fixed="left" width="150px"></a-table-column> -->
         <a-table-column title="序号" data-index="rowIndex" align="left" fixed="left">
           <template slot-scope="text,record,index">
             <span>{{ (ipagination.current-1)*ipagination.pageSize+(index+1) }}</span>
@@ -141,19 +110,6 @@
         <a-form-model-item label="房间号" ref="room" prop="room">
           <a-input v-model="formAdd.room" placeholder="请输入房间号"></a-input>
         </a-form-model-item>
-        <!-- <a-form-model-item label="状态">
-          <a-radio-group v-model="formAdd.meetingRoomState">
-            <a-radio :value="0">
-              空闲
-            </a-radio>
-            <a-radio :value="2">
-              禁用
-            </a-radio>
-            <a-radio :value="1">
-              开会中
-            </a-radio>
-          </a-radio-group>
-        </a-form-model-item> -->
         <a-form-model-item ref="number" label="容纳人数" prop="number">
           <a-input v-model="formAdd.number" placeholder="请输入房间容纳人数"></a-input>
         </a-form-model-item>
@@ -263,8 +219,6 @@
   import {
     postAction
   } from '@/api/manage'
-  // import { deleteMeetingRoom } from '@/api/api'
-  // import { deletePostAction } from '@/api/msg'
   const areaData = [{
       value: '旗山校区',
       label: '旗山校区',
@@ -337,26 +291,16 @@
             trigger: 'blur'
           }]
         },
-        // formDetail: {},
-        // disabledState: false,
         url: {
           list: '/MeetingRoomController/queryMeetingRoom',
           exportXlsUrl: '/sys/user/exportXls'
-          // delete: '/MeetingRoomController/deleteMeetingRoomById'
         }
       }
     },
 
     mounted() {
-      // console.log(this.$store)
       this.$store.dispatch('placeTree')
       this.$store.dispatch('placeTree1')
-      // this.sort()
-      // this.$store.dispatch('placeTreeTwo')
-      // this.$store.dispatch('placeTreeTwo1')
-      // this.$store.dispatch('placeTreeTwo2')
-      // this.$store.dispatch('placeTreeTwo3')
-      // this.$store.dispatch('placeTreeTwo4')
     },
     computed: {
       firstTree() {
@@ -365,25 +309,6 @@
       firstTree1() {
         return this.$store.state.meeting.placeData1
       }
-
-      // placeTreeTwo() {
-      //   return this.$store.state.meeting.placeDataTwo
-      // },
-      // placeTreeTwo1() {
-      //   return this.$store.state.meeting.placeDataTwo1
-      // },
-      // placeTreeTwo2() {
-      //   return this.$store.state.meeting.placeDataTwo2
-      // },
-      // placeTreeTwo3() {
-      //   return this.$store.state.meeting.placeDataTwo3
-      // },
-      // placeTreeTwo4() {
-      //   return this.$store.state.meeting.placeDataTwo4
-      // },
-      // getTableData() {
-      //  return
-      // }
     },
     watch: {},
     methods: {
@@ -391,7 +316,6 @@
         labels
       }) {
         this.queryParam.placeName = labels.join('.')
-        // this.$set(this.queryParam, "placeName", labels.join('.'))
         return labels.join('.')
       },
       displayRenderModify({
@@ -406,8 +330,6 @@
       },
       onChangeConAdd(checkedValues) {
         console.log('checked = ', checkedValues)
-        // console.log('value = ', this.value)
-        // this.checkedValuesData = checkedValues
         this.formAdd.condition = checkedValues
 
         console.log(this.formAdd)
@@ -450,14 +372,6 @@
         this.$refs.ruleForm.resetFields()
       },
       onDelete(index) {
-        // postAction('/MeetingRoomController/deleteMeetingRoomById?id='+index).then(res => {
-        //   if (res.code == 200) {
-        //     this.$message.success('删除成功')
-        //     this.loadData(this.ipagination.current)
-        //   } else {
-        //     this.$message.warning(res.message)
-        //   }
-        // })
         deleteMeetingRoom({
           id: index
         }).then(res => {
@@ -539,65 +453,18 @@
             areaData[0].children.push({
               label: this.firstTree[i].placeName,
               value: this.firstTree[i].placeName
-              // children: []
             })
           }
         }
-
-        // if (areaData[0].children[0].children.length == 0) {
-        //   for (let i = 0; i < this.placeTreeTwo.length; i++) {
-        //     areaData[0].children[0].children.push({
-        //       label: this.placeTreeTwo[i].placeName,
-        //       value: this.placeTreeTwo[i].placeName
-        //     })
-        //   }
-        // }
-
-        // if (areaData[0].children[1].children.length == 0) {
-        //   for (let i = 0; i < this.placeTreeTwo2.length; i++) {
-        //     areaData[0].children[1].children.push({
-        //       label: this.placeTreeTwo2[i].placeName,
-        //       value: this.placeTreeTwo2[i].placeName
-        //     })
-        //   }
-        // }
-
-        // if (areaData[0].children[2].children.length == 0) {
-        //   for (let i = 0; i < this.placeTreeTwo3.length; i++) {
-        //     areaData[0].children[2].children.push({
-        //       label: this.placeTreeTwo3[i].placeName,
-        //       value: this.placeTreeTwo3[i].placeName
-        //     })
-        //   }
-        // }
-
-        // if (areaData[0].children[3].children.length == 0) {
-        //   for (let i = 0; i < this.placeTreeTwo4.length; i++) {
-        //     areaData[0].children[3].children.push({
-        //       label: this.placeTreeTwo4[i].placeName,
-        //       value: this.placeTreeTwo4[i].placeName
-        //     })
-        //   }
-        // }
 
         if (areaData[1].children.length == 0) {
           for (let i = 0; i < this.firstTree1.length; i++) {
             areaData[1].children.push({
               label: this.firstTree1[i].placeName,
               value: this.firstTree1[i].placeName
-              // children: []
             })
           }
         }
-
-        // if (areaData[1].children[0].children.length == 0) {
-        //   for (let i = 0; i < this.placeTreeTwo1.length; i++) {
-        //     areaData[1].children[0].children.push({
-        //       label: this.placeTreeTwo1[i].placeName,
-        //       value: this.placeTreeTwo1[i].placeName
-        //     })
-        //   }
-        // }
         console.log(areaData)
       }
     }

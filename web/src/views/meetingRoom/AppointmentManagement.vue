@@ -21,11 +21,7 @@
         <a-col :span="1"></a-col>
         <a-col>会议时间：</a-col>
         <a-col>
-          <!-- <a-date-picker placeholder="请选择开始" :format="dateFormat"
-            :defaultValue="moment(getCurrentData(), 'YYYY-MM-DD')" :style="{width:'200px'}" v-model="queryParam.reservationStartTime"></a-date-picker>
-          <span>&nbsp;~&nbsp;</span>
-          <a-date-picker  placeholder="请选择结束" :format="dateFormat" :style="{width:'200px'}"
-            :defaultValue="defaultValueEndTime"  v-model="queryParam.reservationEndTime"></a-date-picker> -->
+
           <j-date v-model="queryParam.reservationStartTime" :showTime="true" date-format="YYYY-MM-DD" style="width:30%"
             placeholder="请选择开始时间"></j-date>
           <span style="width: 10px;">~</span>
@@ -71,7 +67,6 @@
             <span>{{ (ipagination.current-1)*ipagination.pageSize+(index+1) }}</span>
           </template>
         </a-table-column>
-        <!-- <a-table-column title="会议编号" data-index="reserveId" align="left" width="150px" fixed="left"></a-table-column> -->
         <a-table-column title="会议名称" data-index="meetingName" align="center"></a-table-column>
         <a-table-column title="预约时间" data-index="createTime" align="center">
           <template slot-scope="createTime">
@@ -98,7 +93,6 @@
             <span v-if="needArrangement==0">否</span>
           </template>
         </a-table-column>
-        <!-- <a-table-column title="会议状态" data-index="state" align="center"></a-table-column> -->
         <a-table-column title="会议状态" data-index="status" align="center">
           <template slot-scope="status">
             <a-tag color="green" v-if="status ==3">
@@ -159,7 +153,6 @@
       <a-tabs default-active-key="1">
         <a-tab-pane key="1" tab="会务安排">
           <a-table :data-source="dataArrange" :pagination="false" rowKey="rowIndex">
-            <!-- <a-table-column title="编号" data-index="studentId" align="center" ></a-table-column> -->
             <a-table-column title="序号" data-index="rowIndex" align="left" fixed="left">
               <template slot-scope="text,record,index">
                 <span>{{parseInt(index)+1}}</span>

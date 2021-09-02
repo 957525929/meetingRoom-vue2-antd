@@ -1,5 +1,5 @@
 <template>
-  <!--会议室管理人员 -->
+  <!--短信通知-->
   <a-card :bordered="false">
     <!-- 搜索操作区域 -->
     <div class="table-page-search-wrapper">

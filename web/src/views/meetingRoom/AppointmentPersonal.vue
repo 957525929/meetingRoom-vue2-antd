@@ -24,9 +24,6 @@
               <div class="bgc">
                 <j-date v-model="apply.date" :showTime="true" date-format="YYYY-MM-DD" style="width:30%"
                   placeholder="请选择开始时间" :style="{ width: '340px' }"></j-date>
-                <!-- <a-date-picker placeholder="请选择会议时间" :style="{ width: '340px' }"
-                  :defaultValue="moment(getCurrentData(),'YYYY-MM-DD')" @change="onChangeTime">
-                </a-date-picker> -->
               </div>
             </td>
             <td colspan="2">
@@ -45,8 +42,7 @@
             <td colspan="2">
               <label :style="{ marginLeft: '100px' }">会议地点</label>
               <div class="bgc">
-                <!-- <a-cascader :options="selectOptions" placeholder="请选择会议室" v-model="meetingRoom" @change="handlePlaceTree"
-                  style="width: 340px" :display-render="displayRender"  @click="handlePlaceTree"/> -->
+
                 <PurInTree :style="{ width: '340px' }" @displayRender="displayRender" v-model="apply.location">
                 </PurInTree>
               </div>
@@ -98,9 +94,6 @@
     <!--强制预约原因 -->
     <a-modal v-model="visibleReason" title="强制预约原因" @ok="handleOkReason" @cancel="handleCancelReason">
       <a-row type="flex" align="middle">
-        <!-- <a-col>
-          <span>原因：</span>
-        </a-col> -->
         <a-col>
           <a-textarea placeholder="请输入强制预约原因" :auto-size="{ minRows: 3, maxRows: 5 }" style="width:450px"
             v-model="apply.cancelReason" />
@@ -173,26 +166,21 @@
       let now = moment(new Date()).subtract(-1, 'days').format('YYYY-MM-DD')
       let dat = moment(now, 'YYYY-MM-DD')
       this.$set(this.apply, "date", dat._i)
-      // this.$set(this.apply, "period", 1)
     },
     watch: {
       'apply.location': {
         handler(value) {
           console.log('location', value)
-          // this.apply.location = value
           this.querypostAction()
         }
       },
       'apply.period': {
         handler(value) {
-          // console.log('period', value)
           this.querypostAction()
         }
       },
       'apply.date': {
         handler(value) {
-          // console.log('date1', value)
-          //  this.apply.date=value
           this.querypostAction()
         }
       }
@@ -281,9 +269,6 @@
       },
       resetApplyData() {
         this.apply.arrangementList = []
-        //this.apply.location = ''
-        //this.$set(this.apply, "location", 'hgdd')
-
         this.apply.needArrangement = 0
         this.apply.remark = ''
         this.apply.cancelReason = ''

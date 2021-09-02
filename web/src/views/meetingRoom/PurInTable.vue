@@ -48,11 +48,9 @@
         console.log('res', res)
         if (res.code == 200) {
           res.data.list.forEach(element => {
-            // console.log(element)
             this.optionsArrangeName.push(element)
           })
         }
-        // console.log('this.optionsArrangeName', this.optionsArrangeName)
       })
     },
     mounted() {},
@@ -117,8 +115,6 @@
           if (!err) {
             //先验证基本信息
             this.basicInfoForm = values
-            // this.basicInfoForm.purchaseDate = moment(this.basicInfoForm.purchaseDate).format('YYYY-MM-SS')
-            // this.basicInfoForm.checkoutDate = moment(this.basicInfoForm.checkoutDate).format('YYYY-MM-SS')
             console.log('基本信息：', this.basicInfoForm)
             this.$refs.detailInfoForm.getValues((err, values) => {
               //再验证详细信息

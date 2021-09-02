@@ -4,13 +4,6 @@
     <!-- 搜索操作区域 -->
     <div class="table-page-search-wrapper">
       <a-row type="flex" align="middle">
-        <!-- <a-col>
-          <span>编号：</span>
-        </a-col>
-        <a-col>
-          <a-input placeholder="请输入安排员编号" v-model="queryParam.studentId"></a-input>
-        </a-col>
-        <a-col :span="1"></a-col> -->
         <a-col>
           <span>姓名：</span>
         </a-col>
@@ -35,19 +28,6 @@
         @change="handleImportExcel">
         <a-button type="primary" icon="import">导入</a-button>
       </a-upload>
-      <!--      <a-button type="primary" icon="hdd" @click="recycleBinVisible=true">回收站</a-button>-->
-      <!-- <a-dropdown v-if="selectedRowKeys.length > 0">
-        <a-menu slot="overlay" @click="handleMenuClick">
-          <a-menu-item key="1">
-            <a-icon type="delete" @click="batchDel"/>
-            删除
-          </a-menu-item>
-        </a-menu>
-        <a-button style="margin-left: 8px">
-          批量操作
-          <a-icon type="down"/>
-        </a-button>
-      </a-dropdown>-->
     </div>
     <!-- table区域-begin -->
     <div id="dataDutyTable">
@@ -72,8 +52,6 @@
           </template>
         </a-table-column>
       </a-table>
-      <!-- <br />
-      <a-pagination size="small" :total="50" show-size-changer show-quick-jumper align="center" /> -->
     </div>
 
     <!-- 新增 -->
@@ -129,11 +107,6 @@
         title: '',
         form: {},
         rules: {
-          // studentId: [{
-          //   required: true,
-          //   message: '请输入学号',
-          //   trigger: 'blur'
-          // }],
           name: [{
             required: true,
             message: '请输入姓名',
@@ -166,10 +139,8 @@
           }]
         },
         url: {
-          // syncUser: "/process/extActProcess/doSyncUser",
           list: "/StudentController/getStudentList",
           delete: "/StudentController/deleteStudent",
-          // deleteBatch: "/sys/user/deleteBatch",
           exportXlsUrl: '/sys/user/exportXls',
           importExcelUrl: 'sys/user/importExcel'
         }
