@@ -394,6 +394,7 @@
         this.departIdShow=false;
         this.identity="1";
         this.fileList=[];
+        this.previewVisible = false;
       },
       moment,
       handleSubmit () {
@@ -636,11 +637,13 @@
         }
       },
       async handlePreview(file) {
+        console.log('file',file)
         if (!file.url && !file.preview) {
           file.preview = await getBase64(file.originFileObj);
         }
         this.previewImage = file.url || file.preview;
         this.previewVisible = true;
+         console.log('this.previewVisible',this.previewVisible)
       },
       handleImgCancel() {
         this.previewVisible = false;

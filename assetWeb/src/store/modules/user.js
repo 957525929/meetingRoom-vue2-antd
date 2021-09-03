@@ -175,7 +175,8 @@ const user = {
                 "path": "/assetMgr/asset",
                 "component": "layouts/RouteView",
                 "route": "1",
-                "children": [ {
+                "children": [ 
+                  {
                   "path": "/assetMgr/asset/entryAsset",
                   "component": "assetMgr/entryAssetList",
                   "route": "1",
@@ -186,7 +187,20 @@ const user = {
                   },
                   "name": "assetMgr-asset-entryAsset",
                   "id": "1265462136117207042"
-                }],
+                },
+                {
+                  "path": "/assetMgr/asset/inAsset",
+                  "component": "assetMgr/inAsset",
+                  "route": "1",
+                  "meta": {
+                    "keepAlive": false,
+                    "internalOrExternal": true,
+                    "title": "入库资产管理"
+                  },
+                  "name": "assetMgr-asset-inAsset",
+                  "id": "1265462136117207042"
+                }
+              ],
                 "meta": {
                   "keepAlive": false,
                   "internalOrExternal": false,
