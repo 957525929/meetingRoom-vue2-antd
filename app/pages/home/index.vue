@@ -34,12 +34,36 @@
 			</view>
 
 			<view class="nav-list margin-top margin-bottom">
-				<navigator hover-class="none" :url="navCard[0].url" :class="navCard[0].style" navigateTo>
-					<view class="nav-title">{{navCard[0].name}}</view>
-					<view class="nav-name">{{navCard[0].secname}}</view>
-					<text :class="navCard[0].icon"></text>
-				</navigator>
-				<navigator hover-class="none" :url="navCard[1].url" :class="navCard[1].style" navigateTo>
+					<!-- #ifdef  MP-WEIXIN -->
+			<!-- 		<navigator hover-class="none" :url="navCard[0].url" :class="navCard[0].style" navigateTo>
+						<view class="nav-title">{{navCard[0].name}}</view>
+						<view class="nav-name">{{navCard[0].secname}}</view>
+						<text :class="navCard[0].icon"></text>
+					</navigator>
+					<navigator hover-class="none" :url="navCard[1].url" :class="navCard[1].style" navigateTo>
+						<view class="nav-title">{{navCard[1].name}}</view>
+						<view class="nav-name">{{navCard[1].secname}}</view>
+						<text :class="navCard[1].icon"></text>
+					</navigator>
+					<view hover-class="none" @tap="click" data-target="Modal" :class="navCard[2].style" navigateTo>
+						<view class="nav-title">{{navCard[2].name}}</view>
+						<view class="nav-name">{{navCard[2].secname}}</view>
+						<text :class="navCard[2].icon"></text>
+					</view>
+					<navigator hover-class="none" :url="navCard[3].url" :class="navCard[3].style" navigateTo>
+						<view class="nav-title">{{navCard[3].name}}</view>
+						<view class="nav-name">{{navCard[3].secname}}</view>
+						<text :class="navCard[3].icon"></text>
+					</navigator> -->
+					<navigator hover-class="none" v-for="(item,index) in navCard" :url="item.url" :class="item.style" navigateTo>
+							<view class="nav-title">{{item.name}}</view>
+							<view class="nav-name">{{item.secname}}</view>
+							<text :class="item.icon"></text>
+					</navigator>
+					<!-- #endif -->
+					<!-- #ifndef  MP-WEIXIN -->
+			
+<!-- 				<navigator hover-class="none" :url="navCard[1].url" :class="navCard[1].style" navigateTo>
 					<view class="nav-title">{{navCard[1].name}}</view>
 					<view class="nav-name">{{navCard[1].secname}}</view>
 					<text :class="navCard[1].icon"></text>
@@ -53,12 +77,15 @@
 					<view class="nav-title">{{navCard[3].name}}</view>
 					<view class="nav-name">{{navCard[3].secname}}</view>
 					<text :class="navCard[3].icon"></text>
+				</navigator> -->
+				<navigator hover-class="none" v-for="(item,index) in navCard" :url="item.url" :class="item.style" navigateTo>
+							<view class="nav-title">{{item.name}}</view>
+							<view class="nav-name">{{item.secname}}</view>
+							<text :class="item.icon"></text>
 				</navigator>
-				<navigator hover-class="none" :url="navCard[4].url" :class="navCard[4].style" navigateTo>
-					<view class="nav-title">{{navCard[4].name}}</view>
-					<view class="nav-name">{{navCard[4].secname}}</view>
-					<text :class="navCard[4].icon"></text>
-				</navigator>
+				 <!-- #endif -->
+				
+			
 			</view>
 
 			<view class="cu-modal" :class="modalName=='Modal'?'show':''">
@@ -132,15 +159,7 @@
 						icon: 'cuIcon-search',
 						url: '../../pagesSearch/index',
 						style: 'nav-li bg-purple'
-					},
-					{
-						id: 5,
-						name: '会议室预约',
-						secname: 'Appointment',
-						icon: 'cuIcon-newshot',
-						url: '../../pagesAppointment/index',
-						style: 'nav-li bg-yellow'
-					},
+					}
 				],
 				modalName: null,
 			}
