@@ -1,17 +1,6 @@
 <template>
   <div>
     <a-card>
-      <!-- <div class="table-operator">
-        <a-button @click="handleAdd">新增</a-button>
-        <a-modal v-model="addVisible" title="新增" @ok="addOk">
-          <a-row type="flex" align="middle">
-            <a-col :span="4">名称：</a-col>
-            <a-col :span="10">
-              <a-input style="width: 100%" placeholder="请输入名称" v-model="placeName" allowClear></a-input>
-            </a-col>
-          </a-row>
-        </a-modal>
-      </div> -->
       <a-table :columns="columns" :data-source="dataSource" :expandedRowsChange="expandedRowKeys" rowKey="placeId" :defaultExpandedRowKeys="defaultExpandedRowKeys" :pagination="false">
         <span slot="action" slot-scope="text, record">
           <a @click="nextAdd(record)" v-if="record.typeId==0||record.typeId==1">添加下级</a>
@@ -29,13 +18,6 @@
                 <a-input style="width: 100%" placeholder="请输入名称" v-model="nextName" allowClear></a-input>
               </a-col>
             </a-row>
-
-            <!-- <a-row type="flex" align="middle" v-if="rowRecord.placeId!=0">
-              <a-col :span="4">上级名称：</a-col>
-              <a-col :span="14">
-                <a-input style="width: 100%" v-model="rowRecord.upName" allowClear></a-input>
-              </a-col>
-            </a-row> -->
           </a-modal>
 
           <a-divider type="vertical" v-if="record.typeId==0||record.typeId==1" />
@@ -49,20 +31,7 @@
               </a-col>
             </a-row>
             <br />
-
-            <!-- <a-row type="flex" align="middle" v-if="rowRecord.placeId!=0">
-              <a-col :span="4">上级名称：</a-col>
-              <a-col :span="14">
-                <a-input style="width: 100%" v-model="rowRecord.upName" allowClear></a-input>
-              </a-col>
-            </a-row> -->
           </a-modal>
-
-          <!-- <a-divider type="vertical" /> -->
-
-          <!-- <a-popconfirm title="确定删除吗？" ok-text="确定" cancel-text="取消" @confirm="confirm" @cancel="cancel">
-            <a href="#" v-if="record.value != 1">删除</a>
-          </a-popconfirm> -->
         </span>
       </a-table>
     </a-card>
@@ -122,33 +91,6 @@
           }
         })
       },
-      // handleAdd() {
-      //   this.addVisible = true
-      // },
-      // addOk() {
-      //   if (this.placeName) {
-      //     let Parameters = {
-      //       placePid: -1,
-      //       placeName: this.placeName,
-      //       placeType: 0
-      //     }
-      //     postAction('/PlaceController/addPlace', Parameters).then(res => {
-      //       if (res.code == 200) {
-      //         this.$message.success('新增成功')
-      //         this.placeName = ''
-      //         this.loadData()
-      //       } else {
-      //         this.$message.warning(res.message)
-      //       }
-      //     })
-      //     this.addVisible = false
-      //   } else {
-      //     this.$message.warning('请输入名称')
-      //   }
-      // },
-      // addChange(e) {
-      //   // console.log('radio checked', e.target.value)
-      // },
       edit(value) {
         this.editVisible = true
         this.rowRecord = value
@@ -202,8 +144,6 @@
           this.$message.warning('请输入名称')
         }
       },
-      // confirm() {},
-      // cancel() {},
     },
   }
 </script>

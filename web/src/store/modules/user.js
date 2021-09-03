@@ -225,18 +225,6 @@ const user = {
                   "name": "erp-bas-BasWareArrange",
                   "id": "1245154050731200514"
                 },
-                // {
-                //   "path": "/erp/bas/warehouse",
-                //   "component": "erp/bas/BasWarehouseList",
-                //   "route": "1",
-                //   "meta": {
-                //     "keepAlive": false,
-                //     "internalOrExternal": false,
-                //     "title": "资产分类管理"
-                //   },
-                //   "name": "erp-bas-warehouse",
-                //   "id": "1245154050731200514"
-                // },
                 {
                   "path": "/erp/bas/materialCategory",
                   "component": "erp/bas/BasMaterialCategoryList",
@@ -1317,19 +1305,6 @@ const user = {
                     "name": "meetingRoom-Information",
                     "id": "1245154570166390786"
                   },
-                  // {
-                  //   "path": "/meetingRoom/RoomDuty",
-                  //   "component": "meetingRoom/RoomDuty",
-                  //   "route": "1",
-                  //   "meta": {
-                  //     "keepAlive": false,
-                  //     "internalOrExternal": false,
-
-                  //     "title": "会议室管理员"
-                  //   },
-                  //   "name": "meetingRoom-duty",
-                  //   "id": "1245154570166390786"
-                  // },
                   {
                     "path": "/meetingRoom/AppointmentPersonal",
                     "component": "meetingRoom/AppointmentPersonal",
@@ -1364,20 +1339,6 @@ const user = {
                       "title": "预约管理"
                     },
                     "name": "meetingRoom-AppointmentManagement",
-                    "id": "1245154914959151105"
-                  },
-
-                  {
-                    "path": "/meetingRoom/PersonalDetil",
-                    "component": "meetingRoom/PersonalDetil",
-                    "route": "1",
-                    "hidden": true,
-                    "meta": {
-                      "keepAlive": false,
-                      "internalOrExternal": false,
-                      "title": "个人预约会议详情"
-                    },
-                    "name": "meetingRoom-PersonalDetil",
                     "id": "1245154914959151105"
                   },
                   {

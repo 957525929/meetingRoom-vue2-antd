@@ -8,13 +8,6 @@
           <span>按日期筛选：</span>
         </a-col>
         <a-col>
-          <!-- <a-date-picker placeholder="请选择开始" v-model="dateStart" :format="dateFormat"></a-date-picker>
-          <span>&nbsp;~&nbsp;</span>
-          <a-date-picker
-            placeholder="请选择结束"
-            :format="dateFormat"
-            :defaultValue="moment(getCurrentData(), 'YYYY年MM月DD日')"
-          ></a-date-picker> -->
           <j-date v-model="queryParam.reservationStartTime" :showTime="true" date-format="YYYY-MM-DD" style="width:30%"
             placeholder="请选择开始时间"></j-date>
           <span style="width: 10px;">~</span>
@@ -94,7 +87,6 @@
       this.init()
     },
     mounted() {
-      // console.log(this.$store)
       this.$store.dispatch('placeTree')
       this.$store.dispatch('placeTree1')
     },
