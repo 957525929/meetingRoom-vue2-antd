@@ -199,6 +199,18 @@ const user = {
                   },
                   "name": "assetMgr-asset-inAsset",
                   "id": "1265462136117207042"
+                },
+                {
+                  "path": "/assetMgr/asset/scrapAsset",
+                  "component": "assetMgr/scrapAsset",
+                  "route": "1",
+                  "meta": {
+                    "keepAlive": false,
+                    "internalOrExternal": true,
+                    "title": "报废资产管理"
+                  },
+                  "name": "assetMgr-asset-scrapAsset",
+                  "id": "1265462136117207042"
                 }
               ],
                 "meta": {

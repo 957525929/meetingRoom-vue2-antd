@@ -69,7 +69,20 @@
           <tr>
             <td colspan="3">
               <!-- 会务安排 -->
-              <PurInTable v-if="modalVisible" @arrangementList="arrangementList"></PurInTable>
+              <!-- <PurInTable v-if="modalVisible" @arrangementList="arrangementList"></PurInTable> -->
+              <a-card class="puInTable" v-if="modalVisible">
+                <j-editable-table ref="detailInfoForm" :columns="columns" :dataSource="dataSource" :maxHeight="300"
+                  :rowNumber="true" :rowSelection="true" :actionButton="true">
+                  <template v-slot:studentId="props">
+                    <a-select show-search @change="changeName($event, props)" :style="{ width: '300px' }"
+                      placeholder="请选择姓名">
+                      <a-select-option v-for="item in optionsArrangeName" :key="item.value" :value="item.studentId">
+                        {{ item.name }}
+                      </a-select-option>
+                    </a-select>
+                  </template>
+                </j-editable-table>
+              </a-card>
             </td>
           </tr>
           <tr>
@@ -129,13 +142,19 @@
   import JDate from '@/components/jeecg/JDate'
   import moment from 'moment'
   import PurInTree from './PurInTree'
-  import PurInTable from './PurInTable'
+  import JEditableTable from '@/components/jeecg/JEditableTable'
   import {
-    postAction
+    FormTypes
+  } from '@/utils/JEditableTableUtil'
+  // import PurInTable from './PurInTable'
+  import {
+    postAction,
+    getAction,
   } from '@/api/manage'
   export default {
     components: {
-      PurInTable,
+      // PurInTable,
+      JEditableTable,
       PurInTree,
       JDate
     },
@@ -152,7 +171,6 @@
           remark: '',
           cancelReason: ''
         },
-
         checkedNeedArrangement: false,
         roomState: '',
         selectMeeting: [],
@@ -160,9 +178,56 @@
         visibleReason: false,
         modalVisible: false,
         visibleApplyDetail: false,
+        optionsArrangeName: [],
+        form1: this.$form.createForm(this),
+        dataSource: [],
+        columns: [{
+            title: '姓名',
+            key: 'studentId',
+            type: FormTypes.slot,
+            placeholder: '请选择${title}',
+            validateRules: [{
+              required: true,
+              message: '${title}不能为空'
+            }],
+            slotName: 'studentId'
+          },
+          {
+            title: '联系电话',
+            key: 'telephone',
+            type: FormTypes.input,
+            validateRules: [{
+              required: true,
+              message: '${title}不能为空'
+            }],
+            slotName: 'telephone',
+            width: '25%'
+          },
+          {
+            title: '安排事项',
+            key: 'arrangeContent',
+            type: FormTypes.input_pop,
+            placeholder: '请输入${title}',
+            validateRules: [{
+              required: true,
+              message: '${title}不能为空'
+            }]
+          }
+        ]
       }
     },
     created() {
+      getAction('/StudentController/getStudentList', {
+        pageNum: 1,
+        pageSize: 10
+      }).then(res => {
+        // console.log('res', res)
+        if (res.code == 200) {
+          res.data.list.forEach(element => {
+            this.optionsArrangeName.push(element)
+          })
+        }
+      })
       let now = moment(new Date()).subtract(-1, 'days').format('YYYY-MM-DD')
       let dat = moment(now, 'YYYY-MM-DD')
       this.$set(this.apply, "date", dat._i)
@@ -216,6 +281,8 @@
         }
       },
       arrangementList(data) {
+        // console.log('222', data)
+        this.apply.arrangementList = []
         if (data) {
           for (let i = 0; i < data.length; i++) {
             let a = {
@@ -224,36 +291,65 @@
             }
             this.apply.arrangementList.push(a)
           }
-          console.log('this.apply.arrangementList', this.apply.arrangementList)
         }
       },
       submitApply() {
+        if (this.apply.needArrangement == 1) {
+          this.form1.validateFields((err, values) => {
+            if (!err) {
+              this.$refs.detailInfoForm.getValues((err, values) => {
+                // console.log('values', values)
+                if (values.length == 0) {
+                    console.log('111', values)
+                  this.submitApplyOK()
+                } else {
+                  //再验证详细信息
+                  if (!err && values.length) {
+                    this.arrangementList(values)
+                    this.submitApplyOK()
+                  }
+                }
+              })
+            }
+          })
+        } else {
+          this.submitApplyOK()
+        }
+      },
+      submitApplyOK() {
         if (this.apply.meetingName == '' || this.apply.number == '' || this.apply.date == '' || this.apply.location ==
           '') {
           this.$message.warning('会议名称、参会人数、会议时间、会议时段、会议地点均需填写')
         } else {
-          const _this = this
           if (this.roomState == '空闲') {
-            this.$message.success('申请成功')
+            let parameter = this.apply
+            postAction('/ReservationController/addCompulsoryReservation', parameter).then(res => {
+              if (res.code == 200) {
+                this.$message.success('预约成功')
+                this.resetApplyData()
+              } else {
+                this.$message.warning(res.message + '，预约失败')
+              }
+            })
           } else {
+            const _this = this
             this.$confirm({
               title: '是否确定强制预约会议室',
               content: '',
               okText: '是',
               cancelText: '否',
               onOk() {
-                console.log('ok')
+                // console.log('ok')
                 _this.visibleReason = true
               },
             })
           }
         }
-
       },
       handleOkReason() {
         if (this.apply.cancelReason) {
           this.visibleReason = false
-          console.log('this.apply', this.apply)
+          // console.log('this.apply', this.apply)
           let parameter = this.apply
           postAction('/ReservationController/addCompulsoryReservation', parameter).then(res => {
             if (res.code == 200) {
@@ -279,7 +375,6 @@
         this.visibleReason = false
       },
       onChangeArrange(checked) {
-        console.log(checked)
         if (checked) {
           this.modalVisible = true
           this.checkedNeedArrangement = true
@@ -292,6 +387,33 @@
       },
       applyDetail() {
         this.visibleApplyDetail = true
+      },
+      changeName(value, props) {
+        // console.log(value, props)
+        // console.log(props.getValue())
+        let tel = ''
+        this.optionsArrangeName.forEach(item => {
+          if (item.studentId == value) {
+            tel = item.telephone
+          }
+        })
+        let {
+          rowId,
+          target
+        } = props
+        target.setValues([{
+            rowKey: rowId,
+            values: {
+              telephone: tel
+            }
+          },
+          {
+            rowKey: rowId,
+            values: {
+              studentId: value
+            }
+          },
+        ])
       }
     },
   }
@@ -327,5 +449,14 @@
     border-radius: 10px;
     margin-left: 80px;
     font-weight: normal;
+  }
+
+  .ant-row.ant-form-item {
+    margin-bottom: 12px;
+  }
+
+  .puInTable {
+    margin-left: 100px;
+    width: 80%;
   }
 </style>
