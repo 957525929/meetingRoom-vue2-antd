@@ -55,34 +55,28 @@
 						<view class="nav-name">{{navCard[3].secname}}</view>
 						<text :class="navCard[3].icon"></text>
 					</navigator> -->
-					<navigator hover-class="none" v-for="(item,index) in navCard" :url="item.url" :class="item.style" navigateTo>
+		<!-- 			<navigator hover-class="none" v-for="(item,index) in navCard" :url="item.url" :class="item.style" navigateTo>
 							<view class="nav-title">{{item.name}}</view>
 							<view class="nav-name">{{item.secname}}</view>
 							<text :class="item.icon"></text>
-					</navigator>
+					</navigator> -->
 					<!-- #endif -->
 					<!-- #ifndef  MP-WEIXIN -->
-			
-<!-- 				<navigator hover-class="none" :url="navCard[1].url" :class="navCard[1].style" navigateTo>
-					<view class="nav-title">{{navCard[1].name}}</view>
-					<view class="nav-name">{{navCard[1].secname}}</view>
-					<text :class="navCard[1].icon"></text>
-				</navigator>
-				<view hover-class="none" @tap="click" data-target="Modal" :class="navCard[2].style" navigateTo>
-					<view class="nav-title">{{navCard[2].name}}</view>
-					<view class="nav-name">{{navCard[2].secname}}</view>
-					<text :class="navCard[2].icon"></text>
-				</view>
-				<navigator hover-class="none" :url="navCard[3].url" :class="navCard[3].style" navigateTo>
-					<view class="nav-title">{{navCard[3].name}}</view>
-					<view class="nav-name">{{navCard[3].secname}}</view>
-					<text :class="navCard[3].icon"></text>
-				</navigator> -->
-				<navigator hover-class="none" v-for="(item,index) in navCard" :url="item.url" :class="item.style" navigateTo>
+	<!-- 				<navigator hover-class="none" v-if="!(index==2)" v-for="(item,index) in navCard" :url="item.url" :class="item.style"  navigateTo>
 							<view class="nav-title">{{item.name}}</view>
 							<view class="nav-name">{{item.secname}}</view>
 							<text :class="item.icon"></text>
-				</navigator>
+					</navigator> -->
+					<view hover-class="none"  v-for="(item,index) in navCard" @tap="gotoPage(item)" data-target="Modal"   :class="item.style"  navigateTo>
+							<view class="nav-title">{{item.name}}</view>
+							<view class="nav-name">{{item.secname}}</view>
+							<text :class="item.icon"></text>
+					</view>
+				<!-- 	<view hover-class="none" @tap="click" data-target="Modal" :class="navCard[2].style" navigateTo>
+						<view class="nav-title">{{navCard[2].name}}</view>
+						<view class="nav-name">{{navCard[2].secname}}</view>
+						<text :class="navCard[2].icon"></text>
+					</view> -->
 				 <!-- #endif -->
 				
 			
@@ -141,7 +135,7 @@
 						name: '登记',
 						secname: 'Sign',
 						icon: 'cuIcon-edit',
-						url: '../../pagesSign/index',
+						url: '../../pagesSign/signList',
 						style: 'nav-li bg-blue'
 					},
 					{
@@ -149,7 +143,7 @@
 						name: '入帐',
 						secname: 'Account',
 						icon: 'cuIcon-redpacket',
-						url: '../../pagesAccount/index',
+						url: ' ',
 						style: 'nav-li bg-mauve'
 					},
 					{
@@ -178,15 +172,26 @@
 				uni.navigateTo({
 					url:'../../pagesAccount/index'
 				})
+				this.modalName = null
 			},
 			goto2(){
 				uni.navigateTo({
 					url:'../../pagesAccount/index'
 				})
+				this.modalName = null
 			},
 			message(){
 				uni.navigateTo({
 					url:'../person/message'
+				})
+			},
+			gotoPage(item){
+				if(item.id==3){
+					this.modalName = "Modal"
+				}
+
+				uni.navigateTo({
+					url:item.url
 				})
 			}
 		}

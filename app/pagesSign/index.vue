@@ -6,9 +6,9 @@
 		</cu-custom>
 		<view class="wrap">
 			
-			<view class="cu-bar bg-white padding-left">
+			<view class="cu-bar bg-white">
 				<view class="action">
-					资产图片
+					资产图片：
 				</view>
 				<view class="action">
 					{{imgList.length}}/4
@@ -19,67 +19,67 @@
 					<view class="bg-img" v-for="(item,index) in imgList" :key="index" @tap="ViewImage"
 						:data-url="imgList[index]">
 						<image :src="imgList[index]" mode="aspectFill"></image>
-						<view class="cu-tag bg-red" @tap.stop="DelImg" :data-index="index">
+			<!-- 			<view class="cu-tag bg-red" @tap.stop="DelImg" :data-index="index">
 							<text class='cuIcon-close'></text>
-						</view>
+						</view> -->
 					</view>
-					<view class="solids" @tap="ChooseImage" v-if="imgList.length<4">
+			<!-- 		<view class="solids" @tap="ChooseImage" v-if="imgList.length<4">
 						<text class='cuIcon-cameraadd'></text>
-					</view>
+					</view> -->
 				</view>
 			</view>
 			
 			<view class="cu-form-group">
 				<view class="title">
-					<text class="cuIcon-title text-red"></text>
-					领用人
+					领&nbsp;用&nbsp;&nbsp;人：
 				</view>
-				<picker @change="nameSelectchange" :value="nameIndex" :range="nameSelectList">
+	<!-- 			<picker @change="nameSelectchange" :value="nameIndex" :range="nameSelectList">
 					<view class="picker">
 						{{nameIndex>-1?nameSelectList[nameIndex]:'请选择领用人'}}
 					</view>
-				</picker>
+				</picker> -->
+				<input placeholder="请输入领用人" name="input" :value="getList.people" disabled></input>
 			</view>
 			<view class="cu-form-group">
 				<view class="title">
-					<text class="cuIcon-title text-red"></text>
-					位置
+					位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;置：
 				</view>
-				<picker mode="multiSelector" @change="addressSelectChange" :value="addressIndex"
+<!-- 				<picker mode="multiSelector" @change="addressSelectChange" :value="addressIndex"
 					@columnchange="addressColumnChange" :range="addressSelectList">
 					<view class="picker">
 						{{addressSelectList[0][addressIndex[0]]}}.{{addressSelectList[1][addressIndex[1]]}}.{{addressIndex[2]>-1?addressSelectList[2][addressIndex[2]]:"请选择位置"}}
 					</view>
-				</picker>
+				</picker> -->
+				<input placeholder="请输入位置" name="input" :value="getList.area" disabled></input>
 			</view>
 			<view class="cu-form-group">
 				<view class="title">
-					<text class="cuIcon-title text-red"></text>
-					手机
+					手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机：
 				</view>
-				<input placeholder="请输入手机号码" name="input"></input>
+				<input placeholder="请输入手机号码" name="input" :value="getList.phone" disabled></input>
 			</view>
 			<view class="cu-form-group">
-				<view class="title padding-left">学校编号</view>
+				<view class="title">学校编号：</view>
 				<input placeholder="请输入学校编号" name="input"></input>
+				<text class='cuIcon-scan'></text>
 			</view>
 			<view class="cu-form-group">
-				<view class="title padding-left">学院编号</view>
+				<view class="title">学院编号：</view>
 				<input placeholder="请输入学院编号" name="input"></input>
 				<text class='cuIcon-scan'></text>
 			</view>
 			<view class="cu-form-group">
 				<view class="title">
-					<text class="cuIcon-title text-red"></text>
-					资产类型
+					资产类型：
 				</view>
-				<picker @change="selectchange" :value="selectIndex" :range="selectList">
+<!-- 				<picker @change="selectchange" :value="selectIndex" :range="selectList">
 					<view class="picker">
 						{{selectIndex>-1?selectList[selectIndex]:'请选择资产类型'}}
 					</view>
-				</picker>
+				</picker> -->
+				<input placeholder="请输入资产类型" name="input" :value="getList.type" disabled></input>
 			</view>
-			<view class="cu-form-group">
+		<!-- 	<view class="cu-form-group">
 				<view class="title padding-left">登记时间</view>
 				<picker mode="date" :value="date" start="2017-09-01" end="2023-09-01" @change="DateChange">
 					<view class="picker">
@@ -116,7 +116,7 @@
 						{{time2}}
 					</view>
 				</picker>
-			</view>
+			</view> -->
 
 			<view class="padding flex flex-direction">
 				<button class="cu-btn round bg-green lg" @tap="submit" data-target="DialogModal">提交</button>
@@ -156,32 +156,35 @@
 				(aData.getMonth() + 1) + "-" +
 				(aData.getDate())
 		},
-		
-		
+				
 		data() {
 			return {
 				nameIndex: -1,
 				nameSelectList: ['王老师', '李老师'],
 				addressIndex: [-1, -1, -1],
 				addressSelectList: [
-					['中国', '美国'],
-					['广东', '广西'],
-					['深圳', '广州']
+					['仓山校区', '旗山校区'],
+					['知明楼', '立诚楼'],
+					['101', '102']
 				],
+				imgList: ['../static/scan/table.jpg'],
+				modalName:null,
 				selectIndex: -1,
 				selectList: ['办公桌', '办公椅'],
 				date: '',
 				date1: '请选择有效期限',
 				date2: '请选择报废日期',
 				time: '请选择登记时间',
-				time2: '请选择报废时间',
-				imgList: ['../static/scan/table.jpg'],
-				modalName: null,
+				time2: '请选择报废时间',    
+				}
+		    },
+		onLoad(getList) {
+			if (getList) {
+				this.getList = JSON.parse(getList.onjs)
+				console.log(this.getList)
+				// this.date = this.onjs.time.slice(0, 10);
+				// console.log(this.onjs)
 			}
-		},
-		onLoad() {
-			_this = this;
-			//_this.getUnitList();
 		},
 		// onReady() {
 		// 	this.$refs.uForm.setRules(this.rules);
@@ -315,9 +318,8 @@
 			},
 			okconfirm() {
 				uni.navigateBack()
-			},
-		}
-
+			}
+		}		
 	}
 </script>
 <style scoped lang="scss">

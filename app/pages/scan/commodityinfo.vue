@@ -51,9 +51,44 @@
 					</view>
 					<view class="text-lg text-right padding">
 						<text class="cuIcon-edit text-blue margin-left" @tap="edit">编辑</text>
-						<text class="cuIcon-delete text-red margin-left" @tap="scrap()">报废</text>
+						<text class="cuIcon-delete text-red margin-left" @tap="showModal1" data-target="DialogModal1">报废</text>
 						<text class="cuIcon-roundclose text-orange margin-left" @tap="showModal"
 							data-target="DialogModal">删除</text>
+					</view>
+				</view>
+				
+				<view class="cu-modal" :class="modalName1=='DialogModal1'?'show':''" style="z-index: 1;">
+					<view class="cu-dialog">
+
+						<view class="cu-bar bg-white justify-end">
+							<view class="content">报废原因</view>
+							<view class="action" @tap="hideModal1">
+								<text class="cuIcon-close text-red"></text>
+							</view>
+						</view>
+						<view class="padding-xl">
+								<view class="cu-form-group">
+									<view >
+										选择状态
+									</view>
+									<picker @change="statusSelectchange" :value="statusIndex" :range="statusSelectList" >
+										<view class="picker">
+											{{statusIndex>-1?statusSelectList[statusIndex]:'请选择选择状态'}}
+										</view>
+									</picker>
+								</view>
+								
+								<view class="cu-form-group">
+									<view>学院编号：</view>
+									<input type="text" v-model="scrap" placeholder="请填写报废原因" />
+								</view>
+						</view>
+						<view class="cu-bar bg-white justify-end">
+							<view class="action">
+								<button class="cu-btn" @tap="hideModal1">取消</button>
+								<button class="cu-btn bg-green margin-left" @tap="okconfirm">确定</button>
+							</view>
+						</view>
 					</view>
 				</view>
 				<view class="cu-modal" :class="modalName=='DialogModal'?'show':''">
@@ -84,6 +119,9 @@
 	export default {
 		data() {
 			return {
+				statusIndex: -1,
+				statusSelectList: ['在用', '丢失'],
+				scrap:'',
 				background: {
 					// 渐变色
 					backgroundImage: 'linear-gradient(45deg, rgb(28, 187, 180), rgb(141, 198, 63))'
@@ -107,6 +145,7 @@
 				type: 'text',
 				border: true,
 				modalName: null,
+				modalName1: null,
 				size: false
 			}
 		},
@@ -127,7 +166,13 @@
 			hideModal(e) {
 				this.modalName = null
 			},
-
+			showModal1(e){				
+				this.modalName1 = e.currentTarget.dataset.target
+				this.scrap=''
+			},
+			hideModal1(e) {
+				this.modalName1 = null
+			},
 			getcommodityList() {
 				this.commodityList = [];
 				// _this._post_form('/api/ykjp/product/product/getProduct', {}, (result) => {
@@ -146,9 +191,6 @@
 				uni.navigateTo({
 					url: '../scan/editcommodity'
 				})
-			},
-			scrap(index) {
-				// console.log('scrap')
 			},
 			open(index) {
 				this.commodityList[index].show = true;
@@ -174,7 +216,11 @@
 			},
 			SetSize(e) {
 				this.size = e.detail.value
+			},
+			statusSelectchange(e){
+				this.statusIndex = e.detail.value
 			}
+			
 		}
 	}
 </script>
@@ -264,4 +310,5 @@
 		display: block;
 		border: 1px solid #dcdcdc;
 	}
+
 </style>

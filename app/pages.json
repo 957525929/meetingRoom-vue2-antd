@@ -207,7 +207,16 @@
 					"path":"index",
 					"style":{}
 				}
-			]
+			    ,{
+                    "path" : "signList",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
 		},
 		{
 			"root":"pagesAccount",
@@ -270,7 +279,8 @@
 					"path":"index",
 					"style":{}
 				}
-			]
+
+            ]
 		}
 	],
 	
