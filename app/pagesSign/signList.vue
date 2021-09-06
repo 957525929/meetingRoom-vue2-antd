@@ -3,7 +3,7 @@
 		<scroll-view scroll-y class="DrawerPage" :class="modalName=='viewModal'?'show':''">
 			<cu-custom bgColor="bg-gradual-green" :isBack="true">
 				<block slot="backText"></block>
-				<block slot="content">资产清单</block>
+				<block slot="content">登记列表</block>
 				<block slot="right">
 					<text class="cuIcon-search padding-right" @tap="showModal" data-target="viewModal">
 						搜索
@@ -12,13 +12,10 @@
 			</cu-custom>
 
 			<view class="margin-top"  v-for="(item,index) in moneyList" >
-				<view class="commodityinfo " @tap="detail" >
+				<view class="commodityinfo " @tap="detail(item)" >
 					<view class="cu-item shadow">
 						<view class="cu-list menu-avatar cardtitle" :class=" size?'solids-bottom':'solid-bottom'">
-							<view class="margin text-bold">学院编号：{{item.collegeNum}}</view>
-							<view :class="item.status=='在用'?'cu-tag bg-green light margin round ':item.status=='闲置'?
-							'cu-tag bg-blue light margin round':item.status=='报废'?
-							'cu-tag bg-red light margin round':'cu-tag bg-orange light margin round' ">{{item.status}}</view>
+							<view class="margin text-bold">资产种类：{{item.type}}</view>
 						</view>
 						<view class="text-content padding-bottom margin-top">
 							<view class="title-wrap">
@@ -31,24 +28,48 @@
 								<view class="margin-left margin-bottom-xs">
 									手机：{{item.phone}}
 								</view>
-								<view class="margin-left margin-bottom-xs">
+						<!-- 		<view class="margin-left margin-bottom-xs">
 									资产种类：{{item.type}}
-								</view>
-								<view class="margin-left margin-bottom-xs">
+								</view> -->
+					<!-- 			<view class="margin-left margin-bottom-xs">
 									学校编号：{{item.schoolNum}}
-								</view>
+								</view> -->
 							</view>
 						</view>
 					</view>
 				</view>
-			</view>			
+			</view>
+			
 		</scroll-view>
 
 		<view class="DrawerClose" :class="modalName=='viewModal'?'show':''" @tap="hideModal">
 			<text class="cuIcon-pullright"></text>
 		</view>
 		<scroll-view scroll-y class="DrawerWindow" :class="modalName=='viewModal'?'show':''">
-
+			<!-- #ifdef  MP-WEIXIN -->				
+			<view class="cu-form-group">
+				<view class="title">
+					资产类型
+				</view>
+				<picker @change="selectchange" :value="selectIndex" :range="selectList">
+					<view class="picker">
+						{{selectIndex>-1?selectList[selectIndex]:'请选择资产类型'}}
+					</view>
+				</picker>
+			</view>
+			
+			<view class="cu-form-group">
+				<view class="title">
+					位置
+				</view>
+				<picker mode="multiSelector" @change="addressSelectChange" :value="addressIndex"
+					@columnchange="addressColumnChange" :range="addressSelectList">
+					<view class="picker">
+						{{addressSelectList[0][addressIndex[0]]}}.{{addressSelectList[1][addressIndex[1]]}}.{{addressIndex[2]>-1?addressSelectList[2][addressIndex[2]]:"请选择位置"}}
+					</view>
+				</picker>
+			</view>
+			<!-- #endif -->
 			<view class="cu-form-group margin-top">
 				<view class="title">
 					姓名
@@ -78,6 +99,7 @@
 					</view>
 				</picker>
 			</view>
+		
 
 			<view class="padding margin text-center">
 				<view class="cu-btn bg-green lg block shadow radius margin-xl" @tap="hideModal">
@@ -109,36 +131,16 @@
 						people:"王老师",
 						area:"仓山校区.知明楼.201",
 						phone:"15880754987",
-						type:"手机",
-						schoolNum:"98214561154",
-						status:"在用"
+						type:"办公桌",
+						schoolNum:"98214561154"
 					},
 					{
 						collegeNum: "51796521556",
 						people:"王老师",
 						area:"仓山校区.知明楼.201",
 						phone:"15880754987",
-						type:"手机",
-						schoolNum:"98214561154",
-						status:"闲置"
-					},
-					{
-						collegeNum: "51796521556",
-						people:"王老师",
-						area:"仓山校区.知明楼.201",
-						phone:"15880754987",
-						type:"手机",
-						schoolNum:"98214561154",
-						status:"报废"
-					},
-					{
-						collegeNum: "51796521556",
-						people:"王老师",
-						area:"仓山校区.知明楼.201",
-						phone:"15880754987",
-						type:"手机",
-						schoolNum:"98214561154",
-						status:"待报废"
+						type:"办公桌",
+						schoolNum:"98214561154"
 					},
 				]
 			};
@@ -207,9 +209,10 @@
 			selectchange(e) {
 				this.selectIndex = e.detail.value
 			},
-			detail(){
+			detail(item){
+				var onjs = JSON.stringify(item)
 				uni.navigateTo({
-					url:'../pages/scan/commodityinfo'
+					url:'./index?onjs='+onjs
 				})
 			}
 		},
