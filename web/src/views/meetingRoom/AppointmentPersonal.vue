@@ -300,7 +300,7 @@
               this.$refs.detailInfoForm.getValues((err, values) => {
                 // console.log('values', values)
                 if (values.length == 0) {
-                    console.log('111', values)
+                  // console.log('111', values)
                   this.submitApplyOK()
                 } else {
                   //再验证详细信息

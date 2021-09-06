@@ -124,7 +124,7 @@
       </a-table>
     </div>
     <!-- 详情页面 -->
-    <a-drawer :visible="visibleAppoint" title="会议详情" @close="appointClose" width="800px" placement="right">
+    <a-drawer :visible="visibleAppoint" title="会议详情" @close="appointClose" width="1000px" placement="right">
       <a-tabs default-active-key="1">
         <a-tab-pane key="1" tab="会议申请">
           <a-descriptions>
@@ -234,6 +234,7 @@
 
       meetingDetail(record) {
         this.visibleAppoint = true
+        console.log('record',record)
         this.selectMeeting = record
         let id = record.reserveId
         getAction('/ArrangementController/getArranmentById', {
