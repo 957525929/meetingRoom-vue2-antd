@@ -13,8 +13,8 @@
     <br />
     <template>
       <!-- <a-button key="cancel" @click="handleCancel" style="marginRight:20px">取消</a-button> -->
-      <a-button key="reset" @click="handleReset" style="marginRight:20px">重置</a-button>
-      <a-button key="submit" type="primary" @click="handleOk" style="marginRight:20px">提交</a-button>
+      <!-- <a-button key="reset" @click="handleReset" style="marginRight:20px">重置</a-button>
+      <a-button key="submit" type="primary" @click="handleOk" style="marginRight:20px">提交</a-button> -->
     </template>
   </a-card>
 </template>
@@ -102,14 +102,14 @@
       handleCancel() {
         this.$emit('handleCancel', false)
       },
-      handleReset() {
-        this.form1.resetFields() //重置基本信息
-        this.$refs.detailInfoForm.getValues((err, values) => {
-          //重置详细信息
-          let rowId = Array.from(values, x => x.id)
-          this.$refs.detailInfoForm.removeRows(rowId)
-        })
-      },
+      // handleReset() {
+      //   this.form1.resetFields() //重置基本信息
+      //   this.$refs.detailInfoForm.getValues((err, values) => {
+      //     //重置详细信息
+      //     let rowId = Array.from(values, x => x.id)
+      //     this.$refs.detailInfoForm.removeRows(rowId)
+      //   })
+      // },
       handleOk() {
         this.form1.validateFields((err, values) => {
           if (!err) {
@@ -123,7 +123,7 @@
                 console.log('详细信息：', this.detailsInfoForm)
                 this.$emit('arrangementList', this.detailsInfoForm) 
                 this.$emit('handleCancel', false) //关闭窗口
-                this.handleReset() //重置表单
+                // this.handleReset() //重置表单
               }
             })
           }
