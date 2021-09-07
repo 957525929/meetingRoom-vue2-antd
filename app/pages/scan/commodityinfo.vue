@@ -310,5 +310,13 @@
 		display: block;
 		border: 1px solid #dcdcdc;
 	}
+	
+	.cu-form-group{
+		text-align: right;
+		.uni-input-input, .uni-input-placeholder{
+			color:#333333;
+			font-size:14px
+		}
+	}
 
 </style>
