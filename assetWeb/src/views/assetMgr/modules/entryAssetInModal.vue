@@ -1,5 +1,5 @@
 <template>
-  <a-drawer :title="title" :maskClosable="true" :width="600" placement="right" :closable="true" @close="handleCancel"
+  <a-drawer :title="title" :maskClosable="false" :width="650" placement="right" :closable="true" @close="handleCancel"
     style="height: calc(100% - 55px);overflow: auto;padding-bottom: 53px;" :visible="modalVisible">
     <a-form-model ref="ruleForm" :model="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
       <a-form-model-item label="领用人" prop="name" ref="name">
@@ -64,18 +64,27 @@
       <a-form-model-item label="金额（元）" prop="totalPrice" ref="totalPrice" v-if="title=='详情'">
         <a-input v-model="form.totalPrice" placeholder="请输入金额" readOnly></a-input>
       </a-form-model-item>
+      <a-form-model-item label="厂家名称" prop="factory" ref="factory">
+        <a-input v-model="form.factory" placeholder="请输入厂家名称" :readOnly="readOnlyJudge"></a-input>
+      </a-form-model-item>
+      <a-form-model-item label="供应商名称" prop="supply" ref="supply">
+        <a-input v-model="form.supply" placeholder="请输入供应商名称" :readOnly="readOnlyJudge"></a-input>
+      </a-form-model-item>
       <a-form-model-item label="购置日期" prop="payTime" ref="payTime">
-        <j-date v-model="form.payTime" :showTime="true" date-format="YYYY-MM-DD" style="width:360px"
+        <j-date v-model="form.payTime" :showTime="true" date-format="YYYY-MM-DD" style="width:395px"
           placeholder="请选择购置日期" :readOnly="readOnlyJudge"></j-date>
       </a-form-model-item>
-      <a-form-model-item label="是否需补贴条码">
-        <a-select v-model="form.check" placeholder="请选择是否是否需补贴条码" :disabled="disabledJudge">
+      <a-form-model-item label="型号规格" prop="model" ref="model">
+        <a-input v-model="form.model" placeholder="请输入型号规格" :readOnly="readOnlyJudge"></a-input>
+      </a-form-model-item>
+      <a-form-model-item label="是否需补贴条形码">
+        <a-select v-model="form.check" placeholder="请选择是否需补贴条形码" :disabled="disabledJudge">
           <a-select-option :value="1">是</a-select-option>
           <a-select-option :value="2">否</a-select-option>
         </a-select>
       </a-form-model-item>
       <a-form-model-item label="位置" prop="placeName" ref="placeName">
-        <a-cascader style="width: 360px" :options="selectOptions" @click="handlePlaceTree" placeholder="请选择位置"
+        <a-cascader style="width: 395px" :options="selectOptions" @click="handlePlaceTree" placeholder="请选择位置"
           v-model="form.area" :display-render="displayRender" :allowClear='false' :disabled="disabledJudge"
           @change="onChangePlaceName" />
       </a-form-model-item>
@@ -88,9 +97,9 @@
       <a-form-model-item label="工号">
         <a-input v-model="form.userNameId" placeholder="请输入使用人工号" :readOnly="readOnlyJudge"></a-input>
       </a-form-model-item>
-      <a-form-model-item label="报帐部门" prop="department" ref="department">
+      <!-- <a-form-model-item label="报帐部门" prop="department" ref="department">
         <a-input v-model="form.department" placeholder="请输入所属单位" :readOnly="readOnlyJudge"></a-input>
-      </a-form-model-item>
+      </a-form-model-item> -->
       <a-form-model-item label="发票编号">
         <a-input v-model="form.invoice" placeholder="请输入发票编号" :readOnly="readOnlyJudge"></a-input>
       </a-form-model-item>
@@ -109,8 +118,14 @@
         </a-modal>
       </a-form-model-item>
     </a-form-model>
-    <a-button type="primary" @click="onSubmit()" style="margin-left:30%" v-if="title!='详情'">确定</a-button>
-    <a-button style="margin-left: 10px;" @click="cancel()" v-if="title!='详情'">取消</a-button>
+    <div v-if="title!='详情'" style="margin-left:30%">
+      <a-button @click="onSubmit" type="primary" style="margin-right: .8rem">提交</a-button>
+      <a-popconfirm title="确定放弃编辑？" @confirm="cancel" okText="确定" cancelText="取消">
+        <a-button>取消</a-button>
+      </a-popconfirm>
+    </div>
+    <!-- <a-button type="primary" @click="onSubmit()" style="margin-left:30%" v-if="title!='详情'">确定</a-button>
+    <a-button style="margin-left: 10px;" @click="cancel()" v-if="title!='详情'">取消</a-button> -->
   </a-drawer>
 </template>
 
