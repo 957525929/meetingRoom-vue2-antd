@@ -119,12 +119,12 @@
                 <span v-if="assetType==60">家具、用具</span>
               </span>
 
-              <span slot="statusName" slot-scope="statusName">
-                <span v-if="statusName==1">使用中</span>
-                <span v-if="statusName==2">丢失</span>
-                <span v-if="statusName==3">多余</span>
-                <span v-if="statusName==4">报废</span>
-                <span v-if="statusName==5">待报废</span>
+              <span slot="assetStatus" slot-scope="assetStatus">
+                <span v-if="assetStatus==1">使用中</span>
+                <span v-if="assetStatus==2">丢失</span>
+                <span v-if="assetStatus==3">多余</span>
+                <span v-if="assetStatus==4">报废</span>
+                <span v-if="assetStatus==5">待报废</span>
               </span>
 
               <span slot="check" slot-scope="check">
@@ -160,12 +160,12 @@
                 <span v-if="assetType==60">家具、用具</span>
               </span>
 
-              <span slot="statusName" slot-scope="statusName">
-                <span v-if="statusName==1">使用中</span>
-                <span v-if="statusName==2">丢失</span>
-                <span v-if="statusName==3">多余</span>
-                <span v-if="statusName==4">报废</span>
-                <span v-if="statusName==5">待报废</span>
+              <span slot="assetStatus" slot-scope="assetStatus">
+                <span v-if="assetStatus==1">使用中</span>
+                <span v-if="assetStatus==2">丢失</span>
+                <span v-if="assetStatus==3">多余</span>
+                <span v-if="assetStatus==4">报废</span>
+                <span v-if="assetStatus==5">待报废</span>
               </span>
 
               <span slot="check" slot-scope="check">
@@ -184,7 +184,7 @@
     <asset-in-modal :title="title" :form="form" :modalVisible="modalVisible" v-if="modalVisible"
       @close="modalVisible=false"></asset-in-modal>
     <a-modal v-model="visibleScrap" title="报废原因" @ok="handleOk">
-      <a-form-model :model="formScrap" :rules="rules" :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }">
+      <a-form-model :model="formScrap" :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }">
         <a-form-model-item label="报废照片">
           <a-upload action="https://www.mocky.io/v2/5cc8019d300000980a055e76" list-type="picture-card"
             :file-list="formScrap.image" @preview="handleScrapPreview" @change="handleScrapImgChange">
@@ -220,15 +220,45 @@
   import JInput from '@/components/jeecg/JInput'
   import JDate from '@/components/jeecg/JDate'
   import assetInModal from './modules/entryAssetInModal'
+  // const areaData = [{
+  //     value: '旗山校区',
+  //     label: '旗山校区',
+  //     children: []
+  //   },
+  //   {
+  //     value: '仓山校区',
+  //     label: '仓山校区',
+  //     children: []
+  //   }
+  // ]
   const areaData = [{
       value: '旗山校区',
       label: '旗山校区',
-      children: []
+      children: [{
+          value: '邵逸夫楼',
+          label: '邵逸夫楼',
+        },
+        {
+          value: '笃行楼',
+          label: '笃行楼',
+        },
+        {
+          value: '知明楼',
+          label: '知明楼',
+        },
+        {
+          value: '立城楼',
+          label: '立城楼',
+        },
+      ]
     },
     {
       value: '仓山校区',
       label: '仓山校区',
-      children: []
+      children: [{
+        value: '地理科学学院实验楼',
+        label: '地理科学学院实验楼',
+      }, ]
     }
   ]
 
@@ -302,7 +332,7 @@
                 url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
               },
             ],
-            statusName: 5,
+            assetStatus: 5,
             check: 2,
             coding: 'N01',
             placeName: '旗山校区.知明楼',
@@ -345,7 +375,7 @@
               status: 'done',
               url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
             }, ],
-            statusName: 5,
+            assetStatus: 5,
             check: 1,
             coding: 'N02',
             placeName: '旗山校区.邵逸夫楼',
@@ -382,6 +412,12 @@
               status: 'done',
               url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
             }, ],
+            scrapImg: [{
+              uid: '-1',
+              name: 'image.png',
+              status: 'done',
+              url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+            }, ],
             image: [{
                 uid: '-1',
                 name: 'image.png',
@@ -395,7 +431,7 @@
                 url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
               },
             ],
-            statusName: 4,
+            assetStatus: 4,
             check: 2,
             coding: 'N01',
             placeName: '旗山校区.知明楼',
@@ -422,10 +458,10 @@
             // tower: '黄鹤楼',
             // room: '301',
             // fundSource: '地理所',
-            // invoice: '250611431925',
+            invoice: '250611431925',
             status: 3,
             // checkTime: '2021-06-30 16:20:35',
-            remark: '使用正常',
+            remark: '已损坏',
             invoiceImg: [{
               uid: '-1',
               name: 'image.png',
@@ -438,7 +474,7 @@
               status: 'done',
               url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
             }, ],
-            statusName: 4,
+            assetStatus: 4,
             check: 1,
             coding: 'N02',
             placeName: '旗山校区.邵逸夫楼',
@@ -464,12 +500,12 @@
             dataIndex: 'name',
             width: 120
           },
-          {
-            title: '所属单位',
-            align: "center",
-            width: 100,
-            dataIndex: 'department',
-          },
+          // {
+          //   title: '报帐部门',
+          //   align: "center",
+          //   width: 100,
+          //   dataIndex: 'department',
+          // },
           {
             title: '资产类型',
             align: "center",
@@ -486,6 +522,15 @@
             dataIndex: 'deviceName',
           },
           {
+            title: '资产状态',
+            align: "center",
+            width: 120,
+            dataIndex: 'assetStatus',
+            scopedSlots: {
+              customRender: 'assetStatus'
+            },
+          },
+          {
             title: '数量',
             align: "center",
             width: 80,
@@ -497,15 +542,7 @@
             width: 100,
             dataIndex: 'price'
           },
-          {
-            title: '资产状态',
-            align: "center",
-            width: 120,
-            dataIndex: 'statusName',
-            scopedSlots: {
-              customRender: 'statusName'
-            },
-          },
+
           {
             title: '购置日期',
             align: "center",
@@ -513,13 +550,19 @@
             dataIndex: 'payTime'
           },
           {
-            title: '是否需要补条形码',
+            title: '是否需要补贴条码',
             align: "center",
             width: 120,
             dataIndex: 'check',
             scopedSlots: {
               customRender: 'check'
             },
+          },
+          {
+            title: '使用人',
+            align: "center",
+            width: 100,
+            dataIndex: 'userName',
           },
           {
             title: '操作',
@@ -542,19 +585,19 @@
       }
     },
     computed: {
-      firstTree() {
-        return this.$store.state.meeting.placeData
-      },
-      firstTree1() {
-        return this.$store.state.meeting.placeData1
-      },
+      // firstTree() {
+      //   return this.$store.state.meeting.placeData
+      // },
+      // firstTree1() {
+      //   return this.$store.state.meeting.placeData1
+      // },
       importExcelUrl: function () {
         return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`
       }
     },
     mounted() {
-      this.$store.dispatch('placeTree')
-      this.$store.dispatch('placeTree1')
+      // this.$store.dispatch('placeTree')
+      // this.$store.dispatch('placeTree1')
     },
     methods: {
       displayRender({
@@ -565,24 +608,24 @@
       },
 
       handlePlaceTree() {
-        if (areaData[0].children.length == 0) {
-          for (let i = 0; i < this.firstTree.length; i++) {
-            areaData[0].children.push({
-              label: this.firstTree[i].placeName,
-              value: this.firstTree[i].placeName
-            })
-          }
-        }
+        // if (areaData[0].children.length == 0) {
+        //   for (let i = 0; i < this.firstTree.length; i++) {
+        //     areaData[0].children.push({
+        //       label: this.firstTree[i].placeName,
+        //       value: this.firstTree[i].placeName
+        //     })
+        //   }
+        // }
 
-        if (areaData[1].children.length == 0) {
-          for (let i = 0; i < this.firstTree1.length; i++) {
-            areaData[1].children.push({
-              label: this.firstTree1[i].placeName,
-              value: this.firstTree1[i].placeName
-            })
-          }
-        }
-        console.log(areaData)
+        // if (areaData[1].children.length == 0) {
+        //   for (let i = 0; i < this.firstTree1.length; i++) {
+        //     areaData[1].children.push({
+        //       label: this.firstTree1[i].placeName,
+        //       value: this.firstTree1[i].placeName
+        //     })
+        //   }
+        // }
+        // console.log(areaData)
       },
       handleMenuClick(e) {
         if (e.key == 1) {
@@ -634,9 +677,9 @@
       handleOk() {
         if (this.scrapListLength > 0 || this.formScrap.remark) {
           this.$message.success('报废成功')
-          this.formScrap={}
-        }else{
-            this.$message.warning('照片或备注至少填一项')
+          this.formScrap = {}
+        } else {
+          this.$message.warning('照片或备注至少填一项')
         }
 
       }

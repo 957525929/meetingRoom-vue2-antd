@@ -6,7 +6,7 @@
         <a-row :gutter="24">
           <a-col :md="6" :sm="8" :lg="4">
             <a-form-item label="领用人">
-              <j-input placeholder="输入领用人姓名模糊查询" v-model="queryParam.username"></j-input>
+              <j-input placeholder="输入领用人姓名模糊查询" v-model="queryParam.name"></j-input>
             </a-form-item>
           </a-col>
 
@@ -35,7 +35,7 @@
 
           <a-col :md="6" :sm="8" :lg="4">
             <a-form-item label="资产状态">
-              <a-select v-model="queryParam.status" placeholder="请选择资产状态">
+              <a-select v-model="queryParam.assetStatus" placeholder="请选择资产状态">
                 <a-select-option :value="1">使用中</a-select-option>
                 <a-select-option :value="2">丢失</a-select-option>
                 <a-select-option :value="3">多余</a-select-option>
@@ -123,12 +123,12 @@
           <span v-if="assetType==60">家具、用具</span>
         </span>
 
-        <span slot="statusName" slot-scope="statusName">
-          <span v-if="statusName==1">使用中</span>
-          <span v-if="statusName==2">丢失</span>
-          <span v-if="statusName==3">多余</span>
-          <span v-if="statusName==4">报废</span>
-          <span v-if="statusName==5">待报废</span>
+        <span slot="assetStatus" slot-scope="assetStatus">
+          <span v-if="assetStatus==1">使用中</span>
+          <span v-if="assetStatus==2">丢失</span>
+          <span v-if="assetStatus==3">多余</span>
+          <span v-if="assetStatus==4">报废</span>
+          <span v-if="assetStatus==5">待报废</span>
         </span>
 
         <span slot="check" slot-scope="check">
@@ -148,7 +148,8 @@
       </a-table>
     </div>
     <!-- table区域-end -->
-     <asset-in-modal :title="title" :form="form" :modalVisible="modalVisible" v-if="modalVisible" @close="modalVisible=false"></asset-in-modal>
+    <asset-in-modal :title="title" :form="form" :modalVisible="modalVisible" v-if="modalVisible"
+      @close="modalVisible=false"></asset-in-modal>
   </a-card>
 </template>
 <script>
@@ -164,16 +165,46 @@
   } from '@/mixins/JeecgListMixin'
   import JInput from '@/components/jeecg/JInput'
   import JDate from '@/components/jeecg/JDate'
-    import assetInModal from './modules/entryAssetInModal'
+  import assetInModal from './modules/entryAssetInModal'
+  // const areaData = [{
+  //     value: '旗山校区',
+  //     label: '旗山校区',
+  //     children: []
+  //   },
+  //   {
+  //     value: '仓山校区',
+  //     label: '仓山校区',
+  //     children: []
+  //   }
+  // ]
   const areaData = [{
       value: '旗山校区',
       label: '旗山校区',
-      children: []
+      children: [{
+          value: '邵逸夫楼',
+          label: '邵逸夫楼',
+        },
+        {
+          value: '笃行楼',
+          label: '笃行楼',
+        },
+        {
+          value: '知明楼',
+          label: '知明楼',
+        },
+        {
+          value: '立城楼',
+          label: '立城楼',
+        },
+      ]
     },
     {
       value: '仓山校区',
       label: '仓山校区',
-      children: []
+      children: [{
+        value: '地理科学学院实验楼',
+        label: '地理科学学院实验楼',
+      }, ]
     }
   ]
   export default {
@@ -181,7 +212,7 @@
     components: {
       JInput,
       JDate,
-       assetInModal,
+      assetInModal,
     },
     data() {
       return {
@@ -193,10 +224,10 @@
         dataSource: [{
             id: 2,
             name: '姚明',
-            assetType: 30,
-            deviceName: '手机',
+            assetType: 60,
+            deviceName: '电脑桌',
             amount: '1',
-            price: '4350',
+            price: '200',
             // factory: '华为',
             // supply: '华为',
             payTime: '2021-06-28',
@@ -231,7 +262,7 @@
                 url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
               },
             ],
-            statusName: 4,
+            assetStatus: 4,
             check: 2,
             coding: 'N01',
             placeName: '旗山校区.知明楼',
@@ -274,7 +305,7 @@
               status: 'done',
               url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
             }, ],
-            statusName: 1,
+            assetStatus: 1,
             check: 1,
             coding: 'N02',
             placeName: '旗山校区.邵逸夫楼',
@@ -300,12 +331,12 @@
             dataIndex: 'name',
             width: 120
           },
-          {
-            title: '所属单位',
-            align: "center",
-            width: 100,
-            dataIndex: 'department',
-          },
+          // {
+          //   title: '报帐部门',
+          //   align: "center",
+          //   width: 100,
+          //   dataIndex: 'department',
+          // },
           {
             title: '资产类型',
             align: "center",
@@ -322,6 +353,15 @@
             dataIndex: 'deviceName',
           },
           {
+            title: '资产状态',
+            align: "center",
+            width: 120,
+            dataIndex: 'assetStatus',
+            scopedSlots: {
+              customRender: 'assetStatus'
+            },
+          },
+          {
             title: '数量',
             align: "center",
             width: 80,
@@ -333,15 +373,7 @@
             width: 100,
             dataIndex: 'price'
           },
-          {
-            title: '资产状态',
-            align: "center",
-            width: 120,
-            dataIndex: 'statusName',
-            scopedSlots: {
-              customRender: 'statusName'
-            },
-          },
+
           {
             title: '购置日期',
             align: "center",
@@ -349,13 +381,19 @@
             dataIndex: 'payTime'
           },
           {
-            title: '是否需要补条形码',
+            title: '是否需要补贴条码',
             align: "center",
             width: 120,
             dataIndex: 'check',
             scopedSlots: {
               customRender: 'check'
             },
+          },
+          {
+            title: '使用人',
+            align: "center",
+            width: 100,
+            dataIndex: 'userName',
           },
           {
             title: '操作',
@@ -378,47 +416,46 @@
       }
     },
     computed: {
-      firstTree() {
-        return this.$store.state.meeting.placeData
-      },
-      firstTree1() {
-        return this.$store.state.meeting.placeData1
-      },
+      // firstTree() {
+      //   return this.$store.state.meeting.placeData
+      // },
+      // firstTree1() {
+      //   return this.$store.state.meeting.placeData1
+      // },
       importExcelUrl: function () {
         return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`;
       }
     },
     mounted() {
-      this.$store.dispatch('placeTree')
-      this.$store.dispatch('placeTree1')
+      // this.$store.dispatch('placeTree')
+      // this.$store.dispatch('placeTree1')
     },
     methods: {
       displayRender({
         labels
       }) {
-        //  this.queryParam.placeName = labels.join('.')
         return labels.join('.')
       },
 
       handlePlaceTree() {
-        if (areaData[0].children.length == 0) {
-          for (let i = 0; i < this.firstTree.length; i++) {
-            areaData[0].children.push({
-              label: this.firstTree[i].placeName,
-              value: this.firstTree[i].placeName
-            })
-          }
-        }
+        // if (areaData[0].children.length == 0) {
+        //   for (let i = 0; i < this.firstTree.length; i++) {
+        //     areaData[0].children.push({
+        //       label: this.firstTree[i].placeName,
+        //       value: this.firstTree[i].placeName
+        //     })
+        //   }
+        // }
 
-        if (areaData[1].children.length == 0) {
-          for (let i = 0; i < this.firstTree1.length; i++) {
-            areaData[1].children.push({
-              label: this.firstTree1[i].placeName,
-              value: this.firstTree1[i].placeName
-            })
-          }
-        }
-        console.log(areaData)
+        // if (areaData[1].children.length == 0) {
+        //   for (let i = 0; i < this.firstTree1.length; i++) {
+        //     areaData[1].children.push({
+        //       label: this.firstTree1[i].placeName,
+        //       value: this.firstTree1[i].placeName
+        //     })
+        //   }
+        // }
+        // console.log(areaData)
       },
       handleMenuClick(e) {
         if (e.key == 1) {

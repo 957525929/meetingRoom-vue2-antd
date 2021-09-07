@@ -160,10 +160,9 @@
     </div>
     <!-- table区域-end -->
 
-    <!-- <asset-modal ref="modalForm" @ok="modalFormOk"></asset-modal> -->
+    <asset-modal ref="modalForm" @ok="modalFormOk"></asset-modal>
 
-    <asset-booked-modal :title="title" :form="form" :modalVisible="modalVisible" v-if="modalVisible"
-      @close="modalVisible=false"></asset-booked-modal>
+
     <sys-user-agent-modal ref="sysUserAgentModal"></sys-user-agent-modal>
 
     <!-- 用户回收站 -->
@@ -176,8 +175,7 @@
 </template>
 
 <script>
-  // import assetModal from './modules/entryAssetModal'
-  import assetBookedModal from './modules/entryAssetBookedModal'
+  import assetModal from './modules/entryAssetModal'
   import {
     putAction,
     getFileAccessHttpUrl
@@ -198,17 +196,13 @@
     mixins: [JeecgListMixin],
     components: {
       SysUserAgentModal,
-      // assetModal,
-      assetBookedModal,
+      assetModal,
       JInput,
       UserRecycleBinModal,
       JDate
     },
     data() {
       return {
-        modalVisible: false,
-        title: '',
-        form: {},
         visible: false,
         description: '入帐资产管理页面',
         queryParam: {
@@ -239,18 +233,12 @@
             checkTime: '2021-06-30 16:20:35',
             reason: '学校已经没有经费了',
             invoiceImg: [{
-              uid: '-1',
-              name: 'image.png',
-              status: 'done',
+              uid:'-1',
               url: 'http://www.juimg.com/tuku/yulantu/140703/330746-140F301555752.jpg'
-
             }],
             image: [{
-              uid: '-1',
-              name: 'image.png',
-              status: 'done',
-              // url: 'http://www.juimg.com/tuku/yulantu/140703/330746-140F301555752.jpg',
-              url: 'https://img2.baidu.com/it/u=3186167766,1213544145&fm=26&fmt=auto&gp=0.jpg'
+               uid:'-1',
+              url: 'http://www.juimg.com/tuku/yulantu/140703/330746-140F301555752.jpg',
             }],
             placeName: '旗山校区.邵逸夫楼',
           },
@@ -279,16 +267,12 @@
             checkTime: '2021-06-30 16:20:35',
             reason: '学校已经没有经费了',
             invoiceImg: [{
-              uid: '-1',
-              name: 'image.png',
-              status: 'done',
+               uid:'-1',
               url: 'http://www.juimg.com/tuku/yulantu/140703/330746-140F301555752.jpg'
             }],
             image: [{
-              uid: '-1',
-              name: 'image.png',
-              status: 'done',
-              url: 'https://img1.baidu.com/it/u=2772749827,411043875&fm=26&fmt=auto&gp=0.jpg',
+               uid:'-1',
+              url: 'http://www.juimg.com/tuku/yulantu/140703/330746-140F301555752.jpg',
             }],
             placeName: '旗山校区.知明楼',
           },
@@ -381,7 +365,7 @@
     },
     computed: {
       importExcelUrl: function () {
-        return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`
+        return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`;
       }
     },
     mounted() {},
@@ -399,31 +383,13 @@
       },
       confirm(e) {
         console.log(e);
-        this.$message.success('审核合格')
+        this.$message.success('审核合格');
 
       },
       cancel(e) {
-        this.visible = true
-        console.log(e)
+        this.visible = true;
+        console.log(e);
         // this.$message.error('审核合格');
-      },
-      handleOk() {
-        this.visible = false
-      },
-      handleDetail(record) {
-        this.modalVisible = true
-        this.title = "详情"
-        this.form = record
-      },
-      handleEdit(record) {
-        this.modalVisible = true
-        this.title = "编辑"
-        this.form = record
-      },
-      handleAdd() {
-        this.modalVisible = true
-        this.title = "添加"
-        this.form = {}
       },
     }
 
