@@ -169,12 +169,12 @@
 					case 0:
 						switch (data.addressIndex[0]) {
 							case 0:
-								data.addressSelectList[1] = ['广东', '广西'];
-								data.addressSelectList[2] = ['广州', '深圳'];
+								data.addressSelectList[1] = ['知明楼', '立诚楼'];
+								data.addressSelectList[2] = ['101', '102'];
 								break;
 							case 1:
-								data.addressSelectList[1] = ['纽约'];
-								data.addressSelectList[2] = ['皇后街'];
+								data.addressSelectList[1] = ['地理科学楼'];
+								data.addressSelectList[2] = ['101'];
 								break;
 						}
 						data.addressIndex[1] = 0;
@@ -185,26 +185,24 @@
 							case 0:
 								switch (data.addressIndex[1]) {
 									case 0:
-										data.addressSelectList[2] = ['广州', '深圳'];
+										data.addressSelectList[2] = ['101', '102'];
 										break;
 									case 1:
-										data.addressSelectList[2] = ['南宁', '桂林'];
+										data.addressSelectList[2] = ['102'];
 										break;
 								}
 								break;
-							case 1:
-								switch (data.addressIndex[1]) {
-									case 0:
-										data.addressSelectList[2] = ['皇后街'];
-										break;
-								}
-								break;
+							// case 1:
+							// 	switch (data.addressIndex[1]) {
+							// 		case 0:
+							// 			data.addressSelectList[2] = ['皇后街'];
+							// 			break;
+							// 	}
+							// 	break;
 						}
 						data.addressIndex[2] = 0;
 						break;
 				}
-				this.addressSelectList = data.addressSelectList;
-				this.addressIndex = data.addressIndex;
 			},
 			selectchange(e) {
 				this.selectIndex = e.detail.value

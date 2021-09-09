@@ -11,7 +11,7 @@
 				</block>
 			</cu-custom>
 
-			<view class="margin-top"  v-for="(item,index) in moneyList" >
+			<view class="margin-top"  v-for="(item,index) in filterData" >
 				<view class="commodityinfo " @tap="detail" >
 					<view class="cu-item shadow">
 						<view class="cu-list menu-avatar cardtitle" :class=" size?'solids-bottom':'solid-bottom'">
@@ -53,15 +53,15 @@
 				<view class="title">
 					姓名
 				</view>
-				<input placeholder="请输入姓名" name="input"></input>
+				<input placeholder="请输入姓名" name="input" v-model="search.name"></input>
 			</view>
 			
 			<view class="cu-form-group">
 				<view class="title">
 					资产类型
 				</view>
-				<picker @change="selectchange" :value="selectIndex" :range="selectList">
-					<view class="picker">
+				<picker @change="selectchange" :value="selectIndex" :range="selectList" >
+					<view class="picker" v-model="search.type">
 						{{selectIndex>-1?selectList[selectIndex]:'请选择资产类型'}}
 					</view>
 				</picker>
@@ -72,7 +72,7 @@
 					位置
 				</view>
 				<picker mode="multiSelector" @change="addressSelectChange" :value="addressIndex"
-					@columnchange="addressColumnChange" :range="addressSelectList">
+					@columnchange="addressColumnChange" :range="addressSelectList" v-model="search.place">
 					<view class="picker">
 						{{addressSelectList[0][addressIndex[0]]}}.{{addressSelectList[1][addressIndex[1]]}}.{{addressIndex[2]>-1?addressSelectList[2][addressIndex[2]]:"请选择位置"}}
 					</view>
@@ -80,7 +80,7 @@
 			</view>
 
 			<view class="padding margin text-center">
-				<view class="cu-btn bg-green lg block shadow radius margin-xl" @tap="hideModal">
+				<view class="cu-btn bg-green lg block shadow radius margin-xl" @tap="loadData">
 					查询
 				</view>
 			</view>
@@ -90,11 +90,20 @@
 
 <script>
 	export default {
+		onLoad() {
+			this.loadData()
+		},
 		data() {
 			return {
+				monList:'',
 				modalName: null,
 				scrollLeft: 0,
 				size: false,
+				search:{
+					name:"",
+					type:"",
+					place:""
+				},
 				addressIndex: [-1, -1, -1],
 				addressSelectList: [
 					['仓山校区', '旗山校区'],
@@ -107,7 +116,7 @@
 					{
 						collegeNum: "51796521556",
 						people:"王老师",
-						area:"仓山校区.知明楼.201",
+						area:"旗山校区.知明楼.201",
 						phone:"15880754987",
 						type:"手机",
 						schoolNum:"98214561154",
@@ -118,33 +127,48 @@
 						people:"王老师",
 						area:"仓山校区.知明楼.201",
 						phone:"15880754987",
-						type:"手机",
+						type:"办公桌",
 						schoolNum:"98214561154",
 						status:"闲置"
 					},
 					{
 						collegeNum: "51796521556",
-						people:"王老师",
+						people:"林老师",
 						area:"仓山校区.知明楼.201",
 						phone:"15880754987",
-						type:"手机",
+						type:"办公椅",
 						schoolNum:"98214561154",
 						status:"报废"
 					},
 					{
 						collegeNum: "51796521556",
-						people:"王老师",
+						people:"姜老师",
 						area:"仓山校区.知明楼.201",
 						phone:"15880754987",
 						type:"手机",
 						schoolNum:"98214561154",
 						status:"待报废"
 					},
-				]
+				],
+				filterData:[]
 			};
 		},
 
 		methods: {
+			loadData(){
+				// console.log(this.search.name)
+				// const filterData = JSON.parse(JSON.stringify(this.moneyList))
+				this.search.type = this.monList
+				this.search.place = this.checkbox  
+				console.log(this.search.type)
+				this.filterData=this.moneyList.filter(item=>{
+					console.log(this.search)
+					console.log(item.people.indexOf(this.search.type))
+					// ||item.type.indexOf(this.search.type)!==-1||item.area.indexOf(this.search.place)!==-1
+					return item.people.indexOf(this.search.name)!==-1
+				})
+				console.log(this.moneyList)
+			},
 			showModal(e) {
 				this.modalName = e.currentTarget.dataset.target
 			},
@@ -167,12 +191,12 @@
 					case 0:
 						switch (data.addressIndex[0]) {
 							case 0:
-								data.addressSelectList[1] = ['广东', '广西'];
-								data.addressSelectList[2] = ['广州', '深圳'];
+								data.addressSelectList[1] = ['知明楼', '立诚楼'];
+								data.addressSelectList[2] = ['101', '102'];
 								break;
 							case 1:
-								data.addressSelectList[1] = ['纽约'];
-								data.addressSelectList[2] = ['皇后街'];
+								data.addressSelectList[1] = ['地理科学楼'];
+								data.addressSelectList[2] = ['101'];
 								break;
 						}
 						data.addressIndex[1] = 0;
@@ -183,29 +207,35 @@
 							case 0:
 								switch (data.addressIndex[1]) {
 									case 0:
-										data.addressSelectList[2] = ['广州', '深圳'];
+										data.addressSelectList[2] = ['101', '102'];
 										break;
 									case 1:
-										data.addressSelectList[2] = ['南宁', '桂林'];
+										data.addressSelectList[2] = ['102'];
 										break;
 								}
 								break;
-							case 1:
-								switch (data.addressIndex[1]) {
-									case 0:
-										data.addressSelectList[2] = ['皇后街'];
-										break;
-								}
-								break;
+							// case 1:
+							// 	switch (data.addressIndex[1]) {
+							// 		case 0:
+							// 			data.addressSelectList[2] = ['皇后街'];
+							// 			break;
+							// 	}
+							// 	break;
 						}
 						data.addressIndex[2] = 0;
 						break;
 				}
 				this.addressSelectList = data.addressSelectList;
 				this.addressIndex = data.addressIndex;
+				// console.log(this.addressSelectList[0][this.addressIndex[0]]+'.'+this.addressSelectList[1][this.addressIndex[1]]+'.'+this.addressSelectList[2][this.addressIndex[2]])
+				this.checkbox = this.addressSelectList[0][this.addressIndex[0]]+'.'+this.addressSelectList[1][this.addressIndex[1]]+'.'+this.addressSelectList[2][this.addressIndex[2]]
 			},
 			selectchange(e) {
+				// console.log(e)
+				// console.log(this.search.type)
 				this.selectIndex = e.detail.value
+				// console.log(this.selectList[this.selectIndex])
+				this.monList = this.selectList[this.selectIndex]
 			},
 			detail(){
 				uni.navigateTo({
@@ -213,6 +243,8 @@
 				})
 			}
 		},
+		watch:{
+		}
 	}
 </script>
 

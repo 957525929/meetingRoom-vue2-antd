@@ -189,7 +189,6 @@
 				if(item.id==3){
 					this.modalName = "Modal"
 				}
-
 				uni.navigateTo({
 					url:item.url
 				})
