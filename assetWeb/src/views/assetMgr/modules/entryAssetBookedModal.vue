@@ -1,5 +1,5 @@
 <template>
-  <a-drawer :title="title" :maskClosable="true" :width="600" placement="right" :closable="true" @close="handleCancel"
+  <a-drawer :title="title" :maskClosable="false" :width="600" placement="right" :closable="true" @close="handleCancel"
     style="height: calc(100% - 55px);overflow: auto;padding-bottom: 53px;" :visible="modalVisible">
     <a-form-model ref="ruleForm" :model="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
       <a-form-model-item label="领用人" prop="name" ref="name">
@@ -99,8 +99,14 @@
         </a-modal>
       </a-form-model-item>
     </a-form-model>
-    <a-button type="primary" @click="onSubmit()" style="margin-left:30%" v-if="title!='详情'">确定</a-button>
-    <a-button style="margin-left: 10px;" @click="cancel()" v-if="title!='详情'">取消</a-button>
+    <div v-if="title!='详情'" style="margin-left:30%">
+      <a-button @click="onSubmit" type="primary" style="margin-right: .8rem">提交</a-button>
+      <a-popconfirm title="确定放弃编辑？" @confirm="cancel" okText="确定" cancelText="取消">
+        <a-button>取消</a-button>
+      </a-popconfirm>
+    </div>
+    <!-- <a-button type="primary" @click="onSubmit()" style="margin-left:30%" v-if="title!='详情'">确定</a-button>
+    <a-button style="margin-left: 10px;" @click="cancel()" v-if="title!='详情'">取消</a-button> -->
   </a-drawer>
 </template>
 
@@ -150,10 +156,10 @@
 
   function getBase64(file) {
     return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => resolve(reader.result)
+      reader.onerror = error => reject(error)
     });
   }
   export default {
