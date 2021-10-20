@@ -75,12 +75,14 @@ const areaData = [
   {
     value: '旗山校区',
     label: '旗山校区',
-    children: []
+    placeId: '1',
+    isLeaf: false
   },
   {
     value: '仓山校区',
     label: '仓山校区',
-    children: []
+    placeId: '2',
+    isLeaf: false
   }
 ]
 const radioOp = [
@@ -283,23 +285,22 @@ export default {
       console.log(value)
     },
     handlePlaceTree() {
-      if (areaData[0].children.length == 0) {
-        for (let i = 0; i < this.firstTree.length; i++) {
-          areaData[0].children.push({
-            label: this.firstTree[i].placeName,
-            value: this.firstTree[i].placeName
-          })
-        }
-      }
-
-      if (areaData[1].children.length == 0) {
-        for (let i = 0; i < this.firstTree1.length; i++) {
-          areaData[1].children.push({
-            label: this.firstTree1[i].placeName,
-            value: this.firstTree1[i].placeName
-          })
-        }
-      }
+      // if (areaData[0].children.length == 0) {
+      //   for (let i = 0; i < this.firstTree.length; i++) {
+      //     areaData[0].children.push({
+      //       label: this.firstTree[i].placeName,
+      //       value: this.firstTree[i].placeName
+      //     })
+      //   }
+      // }
+      // if (areaData[1].children.length == 0) {
+      //   for (let i = 0; i < this.firstTree1.length; i++) {
+      //     areaData[1].children.push({
+      //       label: this.firstTree1[i].placeName,
+      //       value: this.firstTree1[i].placeName
+      //     })
+      //   }
+      // }
     },
     btnSearch() {
       // this.queryParam = this.formState

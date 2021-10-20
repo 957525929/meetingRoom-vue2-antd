@@ -28,6 +28,7 @@
         :placeholder="`${type_msg[item.type]}${item.label}`"
         v-model="formData[item.name]"
         :display-render="displayRender"
+        :load-data="loadData"
       />
     </a-form-model-item>
     <!--按钮-->
@@ -49,6 +50,8 @@
 </template>
 
 <script>
+import { placeTreeData } from '@/api/api'
+import { f } from '../../../public/cdn/babel-polyfill/polyfill_7_2_5'
 export default {
   props: {
     formItem: {
@@ -120,6 +123,31 @@ export default {
       // this.formData.placeName = labels.join('.')
       console.log('formData', this.formData)
       return labels.join('.')
+    },
+    async loadData(selectedOptions) {
+      const targetOption = selectedOptions[selectedOptions.length - 1]
+      targetOption.loading = true
+      let data = targetOption.placeId
+      let res = await placeTreeData({ id: data })
+      console.log('data', res.data)
+      let hadData = this.getOption(res.data)
+      let cas = this.formItem.filter(item => item.type == 'cascader')
+      // load options lazily
+      setTimeout(() => {
+        targetOption.loading = false
+        targetOption.children = [...hadData]
+        cas[0].options = [...cas[0].options]
+      }, 1000)
+    },
+    getOption(params) {
+      return params.map(item => {
+        return {
+          label: item.placeName,
+          value: item.placeId,
+          placeId: item.placeId,
+          isLeaf: item.placeType == 1 ? false : true
+        }
+      })
     }
   },
   watch: {
