@@ -72,6 +72,7 @@ export const JeecgListMixin = {
         this.ipagination.current = 1
       }
       var params = this.getQueryParams() //查询条件
+      console.log(params)
       this.loading = true
 
       // postAction(this.url.list, params).then((res) => {
@@ -124,6 +125,7 @@ export const JeecgListMixin = {
       //var param = Object.assign(sqp, this.queryParam, this.isorter ,this.filters);
 
       var param = Object.assign(sqp, this.queryParam)
+      console.log(param)
       // param.field = this.getQueryField();
       param.pageNum = this.ipagination.current
       param.pageSize = this.ipagination.pageSize

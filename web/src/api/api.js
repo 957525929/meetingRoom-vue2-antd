@@ -94,8 +94,9 @@ const getUserNoticeInfo = params => getAction('/sys/sysAnnouncementSend/getMyAnn
 //区域树
 const placeTreeData = params => getAction('/MeetingRoomController/getPlaceByPid', params)
 
-//添加会议室
+//删除会议室
 const deleteMeetingRoom = params => postAction('/MeetingRoomController/deleteMeetingRoomById', params)
+
 
 export {
   addRole,
